@@ -8,6 +8,10 @@ public class Block {
     private long time;
     private Ledger ledger;
 
+    public Block(){
+        ledger = new Ledger();
+    }
+
     public int getIndex() {
         return index;
     }
@@ -47,4 +51,11 @@ public class Block {
     public void setLedger(Ledger ledger) {
         this.ledger = ledger;
     }
+
+    public String calculateHash(String hash, Ledger ledger){
+        //
+
+        return null;
+    }
+
 }
