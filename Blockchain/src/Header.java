@@ -6,34 +6,35 @@ import java.util.Locale;
 import java.util.concurrent.ThreadLocalRandom;
 import java.math.*;
 public class Header {
-	private int blockId; // Identifiant du blockId
-	
-	private int headerId; // Identifiant du Header 	
-	
-	private int bodyId; // Identifiant du corps
 	
 	private int nonce; // Random number
 	
 	private Date timeStamp; // Date de création du block
 	
-	private int blockTransHash;
+	private String blockTransHash;
 	
-	private int headerHash;
+	private String headerHash;
 	
-	private int headerHashPrev;
+	private String headerHashPrev;
 	
-	public Header(int headerHashPrev) {
+	public Header(Block blockPrev) {
 		nonce = ThreadLocalRandom.current().nextInt(0, 10000);
 		timeStamp = new Date(System.currentTimeMillis());
+		headerHash = calcHeaderHash(blockPrev)
 		
 	};
+	
+	public Header() {
+		
+		
+	}
 	
 	public int getBlockId() {return blockId;}
 	
 	public int getNonce() {return nonce;}
 	
-	public void calcHeaderHash() {
-		
+	public void calcHeaderHash(Block blockPrev) {
+		String body = blockPrev.
 	}
 	
 	public int getPrevHash() {return headerHashPrev;}
