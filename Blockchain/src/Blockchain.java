@@ -22,7 +22,7 @@ public class Blockchain {
     }
 
     public int getLatestBlock(){
-        return blkchain.get(blkchain.size()-1).getBlockId();
+        return blkchain.get(blkchain.size()-1).getHeader().getBlockId();
     }
 
     public synchronized void addBlock(Block block){
@@ -34,7 +34,7 @@ public class Blockchain {
         Block blockprev = it.next();
         while (it.hasNext()){
             Block block = it.next();
-            if(!block.getPrevHash().equals(blockprev.getHeaderHash()))
+            if(block.getHeader().getPrevHash()!=blockprev.getHeader().getHeaderHash())
                 return false;
             blockprev = block;
         }
