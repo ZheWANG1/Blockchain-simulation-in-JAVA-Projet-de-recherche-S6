@@ -7,7 +7,7 @@ import java.util.concurrent.ThreadLocalRandom;
 import java.math.*;
 public class Header {
 	
-	private final int nbOfZeros = 5  
+	private final int nbOfZeros = 2 
 	private int nonce; // Nombre aléatoire permmetant de generé un strign aleatoire
 	
 	private long timeStamp; // Date de création du block
@@ -27,28 +27,29 @@ public class Header {
 		
 		Header h = blockPrev.getHeader();
 		headerHashPrev = h.getHeaderHash();
+		
+		calcHeaderHash()
 	};
 	
 	public Header() {
+		timeStamp = System.currentTimeMillis();
+		blockTransHash = "";
+		headerHashPrev = "";
 		
-		
+		calcHeaderHash()
 	}
 	
 	public int getBlockId() {return blockId;}
 	
 	public int getNonce() {return nonce;}
 	
-	public void calcHeaderHash(Block blockPrev) {
+	public void calcHeaderHash() {
 		String concat = headerHashPrev + blockTransHash;
 		String minedBlock = mineBlock(concat);
 		headerHash = minedBlock;
 	}
 	
-	public int getPrevHash() {return headerHashPrev;}
 	
-	public int getBlockTransHash() {return blockTransHash;}
-	
-	public int getBodyId( ) {return bodyId;}
 	
 	public String mineBlock(String s) {
 		while true{
@@ -63,8 +64,13 @@ public class Header {
 
 		
 	}
+	public int getPrevHash() {return headerHashPrev;}
 	
+	public int getBlockTransHash() {return blockTransHash;}
 	
+	public int getBodyId( ) {return bodyId;}
+	
+	public getHeaderHash( ) {return HeaderHash;}
 	
 	
 }

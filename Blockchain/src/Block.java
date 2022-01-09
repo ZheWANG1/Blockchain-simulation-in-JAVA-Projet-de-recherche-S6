@@ -4,14 +4,18 @@ public class Block {
 
     private final Header header;
     private final Body body;
-    private int blockId = 0;
+    private int blockId;
 
     public Block(Block blockPrev) {
-        header = new Header();
+        header = new Header(blockPrev);
         body = new Body();
-        if (blockPrev == null) {
-        	blockId = blockPrev.blockId + 1
-        }
+        blockId = blockPrev.blockId + 1;
+    }
+    
+    public Block() {
+    	header = new Header();
+    	body = new Body();
+    	blockId = 0
     }
 
     public Header getHeader() {
