@@ -4,8 +4,8 @@ public class Body {
     private int headerId;
     private String transaction;
 
-    public void body(int bodyId, int headerId, String transaction){
-        this.bodyId = bodyId;
+    public Body(int headerId, String transaction){
+        this.bodyId = headerId;
         this.headerId = headerId;
         this.transaction = transaction;
     }

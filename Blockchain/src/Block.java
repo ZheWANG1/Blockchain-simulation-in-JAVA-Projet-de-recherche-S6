@@ -4,9 +4,9 @@ public class Block {
     private final Header header;
     private final Body body;
 
-    public Block() {
+    public Block( int Id, String transaction){
         header = new Header();
-        body = new Body();
+        body = new Body(Id, transaction);
     }
 
     public Header getHeader() {
