@@ -1,5 +1,4 @@
 
-import HashUtil
 import java.text.DateFormat;
 import java.util.Date;
 import java.util.Locale;
@@ -7,7 +6,7 @@ import java.util.concurrent.ThreadLocalRandom;
 import java.math.*;
 public class Header {
 	
-	private final int nbOfZeros = 2 
+	private final int nbOfZeros = 6; 
 	private int nonce; // Nombre aléatoire permmetant de generé un strign aleatoire
 	
 	private long timeStamp; // Date de création du block
@@ -28,7 +27,7 @@ public class Header {
 		Header h = blockPrev.getHeader();
 		headerHashPrev = h.getHeaderHash();
 		
-		calcHeaderHash()
+		calcHeaderHash();
 	};
 	
 	public Header() {
@@ -36,10 +35,8 @@ public class Header {
 		blockTransHash = "";
 		headerHashPrev = "";
 		
-		calcHeaderHash()
+		calcHeaderHash();
 	}
-	
-	public int getBlockId() {return blockId;}
 	
 	public int getNonce() {return nonce;}
 	
@@ -52,11 +49,11 @@ public class Header {
 	
 	
 	public String mineBlock(String s) {
-		while true{
+		while (true){
 			nonce = ThreadLocalRandom.current().nextInt(0, Integer.MAX_VALUE);
-			test_hash = s + nonce.toString();
+			String test_hash = s + Integer.toString(nonce);
 			test_hash = HashUtil.SHA256(test_hash);
-			toBeCheckedSubList = test_hash.sublist(0,nbOfZeros);
+			String toBeCheckedSubList = test_hash.substring(0,nbOfZeros);
 			if( toBeCheckedSubList.equals("0".repeat(nbOfZeros))) {
 				return test_hash;
 			}
@@ -64,13 +61,15 @@ public class Header {
 
 		
 	}
-	public int getPrevHash() {return headerHashPrev;}
+	public String getPrevHash() {return headerHashPrev;}
 	
-	public int getBlockTransHash() {return blockTransHash;}
+	public String getBlockTransHash() {return blockTransHash;}
 	
-	public int getBodyId( ) {return bodyId;}
+	public String getHeaderHash( ) {return headerHash;}
 	
-	public getHeaderHash( ) {return HeaderHash;}
+	public String toString() {
+		return "TS : "+timeStamp + "hash : "+headerHash + "\nNonce : "+ nonce;
+	}
 	
 	
 }

@@ -1,5 +1,4 @@
 
-
 public class Block {
 
     private final Header header;
@@ -15,7 +14,8 @@ public class Block {
     public Block() {
     	header = new Header();
     	body = new Body();
-    	blockId = 0
+    	System.out.print(header.toString());
+    	blockId = 0;
     }
 
     public Header getHeader() {
@@ -25,4 +25,6 @@ public class Block {
     public Body getBody() {
         return body;
     }
+
+    public int getBlockId() { return blockId;}
 }
