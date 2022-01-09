@@ -10,5 +10,9 @@ public class Body {
     public void setTransaction(String transaction){
         this.transaction = transaction;
     }
+    
+    public String getTransaction() {
+    	return transaction;
+    }
 
 }

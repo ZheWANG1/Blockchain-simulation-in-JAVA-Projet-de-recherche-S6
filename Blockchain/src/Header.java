@@ -1,5 +1,5 @@
 
-
+import HashUtil
 import java.text.DateFormat;
 import java.util.Date;
 import java.util.Locale;
@@ -21,7 +21,11 @@ public class Header {
 		nonce = ThreadLocalRandom.current().nextInt(0, 10000);
 		timeStamp = new Date(System.currentTimeMillis());
 		headerHash = calcHeaderHash(blockPrev)
-		
+		Body b = blockPrev.getBody()
+		String trans = b.getTransaction()
+		blockTransHash = HashUtil.SHA256(trans)
+		Header h = blockPrev.getHeader()
+		headerHashPrev = h.getHeaderHash()
 	};
 	
 	public Header() {
@@ -34,7 +38,8 @@ public class Header {
 	public int getNonce() {return nonce;}
 	
 	public void calcHeaderHash(Block blockPrev) {
-		String body = blockPrev.
+		String concat = headerHashPrev + blockTransHash
+		String minedBlock = mineBlock(concat)
 	}
 	
 	public int getPrevHash() {return headerHashPrev;}
@@ -43,7 +48,7 @@ public class Header {
 	
 	public int getBodyId( ) {return bodyId;}
 	
-	public void mineBlock() {
+	public String mineBlock() {
 		
 		
 	}
