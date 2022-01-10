@@ -66,7 +66,7 @@ public class Header {
 	public String getHeaderHash( ) {return headerHash;}
 	
 	public String toString() {
-		return "TS : "+timeStamp + "hash : "+headerHash + "\nNonce : "+ nonce;
+		return "\nTS : "+timeStamp + "\nhash : "+headerHash + "\nNonce : "+ nonce;
 	}
 	
 	

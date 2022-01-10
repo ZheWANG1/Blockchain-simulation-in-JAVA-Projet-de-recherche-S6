@@ -1,3 +1,4 @@
+
 public class Block {
 
     private final Header header;
@@ -27,6 +28,6 @@ public class Block {
     public int getBlockId() { return blockId;}
     
     public String toString() {
-    	return ""+header.toString()+"\n"+body.toString();
+    	return "Block ID : "+blockId+" "+header.toString()+"\n"+body.toString();
     }
 }
