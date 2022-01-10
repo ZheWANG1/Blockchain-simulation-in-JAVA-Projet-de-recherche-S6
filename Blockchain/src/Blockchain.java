@@ -17,12 +17,12 @@ public class Blockchain {
     }
 
     public Block createFirstBlock(){
-        Block genesisBlock = new Block();
+        Block genesisBlock = new Block("First ever transaction");
         return genesisBlock;
     }
 
-    public int getLatestBlock(){
-        return blkchain.get(blkchain.size()-1).getBlockId();
+    public Block getLatestBlock(){
+        return blkchain.get(blkchain.size()-1);
     }
 
     public synchronized void addBlock(Block block){
@@ -40,4 +40,23 @@ public class Blockchain {
         }
         return true;
     }
+    
+    public void newTransaction(String transaction) {
+    	Block lastBlock = getLatestBlock();
+    	Block newBlock = new Block(lastBlock, transaction);
+    	addBlock(newBlock);	
+    	if (!chainValidation()) {
+    		System.out.print("Erreur block invalide\n");
+    	}else {
+    		System.out.print("Transaction ajoute avec succes\n");
+    	}
+    }
+    
+    public void printBlk() {
+   	 Iterator<Block> it = blkchain.iterator();
+        while (it.hasNext()){
+          System.out.print(it.next().toString());
+        }
+   }
+   
 }

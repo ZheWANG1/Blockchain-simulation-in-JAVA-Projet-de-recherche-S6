@@ -2,10 +2,9 @@
 public class Body {
     private String transaction;
 
-    public void body(int bodyId, int headerId, String transaction){
+    public Body(String transaction){
         this.transaction = transaction;
     }
-
 
     public void setTransaction(String transaction){
         this.transaction = transaction;
@@ -13,6 +12,10 @@ public class Body {
     
     public String getTransaction() {
     	return transaction;
+    }
+    
+    public String toString() {
+    	return "Transaction info : "+transaction+"\n";
     }
 
 }

@@ -1,12 +1,10 @@
 
-import java.text.DateFormat;
-import java.util.Date;
-import java.util.Locale;
+
 import java.util.concurrent.ThreadLocalRandom;
-import java.math.*;
+
 public class Header {
 	
-	private final int nbOfZeros = 6; 
+	private final int nbOfZeros = 5; 
 	private int nonce; // Nombre aléatoire permmetant de generé un strign aleatoire
 	
 	private long timeStamp; // Date de création du block
