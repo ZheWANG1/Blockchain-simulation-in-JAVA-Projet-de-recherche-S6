@@ -1,10 +1,33 @@
-public class test {
-	public static void main(String[] args) {
-		Blockchain bitcoin = new Blockchain();
-		bitcoin.newTransaction("Achat de 600 bitcoins");
-		bitcoin.newTransaction("Transfert de 250 bitcoins");
-		bitcoin.newTransaction("Vente de 120 bitcoins");
-		bitcoin.printBlk();
-		
-	}
+
+public class Block {
+
+    private final Header header;
+    private final Body body;
+    private int blockId;
+
+    public Block(Block blockPrev,String transaction) {
+        header = new Header(blockPrev);
+        body = new Body(transaction);
+        blockId = blockPrev.blockId + 1;
+    }
+    
+    public Block(String transaction) {
+    	header = new Header();
+    	body = new Body(transaction);
+    	blockId = 0;
+    }
+
+    public Header getHeader() {
+        return header;
+    }
+
+    public Body getBody() {
+        return body;
+    }
+
+    public int getBlockId() { return blockId;}
+    
+    public String toString() {
+    	return "Block ID : "+blockId+" "+header.toString()+"\n"+body.toString();
+    }
 }

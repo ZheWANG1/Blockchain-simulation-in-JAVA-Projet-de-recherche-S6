@@ -2,23 +2,23 @@ import java.util.ArrayList;
 
 public class Portemonnaie {
     private Noeud user;
-    private int nbMonneie;
+    private double compte;
 
     public Portemonnaie(Noeud user){
         this.user = user;
-        this.nbMonneie = 0;
+        this.compte = 100;
     }
 
-    public void add(int nbMonnaie){
-        nbMonneie += nbMonnaie;
+    public void add(double compte){
+        this.compte += compte;
     }
 
-    public void reduce(int nbMonnaie){
-        nbMonneie -= nbMonnaie;
+    public void reduce(double nbMonnaie){
+    	this.compte -= compte;
     }
 
-    public int getNbMonneie(){
-        return nbMonneie;
+    public double getCompte(){
+        return compte;
     }
 
 }
