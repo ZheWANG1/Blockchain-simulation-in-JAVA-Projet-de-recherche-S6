@@ -1,20 +1,19 @@
-
 public class Block {
 
     private final Header header;
     private final Body body;
-    private int blockId;
+    private final int blockId;
 
-    public Block(Block blockPrev,String transaction) {
+    public Block(Block blockPrev, String transaction) {
         header = new Header(blockPrev);
         body = new Body(transaction);
         blockId = blockPrev.blockId + 1;
     }
-    
+
     public Block(String transaction) {
-    	header = new Header();
-    	body = new Body(transaction);
-    	blockId = 0;
+        header = new Header();
+        body = new Body(transaction);
+        blockId = 0;
     }
 
     public Header getHeader() {
@@ -25,9 +24,11 @@ public class Block {
         return body;
     }
 
-    public int getBlockId() { return blockId;}
-    
+    public int getBlockId() {
+        return blockId;
+    }
+
     public String toString() {
-    	return "Block ID : "+blockId+" "+header.toString()+"\n"+body.toString();
+        return "Block ID : " + blockId + " " + header.toString() + "\n" + body.toString();
     }
 }
