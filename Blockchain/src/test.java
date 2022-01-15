@@ -5,15 +5,6 @@ public class test {
         simulationPoS();
     }
 
-    private static void simulationPow() {
-        int numberOfTransaction = 10;
-        Blockchain blk = new Blockchain();
-        for (int i = 0; i < 50; i++) {
-            blk.newTransactionPoW("TestTransaction");
-        }
-        blk.printBlk();
-    }
-
     private static void simulationPoS() {
         Blockchain blk = new Blockchain();
         Node n1 = new Node("Charles", blk);
@@ -41,16 +32,6 @@ public class test {
         Node n12 = new Node("Werner", blk);
         blk.addNoeud(n12);
 
-        n3.buy(100);
-        n5.sell(50);
-        n8.buy(500);
-        n7.sell(100);
-        n1.sell(1000);
-        n1.sell(50);
-        n9.buy(1000);
-        n10.buy(250);
-        n9.sell(1100);
-        n1.buy(10000);
 
         blk.printBlk();
         blk.printNodes();

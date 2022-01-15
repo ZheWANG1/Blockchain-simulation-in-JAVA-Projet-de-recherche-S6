@@ -11,9 +11,9 @@ public class Block {
         blockId = blockPrev.blockId + 1;
     }
 
-    public Block(String[] transactions) {
+    public Block() {
         header = new Header();
-        body = new Body(transactions);
+        this.transactions = null;
         blockId = 0;
     }
 

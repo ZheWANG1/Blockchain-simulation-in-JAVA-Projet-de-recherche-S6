@@ -21,7 +21,7 @@ public class Blockchain {
     }
 
     public Block createFirstBlock() {
-        Block genesisBlock = new Block("First ever transaction");
+        Block genesisBlock = new Block();
         return genesisBlock;
     }
 
@@ -45,17 +45,6 @@ public class Blockchain {
         return true;
     }
 
-    public void newTransactionPoW(String transaction) {
-        Block lastBlock = getLatestBlock();
-        Block newBlock = new Block(lastBlock, transaction);
-        addBlock(newBlock);
-        if (!chainValidation()) {
-            System.out.print("Erreur block invalide\n");
-        } else {
-            System.out.print("Transaction ajoute avec succes\n");
-        }
-    }
-
 
     private Node electionNoeud() {
         /*
@@ -64,7 +53,7 @@ public class Blockchain {
         double maxAccount = 0;
         Node richestNode = null;
         for (Node node : reseau) {
-            double acc = node.getMoney();
+            double acc = node.getWallet();
             if (acc > maxAccount) {
                 richestNode = node;
                 maxAccount = acc;
@@ -77,7 +66,7 @@ public class Blockchain {
     public void newTransactionPoS(String transaction, double money) {
         Block lastBlock = getLatestBlock();
         Node electedNode = electionNoeud();
-        electedNode.electedToAddBlock(lastBlock, transaction, money * blockCreationfee);
+        //electedNode.electedToAddBlock(lastBlock, transaction, money * blockCreationfee);
 
         if (!chainValidation()) {
             System.out.print("Erreur block invalide\n");

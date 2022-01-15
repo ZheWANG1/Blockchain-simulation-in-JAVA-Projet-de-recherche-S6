@@ -39,7 +39,7 @@ public class Header {
 
 
     public String mineBlock(String s) {
-    	""" MINE THE BLOCK TILL THE FIRST N LETTERS ARE 0.""
+    	//""" MINE THE BLOCK TILL THE FIRST N LETTERS ARE 0.""
         while (true) {
             nonce = ThreadLocalRandom.current().nextInt(0, Integer.MAX_VALUE);
             String test_hash = s + nonce;

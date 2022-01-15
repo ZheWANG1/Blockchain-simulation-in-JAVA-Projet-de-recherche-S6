@@ -1,5 +1,8 @@
 import java.security.*;
+import java.util.HashMap;
+import java.util.Map;
 
 public class Network {
-	private HashMap<int, PublicKey>;
+	private Map<Integer, PublicKey> mapKey = new HashMap<>();
+
 }
