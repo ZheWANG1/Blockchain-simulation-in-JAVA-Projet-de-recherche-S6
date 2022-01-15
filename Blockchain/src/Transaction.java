@@ -10,16 +10,11 @@ public class Transaction {
     
 
   public Transaction(String transaction, int fromID, int toID, double amount, long timeStamp, String signature) {
-	  this.transaction = transaction;
 	  this.fromID = fromID;
 	  this.toID = toID;
 	  this.amount = amount;
 	  this.timeStamp = timeStamp;
 	  this.signature = signature;
-  }
-  
-  public String getTransaction() {
-	  return transaction;
   }
   
   public int getFromID() {
@@ -35,7 +30,6 @@ public class Transaction {
 	  return amount;
   }
 
-
   public long getTimeStamp() {
 	  return timeStamp;
   }
@@ -44,5 +38,7 @@ public class Transaction {
 	  return signature;
   }
   
-  
+  public String toString() {
+	  return ""+toID+" sent "+ amount+"LD to "+ fromID+" timestamp : "+timeStamp+" signature : " + signature +"\n";
+  }
 }

@@ -2,11 +2,12 @@ public class Block {
 
     private final Header header;
     private final int blockId;
-    private final String[] transactions;
+    private final Transaction[] transactions;
+ 
 
-    public Block(Block blockPrev, String[] transaction) {
+    public Block(Block blockPrev, Transaction[] transaction) {
         header = new Header(blockPrev);
-        body = new Body(transactions);
+        this.transactions = transaction;
         blockId = blockPrev.blockId + 1;
     }
 
@@ -20,15 +21,21 @@ public class Block {
         return header;
     }
 
-    public Body getBody() {
-        return body;
+    public Transaction toStringAllTransaction() {
+        String trs = ""
+    		for (in i = 0; i <transaction.length(); i++) {
+            	trs += transaction[i].toString();
+            }
+    	return trs;
     }
 
     public int getBlockId() {
         return blockId;
     }
 
-    public String toString() {
-        return "Block ID : " + blockId + " " + header.toString() + "\n" + body.toString();
+    public void printTransaction() {
+        for (in i = 0; i <transaction.length(); i++) {
+        	System.out.print(""+transaction[i].toString());
+        }
     }
 }

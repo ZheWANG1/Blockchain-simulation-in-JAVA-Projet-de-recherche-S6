@@ -4,29 +4,26 @@ public class Header {
 
     private final int nbOfZeros = 5;
     private final long timeStamp; // Date de création du block
-    private final String blockTransHash;
-    private final String headerHashPrev;
     private int nonce; // Nombre aléatoire permmetant de generer un string aleatoire
+    private final String headerHashPrev;
     private String headerHash;
+    private final String blockTransHash;
 
     public Header(Block blockPrev) {
         timeStamp = System.currentTimeMillis();
-
-        Body b = blockPrev.getBody();
-        String trans = b.getTransaction();
-        blockTransHash = HashUtil.SHA256(trans);
-
+        // GET TRANSACTION HASH
+        String transaction = blockPrev.toStringAllTransaction();
+        blockTransHash = HashUtil.SHA256(transaction);
+        // GET PREVIOUS BLOCK HASH
         Header h = blockPrev.getHeader();
         headerHashPrev = h.getHeaderHash();
-
-        calcHeaderHash();
+        headerHash = calcHeaderHash();
     }
 
     public Header() {
         timeStamp = System.currentTimeMillis();
         blockTransHash = "";
         headerHashPrev = "";
-
         calcHeaderHash();
     }
 
@@ -34,14 +31,15 @@ public class Header {
         return nonce;
     }
 
-    public void calcHeaderHash() {
+    public String calcHeaderHash() {
         String concat = headerHashPrev + blockTransHash;
         String minedBlock = mineBlock(concat);
-        headerHash = minedBlock;
+        return minedBlock;
     }
 
 
     public String mineBlock(String s) {
+    	""" MINE THE BLOCK TILL THE FIRST N LETTERS ARE 0.""
         while (true) {
             nonce = ThreadLocalRandom.current().nextInt(0, Integer.MAX_VALUE);
             String test_hash = s + nonce;
@@ -51,8 +49,6 @@ public class Header {
                 return test_hash;
             }
         }
-
-
     }
 
     public String getPrevHash() {
