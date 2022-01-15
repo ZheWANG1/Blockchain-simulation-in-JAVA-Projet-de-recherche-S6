@@ -1,15 +1,15 @@
 import java.security.*;
 
-public class Body {
+public class Transaction {
     private final String transaction;
     private final String transactionHash;
-    private final String from;
-    private final String to;
+    private final String fromID;
+    private final String toID;
     private final int amount;
     private final long timeStamp;
-    private final PublicKey keys;
+    private final String signature;
     
-    public Body(String transaction) {
+    public Body() {
         this.transaction = transaction;
     }
 
