@@ -15,7 +15,7 @@ public class Network {
 
 	}
 
-	public void broadcast(String message){
+	public void broadcast(Transaction transaction){
 
 	}
 

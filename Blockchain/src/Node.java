@@ -15,7 +15,7 @@ public class Node implements Runnable {
     private PublicKey publicKey;
     private PrivateKey privateKey;
     private boolean isMiner;
-    private List<Object> listTransaction;
+    private List<Transaction> listTransaction;
 
     public Node(String nom, Blockchain ABlk) {
         synchronized (o) {
@@ -45,7 +45,7 @@ public class Node implements Runnable {
             System.out.println(nom + " n'a pas assez de monnaie pour vendre");
             System.out.println("Rejected transaction");
         } else {
-            //network.broadcast
+            network.broadcast(new Transaction("", this.nodeId, nodeId, amount, System.currentTimeMillis(), ""));
         }
     }
 
