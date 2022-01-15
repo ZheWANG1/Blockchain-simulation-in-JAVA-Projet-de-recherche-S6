@@ -1,8 +1,8 @@
 public class Block {
 
     private final Header header;
-    private final Body body;
     private final int blockId;
+    private final ArrayList<Transaction> transactions;
 
     public Block(Block blockPrev, String transaction) {
         header = new Header(blockPrev);
