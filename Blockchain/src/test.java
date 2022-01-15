@@ -16,29 +16,29 @@ public class test {
 
     private static void simulationPoS() {
         Blockchain blk = new Blockchain();
-        Miner n1 = new Miner("Charles", blk);
+        Node n1 = new Node("Charles", blk);
         blk.addNoeud(n1);
-        Miner n2 = new Miner("Corentin", blk);
+        Node n2 = new Node("Corentin", blk);
         blk.addNoeud(n2);
-        Miner n3 = new Miner("Laura", blk);
+        Node n3 = new Node("Laura", blk);
         blk.addNoeud(n3);
-        Miner n4 = new Miner("James", blk);
+        Node n4 = new Node("James", blk);
         blk.addNoeud(n4);
-        Miner n5 = new Miner("Manu", blk);
+        Node n5 = new Node("Manu", blk);
         blk.addNoeud(n5);
-        Miner n6 = new Miner("Jacques", blk);
+        Node n6 = new Node("Jacques", blk);
         blk.addNoeud(n6);
-        Miner n7 = new Miner("Elsa Lesfleur", blk);
+        Node n7 = new Node("Elsa Lesfleur", blk);
         blk.addNoeud(n7);
-        Miner n8 = new Miner("Rose Lesfleur", blk);
+        Node n8 = new Node("Rose Lesfleur", blk);
         blk.addNoeud(n8);
-        Miner n9 = new Miner("Tobi", blk);
+        Node n9 = new Node("Tobi", blk);
         blk.addNoeud(n9);
-        Miner n10 = new Miner("Wilson", blk);
+        Node n10 = new Node("Wilson", blk);
         blk.addNoeud(n10);
-        Miner n11 = new Miner("Taki", blk);
+        Node n11 = new Node("Taki", blk);
         blk.addNoeud(n11);
-        Miner n12 = new Miner("Werner", blk);
+        Node n12 = new Node("Werner", blk);
         blk.addNoeud(n12);
 
         n3.buy(100);

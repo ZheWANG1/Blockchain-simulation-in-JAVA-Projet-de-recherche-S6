@@ -1,15 +1,33 @@
-public class Miner implements Runnable {
+import java.nio.channels.NetworkChannel;
+import java.util.List;
+import java.util.concurrent.TransferQueue;
+
+public class Node implements Runnable {
+    private static final Object o = new Object();
     private static int cpt = 0;
-    private final int id;
+    private final int idNode;
     private final String nom;
     private final Wallet wallet;
     private final Blockchain associatedBlk;
+    private Network network;
+    private String publicKey, privateKey;
+    private boolean isMiner;
+    private List<Object> listTransaction;
 
-    public Miner(String nom, Blockchain ABlk) {
-        this.id = cpt++;
+    public Node(String nom, Blockchain ABlk) {
+        synchronized (o){
+            this.idNode = cpt++;
+        }
         this.nom = nom;
         this.wallet = new Wallet(this);
         this.associatedBlk = ABlk;
+        this.isMiner = true;
+    }
+
+    public Node(String nom, Blockchain ABlk, boolean isMiner, Network network) {
+        this(nom, ABlk);
+        this.isMiner = isMiner;
+        this.network = network;
     }
 
     public void buy(double nbMoney) {
@@ -43,11 +61,12 @@ public class Miner implements Runnable {
     }
 
     public String toString() {
-        return "\nNode " + id + " Owner : " + nom + " Account balance : " + getMoney() + "\n";
+        return "\nNode " + idNode + " Owner : " + nom + " Account balance : " + getMoney() + "\n";
     }
 
     @Override
     public void run() {
 
     }
+
 }

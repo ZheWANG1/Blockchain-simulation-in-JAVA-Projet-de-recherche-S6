@@ -1,8 +1,8 @@
 public class Wallet {
-    private final Miner user;
+    private final Node user;
     private double account;
 
-    public Wallet(Miner user) {
+    public Wallet(Node user) {
         this.user = user;
         this.account = 100;
     }

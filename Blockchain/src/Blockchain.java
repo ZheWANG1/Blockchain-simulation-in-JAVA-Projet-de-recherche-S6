@@ -10,7 +10,7 @@ public class Blockchain {
     private static int cpt = 0;
     private final int blockcid;
     private final List<Block> blkchain = new CopyOnWriteArrayList<>();
-    private final List<Miner> reseau = new ArrayList<>();
+    private final List<Node> reseau = new ArrayList<>();
     private final double blockCreationfee = 0.10;
 
     public Blockchain() {
@@ -57,16 +57,16 @@ public class Blockchain {
     }
 
 
-    private Miner electionNoeud() {
+    private Node electionNoeud() {
         /*
          Naive function which elect the richest node to add the block
          */
         double maxAccount = 0;
-        Miner richestNode = null;
-        for (Miner miner : reseau) {
-            double acc = miner.getMoney();
+        Node richestNode = null;
+        for (Node node : reseau) {
+            double acc = node.getMoney();
             if (acc > maxAccount) {
-                richestNode = miner;
+                richestNode = node;
                 maxAccount = acc;
             }
         }
@@ -76,7 +76,7 @@ public class Blockchain {
 
     public void newTransactionPoS(String transaction, double money) {
         Block lastBlock = getLatestBlock();
-        Miner electedNode = electionNoeud();
+        Node electedNode = electionNoeud();
         electedNode.electedToAddBlock(lastBlock, transaction, money * blockCreationfee);
 
         if (!chainValidation()) {
@@ -93,12 +93,12 @@ public class Blockchain {
     }
 
     public void printNodes() {
-        for (Miner miner : reseau) {
-            System.out.print(miner.toString());
+        for (Node node : reseau) {
+            System.out.print(node.toString());
         }
     }
 
-    public void addNoeud(Miner n) {
+    public void addNoeud(Node n) {
         reseau.add(n);
     }
 
