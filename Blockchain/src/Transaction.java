@@ -4,10 +4,45 @@ public class Transaction {
     private final String transaction;
     private final int fromID;
     private final int toID;
-    private final int amount;
+    private final double amount;
     private final long timeStamp;
     private final String signature;
     
 
+  public Transaction(String transaction, int fromID, int toID, double amount, long timeStamp, String signature) {
+	  this.transaction = transaction;
+	  this.fromID = fromID;
+	  this.toID = toID;
+	  this.amount = amount;
+	  this.timeStamp = timeStamp;
+	  this.signature = signature;
+  }
+  
+  public String getTransaction() {
+	  return transaction;
+  }
+  
+  public int getFromID() {
+	  return fromID;
+  }
+
+  public int getToID() {
+	  return toID;
+  }
+
+
+  public double getAmount() {
+	  return amount;
+  }
+
+
+  public long getTimeStamp() {
+	  return timeStamp;
+  }
+  
+  public String getSignature() {
+	  return signature;
+  }
+  
   
 }
