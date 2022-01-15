@@ -1,9 +1,11 @@
+import java.util.Objects;
+
 public class Block {
 
     private final Header header;
     private final int blockId;
     private final Transaction[] transactions;
- 
+
 
     public Block(Block blockPrev, Transaction[] transaction) {
         header = new Header(blockPrev);
@@ -13,7 +15,7 @@ public class Block {
 
     public Block() {
         header = new Header();
-        this.transactions = null;
+        this.transactions = new Transaction[0];
         blockId = 0;
     }
 
@@ -21,12 +23,12 @@ public class Block {
         return header;
     }
 
-    public Transaction toStringAllTransaction() {
-        String trs = ""
-    		for (in i = 0; i <transaction.length(); i++) {
-            	trs += transaction[i].toString();
-            }
-    	return trs;
+    public String toStringAllTransaction() {
+        StringBuilder trs = new StringBuilder();
+        for (int i = 0; i < Objects.requireNonNull(transactions).length; i++) {
+            trs.append(transactions[i].toString());
+        }
+        return trs.toString();
     }
 
     public int getBlockId() {
@@ -34,8 +36,8 @@ public class Block {
     }
 
     public void printTransactions() {
-        for (in i = 0; i <transaction.length(); i++) {
-        	System.out.print(""+transaction[i].toString());
+        for (int i = 0; i < Objects.requireNonNull(transactions).length; i++) {
+            System.out.print("" + transactions[i].toString());
         }
     }
 }
