@@ -33,7 +33,7 @@ public class Block {
         return blockId;
     }
 
-    public void printTransaction() {
+    public void printTransactions() {
         for (in i = 0; i <transaction.length(); i++) {
         	System.out.print(""+transaction[i].toString());
         }

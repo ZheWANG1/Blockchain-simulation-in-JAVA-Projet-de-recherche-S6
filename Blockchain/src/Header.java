@@ -3,8 +3,8 @@ import java.util.concurrent.ThreadLocalRandom;
 public class Header {
 
     private final int nbOfZeros = 5;
-    private final long timeStamp; // Date de création du block
-    private int nonce; // Nombre aléatoire permmetant de generer un string aleatoire
+    private final long timeStamp; 
+    private int nonce; 
     private final String headerHashPrev;
     private String headerHash;
     private final String blockTransHash;
