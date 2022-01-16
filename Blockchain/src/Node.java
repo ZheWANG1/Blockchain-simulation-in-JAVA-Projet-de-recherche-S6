@@ -57,6 +57,18 @@ public class Node implements Runnable {
         return true;
     }
 
+    public int getNodeId(){ return nodeId;}
+
+    public PublicKey getPublicKey(){ return keys.getPublic();}
+
+    public void addTransaction(Transaction transaction){
+        listTransaction.add(transaction);
+    }
+
+    public void addBlock(Block block){
+        associatedBlk.addBlock(block);
+    }
+
     @Override
     public void run() {
 

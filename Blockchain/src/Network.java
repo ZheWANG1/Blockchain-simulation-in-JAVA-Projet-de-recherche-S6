@@ -1,3 +1,4 @@
+import javax.swing.text.html.HTMLDocument;
 import java.security.*;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -12,18 +13,29 @@ public class Network {
 	}
 
 	public boolean addNode(Node node){
-
+		try {
+			network.add(node);
+			keyTable.put(node.getNodeId(), node.getPublicKey());
+			return true;
+		}catch (Exception e){
+			e.printStackTrace();
+		}
+		return false;
 	}
 
 	public void broadcast(Transaction transaction){
-
+		for(int i = 0; i < network.size() ; i++){
+			network.get(i).addTransaction(transaction);
+		}
 	}
 
 	public void broadcastBlock(Block b){
-
+		for(int i = 0; i < network.size() ; i++){
+			network.get(i).addBlock(b);
+		}
 	}
 
 	public PublicKey getPkWithID(int id){
-
+		return keyTable.get(id);
 	}
 }
