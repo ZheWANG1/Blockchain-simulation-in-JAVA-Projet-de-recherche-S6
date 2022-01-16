@@ -1,4 +1,4 @@
 
-public class FullNode {
+public class FullNode extends Node2 {
 
 }
