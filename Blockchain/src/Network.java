@@ -23,7 +23,7 @@ public class Network {
 		return false;
 	}
 
-	public void broadcast(Transaction transaction){
+	public void broadcastTransaction(Transaction transaction){
 		for(int i = 0; i < network.size() ; i++){
 			network.get(i).addTransaction(transaction);
 		}

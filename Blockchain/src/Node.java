@@ -45,7 +45,7 @@ public class Node implements Runnable {
             System.out.println(nom + " n'a pas assez de monnaie pour vendre");
             System.out.println("Rejected transaction");
         } else {
-            network.broadcast(new Transaction("", this.nodeId, nodeId, amount, System.currentTimeMillis(), ""));
+            network.broadcastTransaction(new Transaction("", this.nodeId, nodeId, amount, System.currentTimeMillis(), ""));
         }
     }
 

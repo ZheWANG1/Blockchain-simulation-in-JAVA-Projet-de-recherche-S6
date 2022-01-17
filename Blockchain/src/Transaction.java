@@ -5,13 +5,13 @@ public class Transaction {
     private final int toID;
     private final double amount;
     private final long timeStamp;
-    private final String signature;
+    private String signature;
     private final int transactionID;
     private static int cpt =0;
     private static final Object o = new Object();
     
 
-  public Transaction(String transaction, int fromID, int toID, double amount, long timeStamp, String signature) {
+  public Transaction(String transaction, int fromID, int toID, double amount, long timeStamp, PrivateKey pv) {
 	  synchronized(o) {
 		  transactionID = cpt++;
 	  }
@@ -19,7 +19,13 @@ public class Transaction {
 	  this.toID = toID;
 	  this.amount = amount;
 	  this.timeStamp = timeStamp;
-	  this.signature = signature;
+	  try {
+		this.signature = RsaUtil.sign(this.toString(), pv);
+	} catch (Exception e) {
+		// TODO Auto-generated catch block
+		e.printStackTrace();
+		this.signature = null;
+	}
   }
   
   public int getFromID() {
