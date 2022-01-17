@@ -6,52 +6,25 @@ import java.util.List;
 public class Node implements Runnable {
     private static final Object o = new Object();
     private static int cpt = 0;
-    private final int nodeId;
-    private final String nom;
-    private final Blockchain associatedBlk;
-    private double wallet;
+    protected final int nodeId;
+    protected final String nom;
     private Network network;
-    private KeyPair keys;
-    private PublicKey publicKey;
-    private PrivateKey privateKey;
-    private boolean isMiner;
     private List<Transaction> listTransaction;
 
-    public Node(String nom, Blockchain ABlk) {
+    public Node(String nom) {
         synchronized (o) {
             this.nodeId = cpt++;
         }
         this.nom = nom;
-        this.wallet = 0;
-        this.associatedBlk = ABlk;
-        this.isMiner = true;
-        try {
-            keys = RsaUtil.generateKeyPair();
-            publicKey = keys.getPublic();
-            privateKey = keys.getPrivate();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+
     }
 
-    public Node(String nom, Blockchain ABlk, boolean isMiner, Network network) {
-        this(nom, ABlk);
-        this.isMiner = isMiner;
+    public Node(String nom, Network network) {
+        this.nom = nom;
         this.network = network;
     }
 
-    public void sendMoneyTo(double amount, int nodeId) {
-        if (wallet < amount) {
-            System.out.println(nom + " n'a pas assez de monnaie pour vendre");
-            System.out.println("Rejected transaction");
-        } else {
-            network.broadcastTransaction(new Transaction("", this.nodeId, nodeId, amount, System.currentTimeMillis(), ""));
-        }
-    }
-
-    public double getWallet() {
-        return wallet;
-    }
+    public void getBlock(){}
 
     public boolean verifySign() {
         return true;
@@ -59,14 +32,9 @@ public class Node implements Runnable {
 
     public int getNodeId(){ return nodeId;}
 
-    public PublicKey getPublicKey(){ return keys.getPublic();}
 
     public void addTransaction(Transaction transaction){
         listTransaction.add(transaction);
-    }
-
-    public void addBlock(Block block){
-        associatedBlk.addBlock(block);
     }
 
     @Override

@@ -12,30 +12,53 @@ public class Network {
 	public Network() {
 	}
 
-	public boolean addNode(Node node){
+	public boolean addNode(Node node) {
+		network.add(node);
 		try {
-			network.add(node);
-			keyTable.put(node.getNodeId(), node.getPublicKey());
+			if (node instanceof LightNode)
+				keyTable.put(node.getNodeId(), ((LightNode) node).getPublicKey());
 			return true;
-		}catch (Exception e){
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 		return false;
 	}
 
-	public void broadcastTransaction(Transaction transaction){
-		for(int i = 0; i < network.size() ; i++){
+	public void broadcastTransaction(Transaction transaction) {
+		for (int i = 0; i < network.size(); i++) {
 			network.get(i).addTransaction(transaction);
 		}
 	}
 
-	public void broadcastBlock(Block b){
-		for(int i = 0; i < network.size() ; i++){
-			network.get(i).addBlock(b);
+	public void broadcastBlock(Block b) {
+		for (int i = 0; i < network.size(); i++) {
+			if (network.get(i) instanceof FullNode)
+				((FullNode) network.get(i)).addBlock(b);
 		}
 	}
 
-	public PublicKey getPkWithID(int id){
+	public PublicKey getPkWithID(int id) {
 		return keyTable.get(id);
+	}
+
+	public void broadcastReward(int clientId) {
+		int i = 0;
+		Node associatedLightNode = network.get(i);
+		while (associatedLightNode.getNodeId() != clientId) {
+			i++;
+			associatedLightNode = network.get(i);
+		}
+		// broadcast
+
+	}
+
+	public Blockchain copyBlockchainFromFN() {
+		int i = 0;
+		Node node = network.get(i);
+		while (!(node instanceof FullNode)) {
+			i++;
+			node = network.get(i);
+		}
+		return ((FullNode) node).getBlockchain();
 	}
 }
