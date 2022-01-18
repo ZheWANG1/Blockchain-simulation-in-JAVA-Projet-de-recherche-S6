@@ -55,7 +55,7 @@ public class Network {
 	}
 
 	// function updating client wallet with matching ID
-	public void updateWalletWithID(double amount, int clientId) {
+	private void updateWalletWithID(double amount, int clientId) {
 		int i = 0;
 		Node associatedLightNode = network.get(i);
 		while (associatedLightNode.getNodeId() != clientId) {
