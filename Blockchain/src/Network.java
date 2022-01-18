@@ -26,14 +26,16 @@ public class Network {
 
 	public void broadcastTransaction(Transaction transaction) {
 		for (int i = 0; i < network.size(); i++) {
-			network.get(i).addTransaction(transaction);
+			if (network.get(i) instanceof Miner) {
+				network.get(i).receiptTransaction(transaction);
+			}
 		}
 	}
 
 	public void broadcastBlock(Block b) {
 		for (int i = 0; i < network.size(); i++) {
 			if (network.get(i) instanceof FullNode)
-				((FullNode) network.get(i)).addBlock(b);
+				((FullNode) network.get(i)).receiptBlock(b);
 		}
 	}
 
@@ -48,8 +50,6 @@ public class Network {
 			i++;
 			associatedLightNode = network.get(i);
 		}
-		// broadcast
-
 	}
 
 	public Blockchain copyBlockchainFromFN() {

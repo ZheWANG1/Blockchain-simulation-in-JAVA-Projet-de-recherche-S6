@@ -23,4 +23,8 @@ public class Node{
         this(name);
         this.network = network;
     }
+
+	public Integer getNodeId() {
+		return nodeId;
+	}
 }
