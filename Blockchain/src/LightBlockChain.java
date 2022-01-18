@@ -1,0 +1,19 @@
+import java.util.ArrayList;
+
+public class LightBlockChain {
+	private static int cpt = 0;
+	private final int LightBlockID;
+	private final ArrayList<LightBlock> LightBlkchain = new ArrayList<LightBlock>();
+	
+	public LightBlockChain() {
+		LightBlockID = cpt;
+		cpt++;
+	}
+	
+	public void addLightHeader(Header h) {
+		String headerHash = h.getHeaderHash();
+		String previousHeaderHash = h.getPrevHash();
+		LightBlock ln = new LightBlock(previousHeaderHash, headerHash);
+		LightBlkchain.add(ln);
+	}
+}
