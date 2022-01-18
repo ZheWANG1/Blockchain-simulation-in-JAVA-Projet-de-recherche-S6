@@ -12,7 +12,7 @@ public class LightNode extends Node{
 
 	public LightNode(String name, Network network) {
 		super(name, network);
-		this.wallet = 0;
+		this.wallet = 80;
 		try {
 			keys = RsaUtil.generateKeyPair();
 			publicKey = keys.getPublic();
