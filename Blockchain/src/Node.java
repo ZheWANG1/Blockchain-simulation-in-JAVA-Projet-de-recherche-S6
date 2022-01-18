@@ -22,6 +22,7 @@ public class Node{
     public Node(String name, Network network) {
         this(name);
         this.network = network;
+        network.addNode(this);
     }
 
 	public Integer getNodeId() {
