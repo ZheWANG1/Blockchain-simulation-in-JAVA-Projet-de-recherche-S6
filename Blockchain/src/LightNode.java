@@ -1,3 +1,4 @@
+import java.nio.file.Watchable;
 import java.security.KeyPair;
 import java.security.PrivateKey;
 import java.security.PublicKey;
@@ -9,8 +10,8 @@ public class LightNode extends Node{
 	private KeyPair keys;
 	private Network network;
 
-	public LightNode(String nom, Network network) {
-		super(nom, network);
+	public LightNode(String name, Network network) {
+		super(name, network);
 		this.wallet = 0;
 		try {
 			keys = RsaUtil.generateKeyPair();
@@ -24,15 +25,20 @@ public class LightNode extends Node{
 
 	public void sendMoneyTo(double amount, int nodeId) {
 		if (wallet < amount) {
-			System.out.println(nom + " n'a pas assez de monnaie pour vendre");
+			System.out.println(name + " Not enough bitcoin to send");
 			System.out.println("Rejected transaction");
 		} else {
-			network.broadcastTransaction(new Transaction("", this.nodeId, nodeId, amount, System.currentTimeMillis(), privateKey));
+			network.broadcastTransaction(new Transaction("", this.nodeId, nodeId, amount, System.currentTimeMillis(),0.1, privateKey));
 		}
 	}
 
 	public double getWallet() {
 		return wallet;
+	}
+
+	public void receiveReward(int amount){
+		wallet += amount;
+		System.out.println(this.name + " received "+amount+" bitcoins as reward");
 	}
 
 	public PublicKey getPublicKey(){ return keys.getPublic();}

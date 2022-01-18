@@ -27,7 +27,7 @@ public class Network {
 	public void broadcastTransaction(Transaction transaction) {
 		for (int i = 0; i < network.size(); i++) {
 			if (network.get(i) instanceof Miner) {
-				network.get(i).receiptTransaction(transaction);
+				((Miner)network.get(i)).receiptTransaction(transaction);
 			}
 		}
 	}
@@ -43,13 +43,15 @@ public class Network {
 		return keyTable.get(id);
 	}
 
-	public void broadcastReward(int clientId) {
+	// function for send rewards to miners
+	public void updateWalletWithID(int amount, int clientId) {
 		int i = 0;
 		Node associatedLightNode = network.get(i);
 		while (associatedLightNode.getNodeId() != clientId) {
 			i++;
 			associatedLightNode = network.get(i);
 		}
+		((LightNode)associatedLightNode).receiveReward(amount);
 	}
 
 	public Blockchain copyBlockchainFromFN() {
