@@ -1,17 +1,20 @@
 import java.security.*;
 
 public class Transaction {
+	private final String transactionHash;
     private final int fromID;
     private final int toID;
     private final double amount;
+    private final double transactionFee; 
     private final long timeStamp;
     private String signature;
     private final int transactionID;
     private static int cpt =0;
+    private boolean confirmedTrans = false;
     private static final Object o = new Object();
     
 
-  public Transaction(String transaction, int fromID, int toID, double amount, long timeStamp, PrivateKey pv) {
+  public Transaction(String transaction, int fromID, int toID, double amount, long timeStamp,double transactionFee,PrivateKey pv) {
 	  synchronized(o) {
 		  transactionID = cpt++;
 	  }
@@ -19,6 +22,8 @@ public class Transaction {
 	  this.toID = toID;
 	  this.amount = amount;
 	  this.timeStamp = timeStamp;
+	  this.transactionFee = transactionFee;
+	  this.transactionHash = HashUtil.SHA256(this.toString());
 	  try {
 		this.signature = RsaUtil.sign(this.toString(), pv);
 	} catch (Exception e) {
@@ -49,6 +54,6 @@ public class Transaction {
   }
   
   public String toString() {
-	  return ""+toID+" sent "+ amount+"LD to "+ fromID+" timestamp : "+timeStamp+" signature : " + signature +"\n";
+	  return ""+toID+" sent "+ amount+"LD to "+ fromID+" timestamp : "+timeStamp+" signature : " + signature + " Transaction fee : "+transactionFee+"\n";
   }
 }
