@@ -25,7 +25,7 @@ public class LightNode extends Node{
 
 	public void sendMoneyTo(double amount, int nodeId) {
 		if (wallet < amount) {
-			System.out.println(name + " Not enough bitcoin to send");
+			System.out.println(name + " Not enough bitcoin to send"); // Whatever the currency
 			System.out.println("Rejected transaction");
 		} else {
 			network.broadcastTransaction(new Transaction("", this.nodeId, nodeId, amount, System.currentTimeMillis(),0.1, privateKey));
