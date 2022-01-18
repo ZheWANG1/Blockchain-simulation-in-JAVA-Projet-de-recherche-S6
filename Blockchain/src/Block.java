@@ -40,4 +40,8 @@ public class Block {
             System.out.print("" + transactions[i].toString());
         }
     }
+    
+    public Transaction[] getTransaction() {
+    	return transactions;
+    }
 }

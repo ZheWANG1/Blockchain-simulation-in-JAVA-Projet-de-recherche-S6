@@ -9,10 +9,12 @@ public class LightNode extends Node{
 	private PrivateKey privateKey;
 	private KeyPair keys;
 	private Network network;
+	private LightBlockChain lightBlkch;
 
 	public LightNode(String name, Network network) {
 		super(name, network);
 		this.wallet = 80;
+		lightBlkch = new LightBlockChain();
 		try {
 			keys = RsaUtil.generateKeyPair();
 			publicKey = keys.getPublic();
@@ -36,10 +38,14 @@ public class LightNode extends Node{
 		return wallet;
 	}
 
-	public void receiveReward(int amount){
+	public void receiptCoin(double amount){
 		wallet += amount;
 		System.out.println(this.name + " received "+amount+" bitcoins as reward");
 	}
 
 	public PublicKey getPublicKey(){ return keys.getPublic();}
+	
+	public void receiptBlock(Block b) {
+		lightBlkch.addLightHeader(b.getHeader());
+	}
 }

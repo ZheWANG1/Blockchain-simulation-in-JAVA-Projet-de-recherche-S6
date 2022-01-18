@@ -32,26 +32,37 @@ public class Network {
 		}
 	}
 
+	// function updating client wallet with matching ID in the Block
+	private void updateAllWallet(Block b) {
+		Transaction[] t = b.getTransaction();
+		for (int i = 0; i < t.length; i++) {
+			double amount = t[i].getAmount();
+			int toID = t[i].getToID();
+			updateWalletWithID(amount, toID);
+		}
+	}
+	
 	public void broadcastBlock(Block b) {
 		for (int i = 0; i < network.size(); i++) {
 			if (network.get(i) instanceof FullNode)
 				((FullNode) network.get(i)).receiptBlock(b);
 		}
+		updateAllWallet(b);
 	}
 
 	public PublicKey getPkWithID(int id) {
 		return keyTable.get(id);
 	}
 
-	// function for send rewards to miners
-	public void updateWalletWithID(int amount, int clientId) {
+	// function updating client wallet with matching ID
+	public void updateWalletWithID(double amount, int clientId) {
 		int i = 0;
 		Node associatedLightNode = network.get(i);
 		while (associatedLightNode.getNodeId() != clientId) {
 			i++;
 			associatedLightNode = network.get(i);
 		}
-		((LightNode)associatedLightNode).receiveReward(amount);
+		((LightNode)associatedLightNode).receiptCoin(amount);
 	}
 
 	public Blockchain copyBlockchainFromFN() {
