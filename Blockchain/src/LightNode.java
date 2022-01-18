@@ -40,7 +40,7 @@ public class LightNode extends Node{
 
 	public void receiptCoin(double amount){
 		wallet += amount;
-		System.out.println(this.name + " received "+amount+" bitcoins as reward");
+		System.out.println(this.name + " received "+amount+" bitcoins");
 	}
 
 	public PublicKey getPublicKey(){ return keys.getPublic();}
