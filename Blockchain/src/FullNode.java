@@ -12,8 +12,8 @@ public class FullNode extends Node {
         return blockchain;
     }
 
-    public void addBlock(Block block){
+    public void receiptBlock(Block block){
         blockchain.addBlock(block);
     }
-
+    
 }
