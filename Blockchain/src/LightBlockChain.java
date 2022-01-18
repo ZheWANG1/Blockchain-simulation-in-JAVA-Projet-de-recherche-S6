@@ -1,4 +1,6 @@
 import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.Objects;
 
 public class LightBlockChain {
 	private static int cpt = 0;
@@ -18,5 +20,21 @@ public class LightBlockChain {
 		if (LightBlkchain.size() == 11) {
 			LightBlkchain.remove(0);
 		}
+		
 	}
+	
+	public boolean chainValidation() {
+        Iterator<LightBlock> it = LightBlkchain.iterator();
+        LightBlock blockprev = it.next();
+        while (it.hasNext()) {
+            LightBlock block = it.next();
+            if (!Objects.equals(block.getHeader().getPrevHash(), blockprev.getHeader().getHeaderHash()))
+                return false;
+            blockprev = block;
+        }
+        return true;
+    }
+	
+	
+	
 }

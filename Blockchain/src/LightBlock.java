@@ -7,4 +7,12 @@ public class LightBlock {
     	headerHashPrev = hHp;
     	headerHash = hH;
     }
+    
+    public String getHeaderHash() {
+    	return headerHash;
+    }
+    
+    public String getHeaderHashPrev() {
+    	return headerHash;
+    }
 }
