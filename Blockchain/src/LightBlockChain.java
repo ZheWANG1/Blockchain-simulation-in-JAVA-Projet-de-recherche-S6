@@ -15,26 +15,13 @@ public class LightBlockChain {
 	public void addLightHeader(Header h) {
 		String headerHash = h.getHeaderHash();
 		String previousHeaderHash = h.getPrevHash();
-		LightBlock ln = new LightBlock(previousHeaderHash, headerHash);
+		String trsHash = h.getBlockTransHash();
+		LightBlock ln = new LightBlock(previousHeaderHash, headerHash, trsHash);
 		LightBlkchain.add(ln);
 		if (LightBlkchain.size() == 11) {
 			LightBlkchain.remove(0);
 		}
 		
 	}
-	
-	public boolean chainValidation() {
-        Iterator<LightBlock> it = LightBlkchain.iterator();
-        LightBlock blockprev = it.next();
-        while (it.hasNext()) {
-            LightBlock block = it.next();
-            if (!Objects.equals(block.getHeader().getPrevHash(), blockprev.getHeader().getHeaderHash()))
-                return false;
-            blockprev = block;
-        }
-        return true;
-    }
-	
-	
 	
 }
