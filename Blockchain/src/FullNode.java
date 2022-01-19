@@ -3,8 +3,8 @@ public class FullNode extends Node {
 
     private Blockchain blockchain;
 
-    public FullNode(String nom) {
-        super(nom);
+    public FullNode(String nom, Network network) {
+        super(nom,network);
         blockchain = new Blockchain();
     }
 
