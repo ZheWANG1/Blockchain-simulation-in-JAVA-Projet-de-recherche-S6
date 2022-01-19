@@ -1,14 +1,12 @@
-abstract class Node{
+abstract class Node {
     private static final Object o = new Object();
     private static int cpt = 0;
     protected final int nodeId;
     protected final String name;
     protected Network network;
 
-
-
     public Node(String name, Network network) {
-    	synchronized (o) {
+        synchronized (o) {
             this.nodeId = cpt++;
         }
         this.name = name;
@@ -16,7 +14,7 @@ abstract class Node{
         network.addNode(this);
     }
 
-	public Integer getNodeId() {
-		return nodeId;
-	}
+    public Integer getNodeId() {
+        return nodeId;
+    }
 }
