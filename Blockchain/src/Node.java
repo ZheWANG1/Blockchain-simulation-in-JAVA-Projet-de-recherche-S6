@@ -11,7 +11,6 @@ abstract class Node {
         }
         this.name = name;
         this.network = network;
-        network.addNode(this);
     }
 
     public Integer getNodeId() {

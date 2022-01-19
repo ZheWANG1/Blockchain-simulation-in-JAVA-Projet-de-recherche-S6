@@ -6,22 +6,26 @@ import java.util.concurrent.locks.ReentrantLock;
 
 public class Miner extends Node implements Runnable {
 
-    private List<Transaction> transactionBuffer = new ArrayList<>();
+    private final List<Transaction> transactionBuffer = new ArrayList<>();
+    private final int clientID;
     private Transaction transactionTempo;
-    private int clientID;
     private int nonce;
     private int difficulty;
-    private Lock lock = new ReentrantLock();
-    private Condition conditionTran = lock.newCondition();
-    private Condition conditionBlock = lock.newCondition();
+    private final Lock lock = new ReentrantLock();
+    private final Condition conditionTran = lock.newCondition();
+    private final Condition conditionBlock = lock.newCondition();
     private boolean receiptTran = false;
     private boolean receiptBlock = false;
 
     public Miner(String name, Network network) {
         super(name, network);
+        difficulty = network.getDifficulty();
+        clientID = new LightNode(name, network).getNodeId();
+        network.addNode(this);
     }
 
     public boolean verifySignature(Transaction transaction) throws Exception {
+        System.out.println(network.getPkWithID(transaction.getFromID()));
         return RsaUtil.verify(transaction.toString(), transaction.getSignature(), network.getPkWithID(transaction.getFromID()));
     }
 
@@ -30,20 +34,40 @@ public class Miner extends Node implements Runnable {
     }
 
     public void receiptTransaction(Transaction transaction) {
-        try {
-            if(verifySignature(transaction))
-            transactionBuffer.add(transaction);
-        } catch (Exception e) {
-            e.printStackTrace();
+        lock.lock();
+        try{
+            transactionTempo = transaction;
+            receiptTran = true;
+            conditionTran.signalAll();
+        } finally {
+            lock.unlock();
         }
+
     }
 
-    public void receiptBlock(){
+    public void receiptBlock() {
 
     }
 
     @Override
     public void run() {
+
+        lock.lock();
+        try {
+            while (!receiptTran) {
+                conditionTran.await();
+            }
+            receiptTran = false;
+            if (verifySignature(transactionTempo)) {
+                transactionBuffer.add(transactionTempo);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            lock.unlock();
+        }
+
+        System.out.println(getNodeId()+"finish");
 
 
     }

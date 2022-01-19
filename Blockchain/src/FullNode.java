@@ -6,6 +6,7 @@ public class FullNode extends Node {
     public FullNode(String nom, Network network) {
         super(nom,network);
         blockchain = new Blockchain();
+        network.addNode(this);
     }
 
     public Blockchain getBlockchain(){

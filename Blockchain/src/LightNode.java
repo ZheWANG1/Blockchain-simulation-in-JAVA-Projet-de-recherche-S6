@@ -20,6 +20,7 @@ public class LightNode extends Node {
         } catch (Exception e) {
             e.printStackTrace();
         }
+        network.addNode(this);
     }
 
     public void sendMoneyTo(double amount, int nodeId) {
