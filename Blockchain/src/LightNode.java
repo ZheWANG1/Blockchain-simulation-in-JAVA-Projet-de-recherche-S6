@@ -8,7 +8,6 @@ public class LightNode extends Node{
 	private PublicKey publicKey;
 	private PrivateKey privateKey;
 	private KeyPair keys;
-	private Network network;
 	private LightBlockChain lightBlkch;
 
 	public LightNode(String name, Network network) {

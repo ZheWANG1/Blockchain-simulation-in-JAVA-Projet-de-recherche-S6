@@ -8,12 +8,14 @@ import java.util.Map;
 public class Network {
 	private final List<Node> network = new ArrayList<>();
 	private final Map<Integer, PublicKey> keyTable = new HashMap<>();
+	private int difficulty = 10;
 
 	public Network() {
 	}
 
 	public boolean addNode(Node node) {
 		network.add(node);
+		difficulty = network.size();
 		try {
 			if (node instanceof LightNode)
 				keyTable.put(node.getNodeId(), ((LightNode) node).getPublicKey());

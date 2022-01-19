@@ -1,14 +1,9 @@
-import java.security.KeyPair;
-import java.security.PrivateKey;
-import java.security.PublicKey;
-import java.util.List;
-
 abstract class Node{
     private static final Object o = new Object();
     private static int cpt = 0;
     protected final int nodeId;
     protected final String name;
-    private Network network;
+    protected Network network;
 
 
 

@@ -14,10 +14,10 @@ public class test {
     	LightNode ln5 = new LightNode("Jennifer", bitcoin);
     	LightNode ln6 = new LightNode("Lise", bitcoin);
     	
-    	FullNode s1 = new FullNode("Spain Server");
-    	FullNode s2 = new FullNode("Alex Server");
-    	FullNode s3 = new FullNode("Paris Server");
-    	FullNode s4 = new FullNode("England Server");
+    	FullNode s1 = new FullNode("Spain Server", bitcoin);
+    	FullNode s2 = new FullNode("Alex Server", bitcoin);
+    	FullNode s3 = new FullNode("Paris Server", bitcoin);
+    	FullNode s4 = new FullNode("England Server", bitcoin);
     	
     	
     	
