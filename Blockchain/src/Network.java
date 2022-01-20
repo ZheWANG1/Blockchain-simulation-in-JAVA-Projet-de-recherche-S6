@@ -47,6 +47,8 @@ public class Network {
         for (Node node : network) {
             if (node instanceof FullNode)
                 ((FullNode) node).receiptBlock(b);
+            if (node instanceof Miner)
+                ((Miner) node).receiptBlock();
         }
         updateAllWallet(b);
     }
@@ -70,6 +72,8 @@ public class Network {
         for (Node node : network) {
             if (node instanceof FullNode)
                 return ((FullNode) node).getBlockchain();
+
+
         }
         return null;
     }

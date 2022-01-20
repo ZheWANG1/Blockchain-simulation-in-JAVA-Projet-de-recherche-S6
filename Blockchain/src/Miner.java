@@ -97,7 +97,8 @@ public class Miner extends Node implements Runnable {
             lock.lock();
             try {
                 while (!receiptTran && transactionBuffer.isEmpty()) {
-                    conditionTran.await();
+                    conditionTran.await(
+                    );
                 }
                 mine();
                 System.out.println("finish");
