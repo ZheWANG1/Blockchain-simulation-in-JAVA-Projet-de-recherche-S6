@@ -35,7 +35,7 @@ public class Network {
 
     // function updating client wallet with matching ID in the Block
     private void updateAllWallet(Block b) {
-        Transaction[] t = b.getTransaction();
+        List<Transaction> t = b.getTransaction();
         for (Transaction transaction : t) {
             double amount = transaction.getAmount();
             int toID = transaction.getToID();
@@ -45,10 +45,8 @@ public class Network {
 
     public void broadcastBlock(Block b) {
         for (Node node : network) {
-            if (node instanceof FullNode)
-                ((FullNode) node).receiptBlock(b);
-            if (node instanceof Miner)
-                ((Miner) node).receiptBlock();
+                node.receiptBlock(b);
+            
         }
         updateAllWallet(b);
     }

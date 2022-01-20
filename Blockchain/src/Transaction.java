@@ -25,7 +25,7 @@ public class Transaction {
 	  this.transactionFee = transactionFee;
 	  this.transactionHash = HashUtil.SHA256(this.toString());
 	  try {
-		this.signature = RsaUtil.sign(this.toString(), pv);
+		this.signature = RsaUtil.sign("", pv);
 	} catch (Exception e) {
 		// TODO Auto-generated catch block
 		e.printStackTrace();

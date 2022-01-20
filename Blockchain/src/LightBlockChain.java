@@ -21,7 +21,6 @@ public class LightBlockChain {
 		if (LightBlkchain.size() == 11) {
 			LightBlkchain.remove(0);
 		}
-		
 	}
 	
 }

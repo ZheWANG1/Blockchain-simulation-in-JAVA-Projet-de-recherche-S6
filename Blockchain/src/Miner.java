@@ -31,7 +31,7 @@ public class Miner extends Node implements Runnable {
     public void mine() {
         int nonce = 0;
         while (!receiptBlock) {
-            Block block = new Block(network.copyBlockchainFromFN().getLatestBlock(), transactionBuffer.toArray(new Transaction[0]));
+            Block block = new Block(network.copyBlockchainFromFN().getLatestBlock(), transactionBuffer);
             String hash = block.getHeader().calcHeaderHash(nonce++);
             String toBeCheckedSubList = hash.substring(0, difficulty);
             System.out.println(nodeId + " " + nonce + " " + hash);
@@ -53,7 +53,7 @@ public class Miner extends Node implements Runnable {
         }
     }
 
-    public void receiptBlock() {
+    public void receiptBlock(Block b) {
         receiptBlock = true;
     }
 /*

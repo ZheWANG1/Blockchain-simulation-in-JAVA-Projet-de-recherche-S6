@@ -12,7 +12,13 @@ abstract class Node {
         this.name = name;
         this.network = network;
     }
-
+    
+    public void receiptBlock() {
+    	
+    }
+    
+    public abstract void receiptBlock(Block b);
+    
     public Integer getNodeId() {
         return nodeId;
     }

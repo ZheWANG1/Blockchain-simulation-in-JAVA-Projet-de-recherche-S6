@@ -1,21 +1,24 @@
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
 public class Block {
 
     private final Header header;
     private final int blockId;
-    private final Transaction[] transactions;
+    private final List<Transaction> transactions;
 
 
-    public Block(Block blockPrev, Transaction[] transaction) {
+    public Block(Block blockPrev, List<Transaction> transaction) {
         header = new Header(blockPrev);
         this.transactions = transaction;
         blockId = blockPrev.blockId + 1;
+        this.printTransactions();
     }
 
     public Block() {
         header = new Header();
-        this.transactions = new Transaction[0];
+        this.transactions = new ArrayList<>();
         blockId = 0;
     }
 
@@ -25,8 +28,8 @@ public class Block {
 
     public String toStringAllTransaction() {
         StringBuilder trs = new StringBuilder();
-        for (int i = 0; i < Objects.requireNonNull(transactions).length; i++) {
-            trs.append(transactions[i].toString());
+        for (int i = 0; i < Objects.requireNonNull(transactions).size(); i++) {
+            trs.append(transactions.get(i).toString());
         }
         return trs.toString();
     }
@@ -36,12 +39,12 @@ public class Block {
     }
 
     public void printTransactions() {
-        for (int i = 0; i < Objects.requireNonNull(transactions).length; i++) {
-            System.out.print("" + transactions[i].toString());
+        for (int i = 0; i < Objects.requireNonNull(transactions).size(); i++) {
+            System.out.print("" + transactions.get(i).toString());
         }
     }
     
-    public Transaction[] getTransaction() {
+    public List<Transaction> getTransaction() {
     	return transactions;
     }
 }
