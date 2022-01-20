@@ -26,13 +26,19 @@ public class test {
 		Miner m2 = new Miner("B", bitcoin);
 		Miner m3 = new Miner("C", bitcoin);
 
+
 		ExecutorService executor = Executors.newFixedThreadPool(3);
 		executor.execute(m1);
 		executor.execute(m2);
 		executor.execute(m3);
 
 		ln1.sendMoneyTo(10, 2);
-    	
+		ln2.sendMoneyTo(10,1);
+
+
+		Blockchain blk = new Blockchain();
+		blk.createFirstBlock();
+		//System.out.println(blk.getLatestBlock().getHeader().calcHeaderHash(1));
     	
     	
     }

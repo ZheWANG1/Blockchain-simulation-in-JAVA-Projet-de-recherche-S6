@@ -1,13 +1,18 @@
-import java.util.concurrent.ThreadLocalRandom;
-
 public class Header {
 
-    private final int nbOfZeros = 5;
-    private final long timeStamp; 
-    private int nonce; 
+    private final long timeStamp;
     private final String headerHashPrev;
-    private String headerHash;
     private final String blockTransHash;
+    private String headerHash;
+    private int nonce;
+
+    public Header() {
+        timeStamp = System.currentTimeMillis();
+        blockTransHash = "";
+        headerHashPrev = "";
+        nonce = 0;
+        headerHash = calcHeaderHash(nonce);
+    }
 
     public Header(Block blockPrev) {
         timeStamp = System.currentTimeMillis();
@@ -17,38 +22,26 @@ public class Header {
         // GET PREVIOUS BLOCK HASH
         Header h = blockPrev.getHeader();
         headerHashPrev = h.getHeaderHash();
-        headerHash = calcHeaderHash();
+        //nonce = ThreadLocalRandom.current().nextInt(0, Integer.MAX_VALUE);
+        //headerHash = calcHeaderHash();
     }
 
-    public Header() {
-        timeStamp = System.currentTimeMillis();
-        blockTransHash = "";
-        headerHashPrev = "";
-        calcHeaderHash();
+    public long getTimeStamp() {
+        return timeStamp;
     }
 
     public int getNonce() {
         return nonce;
     }
 
-    public String calcHeaderHash() {
-        String concat = headerHashPrev + blockTransHash;
-        String minedBlock = mineBlock(concat);
-        return minedBlock;
+    public void setNonce(int nonce) {
+        this.nonce = nonce;
     }
 
-
-    public String mineBlock(String s) {
-    	//""" MINE THE BLOCK TILL THE FIRST N LETTERS ARE 0.""
-        while (true) {
-            nonce = ThreadLocalRandom.current().nextInt(0, Integer.MAX_VALUE);
-            String test_hash = s + nonce;
-            test_hash = HashUtil.SHA256(test_hash);
-            String toBeCheckedSubList = test_hash.substring(0, nbOfZeros);
-            if (toBeCheckedSubList.equals("0".repeat(nbOfZeros))) {
-                return test_hash;
-            }
-        }
+    public String calcHeaderHash(int nonce) {
+        this.nonce = nonce;
+        String concat = headerHashPrev + timeStamp + nonce + blockTransHash;
+        return HashUtil.SHA256(concat);
     }
 
     public String getPrevHash() {

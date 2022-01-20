@@ -7,14 +7,14 @@ import java.util.Map;
 public class Network {
     private final List<Node> network = new ArrayList<>();
     private final Map<Integer, PublicKey> keyTable = new HashMap<>();
-    private int difficulty = 10;
+    private int difficulty = 4;
 
     public Network() {
     }
 
     public boolean addNode(Node node) {
         network.add(node);
-        difficulty = network.size() / 10 + 10;
+        //difficulty = network.size() / 10 + 2;
         try {
             if (node instanceof LightNode)
                 keyTable.put(node.getNodeId(), ((LightNode) node).getPublicKey());
@@ -67,13 +67,11 @@ public class Network {
     }
 
     public Blockchain copyBlockchainFromFN() {
-        int i = 0;
-        Node node = network.get(i);
-        while (!(node instanceof FullNode)) {
-            i++;
-            node = network.get(i);
+        for (Node node : network) {
+            if (node instanceof FullNode)
+                return ((FullNode) node).getBlockchain();
         }
-        return ((FullNode) node).getBlockchain();
+        return null;
     }
 
     public int getDifficulty() {
