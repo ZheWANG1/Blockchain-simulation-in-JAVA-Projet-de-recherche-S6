@@ -84,6 +84,7 @@ public class Miner extends Node implements Runnable {
                     receiptTran = false;
                     if (verifySignature(transactionTempo)) {
                         transactionBuffer.add(transactionTempo);
+                        System.out.println(transactionBuffer);
                     }
                 } catch (Exception e) {
                     e.printStackTrace();
