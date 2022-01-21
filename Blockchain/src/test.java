@@ -12,15 +12,15 @@ public class test {
     	
     	LightNode ln1 = new LightNode("Jack",bitcoin);
     	LightNode ln2 = new LightNode("Alex", bitcoin);
-    	//LightNode ln3 = new LightNode("Chen", bitcoin);
-    	//LightNode ln4 = new LightNode("Kyle", bitcoin);
-    	//LightNode ln5 = new LightNode("Jennifer", bitcoin);
-    	//LightNode ln6 = new LightNode("Lise", bitcoin);
+    	LightNode ln3 = new LightNode("Chen", bitcoin);
+    	LightNode ln4 = new LightNode("Kyle", bitcoin);
+    	LightNode ln5 = new LightNode("Jennifer", bitcoin);
+    	LightNode ln6 = new LightNode("Lise", bitcoin);
     	
     	FullNode s1 = new FullNode("Spain Server", bitcoin);
-    	//FullNode s2 = new FullNode("Alex Server", bitcoin);
-    	//FullNode s3 = new FullNode("Paris Server", bitcoin);
-    	//FullNode s4 = new FullNode("England Server", bitcoin);
+    	FullNode s2 = new FullNode("Alex Server", bitcoin);
+    	FullNode s3 = new FullNode("Paris Server", bitcoin);
+    	FullNode s4 = new FullNode("England Server", bitcoin);
 
 		Miner m1 = new Miner("A", bitcoin);
 		Miner m2 = new Miner("B", bitcoin);
@@ -34,15 +34,15 @@ public class test {
 		
 		ln1.sendMoneyTo(10, ln2.getNodeId());
 		ln1.sendMoneyTo(10, ln2.getNodeId());
-		/*
-		ln1.sendMoneyTo(10, ln2.getNodeId());
-		ln1.sendMoneyTo(10, ln2.getNodeId());
-		ln1.sendMoneyTo(10, ln2.getNodeId());
-		ln1.sendMoneyTo(10, ln2.getNodeId());
-		ln1.sendMoneyTo(10, ln2.getNodeId());
-		*/
 
-		
+		ln2.sendMoneyTo(10, ln1.getNodeId());
+		ln2.sendMoneyTo(10, ln2.getNodeId());
+		ln2.sendMoneyTo(10, ln3.getNodeId());
+		ln2.sendMoneyTo(10, ln4.getNodeId());
+		ln2.sendMoneyTo(10, ln5.getNodeId());
+		ln2.sendMoneyTo(10, ln6.getNodeId());
+		ln2.sendMoneyTo(10, ln1.getNodeId());
+		ln6.sendMoneyTo(60, ln2.getNodeId());
 
 		Blockchain blk = new Blockchain();
 		blk.createFirstBlock();

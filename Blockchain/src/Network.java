@@ -52,6 +52,7 @@ public class Network {
         }
         System.out.println("Block " + this.copyBlockchainFromFN().getLatestBlock().getHeader());
         updateAllWallet(b);
+        System.out.println("\n--BROADCAST--");
         printWallets();
     }
 

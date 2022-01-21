@@ -9,6 +9,7 @@ public class Miner extends Node implements Runnable {
     private final List<Transaction> transactionBuffer = new ArrayList<>();
     private final int clientID;
     private Transaction transactionTempo;
+    private int nbOfTransReceived;
     private int nonce = 0;
     private int difficulty;
     private final Lock lock = new ReentrantLock();
@@ -32,7 +33,7 @@ public class Miner extends Node implements Runnable {
         Block block = new Block(network.copyBlockchainFromFN().getLatestBlock(), transactionBuffer);
         String hash = block.getHeader().calcHeaderHash(++nonce);
         String toBeCheckedSubList = hash.substring(0, difficulty);
-        System.out.println(nodeId + " " + nonce + " " + hash);
+        //System.out.println(nodeId + " " + nonce + " " + hash);
         if (toBeCheckedSubList.equals("0".repeat(difficulty))) {
             block.getHeader().setHeaderHash(hash);
             network.broadcastBlock(block);
@@ -82,6 +83,7 @@ public class Miner extends Node implements Runnable {
                     receiptTran = false;
                     if (verifySignature(transactionTempo)) {
                         transactionBuffer.add(transactionTempo);
+                        nbOfTransReceived++;
                     }
                     conditionBlock.signalAll();
                 } catch (Exception e) {
@@ -99,6 +101,7 @@ public class Miner extends Node implements Runnable {
                     conditionBlock.await();
                 }
                 mine();
+                nbOfTransReceived = 0;
             } catch (InterruptedException e) {
                 e.printStackTrace();
             } finally {
