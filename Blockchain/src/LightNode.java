@@ -37,8 +37,14 @@ public class LightNode extends Node {
     }
 
     public void receiptCoin(double amount) {
+        String order;
+        if (amount < 0)
+            order = " Lost ";
+        else
+            order = " received ";
+
         wallet += amount;
-        System.out.println(this.name + " received " + amount + " bitcoins");
+        System.out.println(this.name + order + amount + " bitcoins");
     }
 
     public PublicKey getPublicKey() {

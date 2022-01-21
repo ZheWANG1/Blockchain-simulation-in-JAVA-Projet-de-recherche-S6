@@ -11,9 +11,9 @@ public class Block {
 
     public Block(Block blockPrev, List<Transaction> transaction) {
         header = new Header(blockPrev);
-        this.transactions = transaction;
+        this.transactions = new ArrayList<>(transaction);
         blockId = blockPrev.blockId + 1;
-        this.printTransactions();
+        //this.printTransactions();
     }
 
     public Block() {
@@ -28,8 +28,8 @@ public class Block {
 
     public String toStringAllTransaction() {
         StringBuilder trs = new StringBuilder();
-        for (int i = 0; i < Objects.requireNonNull(transactions).size(); i++) {
-            trs.append(transactions.get(i).toString());
+        for (Transaction transaction : transactions) {
+            trs.append(transaction.toString());
         }
         return trs.toString();
     }
@@ -39,8 +39,8 @@ public class Block {
     }
 
     public void printTransactions() {
-        for (int i = 0; i < Objects.requireNonNull(transactions).size(); i++) {
-            System.out.print("" + transactions.get(i).toString());
+        for (Transaction transaction : transactions) {
+            System.out.print(transaction.toString());
         }
     }
     
