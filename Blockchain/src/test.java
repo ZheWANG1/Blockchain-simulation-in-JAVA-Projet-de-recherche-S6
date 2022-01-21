@@ -34,13 +34,14 @@ public class test {
 		
 		ln1.sendMoneyTo(10, ln2.getNodeId());
 		ln1.sendMoneyTo(10, ln2.getNodeId());
+		/*
 		ln1.sendMoneyTo(10, ln2.getNodeId());
 		ln1.sendMoneyTo(10, ln2.getNodeId());
 		ln1.sendMoneyTo(10, ln2.getNodeId());
 		ln1.sendMoneyTo(10, ln2.getNodeId());
 		ln1.sendMoneyTo(10, ln2.getNodeId());
-		
-		//System.out.println("Wallet 1 "+ln1.getWallet());
+		*/
+
 		
 
 		Blockchain blk = new Blockchain();

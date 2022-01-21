@@ -9,7 +9,7 @@ public class Miner extends Node implements Runnable {
     private final List<Transaction> transactionBuffer = new ArrayList<>();
     private final int clientID;
     private Transaction transactionTempo;
-    private int nonce;
+    private int nonce = 0;
     private int difficulty;
     private final Lock lock = new ReentrantLock();
     private final Condition conditionTran = lock.newCondition();
@@ -25,21 +25,19 @@ public class Miner extends Node implements Runnable {
     }
 
     public boolean verifySignature(Transaction transaction) throws Exception {
-        return RsaUtil.verify(transaction.toString(), transaction.getSignature(), network.getPkWithID(transaction.getFromID()));
+        return RsaUtil.verify("", transaction.getSignature(), network.getPkWithID(transaction.getFromID()));
     }
 
     public void mine() {
-        int nonce = 0;
-        while (!receiptBlock) {
-            Block block = new Block(network.copyBlockchainFromFN().getLatestBlock(), transactionBuffer);
-            String hash = block.getHeader().calcHeaderHash(nonce++);
-            String toBeCheckedSubList = hash.substring(0, difficulty);
-            System.out.println(nodeId + " " + nonce + " " + hash);
-            if (toBeCheckedSubList.equals("0".repeat(difficulty))) {
-                network.broadcastBlock(block);
-                return;
-            }
+        Block block = new Block(network.copyBlockchainFromFN().getLatestBlock(), transactionBuffer);
+        String hash = block.getHeader().calcHeaderHash(++nonce);
+        String toBeCheckedSubList = hash.substring(0, difficulty);
+        System.out.println(nodeId + " " + nonce + " " + hash);
+        if (toBeCheckedSubList.equals("0".repeat(difficulty))) {
+            block.getHeader().setHeaderHash(hash);
+            network.broadcastBlock(block);
         }
+
     }
 
     public void receiptTransaction(Transaction transaction) {
@@ -85,6 +83,7 @@ public class Miner extends Node implements Runnable {
                     if (verifySignature(transactionTempo)) {
                         transactionBuffer.add(transactionTempo);
                     }
+                    conditionBlock.signalAll();
                 } catch (Exception e) {
                     e.printStackTrace();
                 } finally {
@@ -97,12 +96,9 @@ public class Miner extends Node implements Runnable {
             lock.lock();
             try {
                 while (!receiptTran && transactionBuffer.isEmpty()) {
-                    conditionTran.await(
-                    );
+                    conditionBlock.await();
                 }
                 mine();
-                System.out.println("finish");
-                break;
             } catch (InterruptedException e) {
                 e.printStackTrace();
             } finally {

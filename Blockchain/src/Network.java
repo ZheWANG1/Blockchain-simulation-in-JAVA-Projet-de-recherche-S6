@@ -40,15 +40,27 @@ public class Network {
             double amount = transaction.getAmount();
             int toID = transaction.getToID();
             updateWalletWithID(amount, toID);
+            updateWalletWithID(-amount, transaction.getFromID());
         }
     }
 
     public void broadcastBlock(Block b) {
+        System.out.println("Block " + this.copyBlockchainFromFN().getLatestBlock().getHeader());
         for (Node node : network) {
                 node.receiptBlock(b);
             
         }
+        System.out.println("Block " + this.copyBlockchainFromFN().getLatestBlock().getHeader());
         updateAllWallet(b);
+        printWallets();
+    }
+
+    public void printWallets(){
+        for (var node: network){
+            if (node instanceof LightNode){
+                System.out.println("Nom client : "+ node.name+" Wallet : "+ ((LightNode)node).getWallet());
+            }
+        }
     }
 
     public PublicKey getPkWithID(int id) {

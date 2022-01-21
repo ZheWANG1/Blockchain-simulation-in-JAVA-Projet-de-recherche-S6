@@ -34,6 +34,10 @@ public class Header {
         return nonce;
     }
 
+    public void setHeaderHash(String headerHash) {
+        this.headerHash = headerHash;
+    }
+
     public void setNonce(int nonce) {
         this.nonce = nonce;
     }
