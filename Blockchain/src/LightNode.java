@@ -55,11 +55,7 @@ public class LightNode extends Node {
     }
 
     public void receiptCoin(double amount) {
-        String order;
-        if (amount < 0)
-            order = " Lost ";
-        else
-            order = " received ";
+        String order = amount < 0 ? " Lost " : " received ";
 
         wallet += amount;
         System.out.println(this.name + order + amount + " bitcoins");
@@ -70,7 +66,9 @@ public class LightNode extends Node {
     }
 
     public void receiptBlock(Block b) {
-        lightBlkch.addLightHeader(b.getHeader());
-        checkIfAllTransSent(b);
+        new Thread(()->{
+            lightBlkch.addLightHeader(b.getHeader());
+            checkIfAllTransSent(b);
+        }).start();
     }
 }

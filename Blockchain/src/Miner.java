@@ -37,9 +37,7 @@ public class Miner extends Node implements Runnable {
             block.getHeader().setHeaderHash(hash);
             //System.out.println(name + " " + nonce + " " + hash);
             network.broadcastBlock(block);
-
         }
-
     }
 
     public void receiptTransaction(Transaction transaction) {
@@ -54,6 +52,7 @@ public class Miner extends Node implements Runnable {
     }
 
     public void receiptBlock(Block b) {
+        transactionBuffer.clear();
         receiptBlock = true;
     }
 /*
@@ -74,23 +73,7 @@ public class Miner extends Node implements Runnable {
 
     @Override
     public void run() {
-        while (true) {
-            while (!receiptBlock) {
-                lock.lock();
-                try {
-                    while (!receiptTran && transactionBuffer.isEmpty()) {
-                        conditionBlock.await();
-                    }
-                    mine();
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                } finally {
-                    lock.unlock();
-                }
-            }
-            transactionBuffer.clear();
-            receiptBlock = false;
-        }
+
         new Thread(() -> {
             while (true) {
                 lock.lock();
@@ -110,6 +93,24 @@ public class Miner extends Node implements Runnable {
                 }
             }
         }).start();
+
+        while (true) {
+            while (!receiptBlock) {
+                lock.lock();
+                try {
+                    while (!receiptTran && transactionBuffer.isEmpty()) {
+                        conditionBlock.await();
+                    }
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                } finally {
+                    lock.unlock();
+                }
+                mine();
+            }
+
+            receiptBlock = false;
+        }
 
     }
 }
