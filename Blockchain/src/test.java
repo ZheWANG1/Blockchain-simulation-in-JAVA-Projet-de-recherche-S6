@@ -40,9 +40,15 @@ public class test {
 		ln2.sendMoneyTo(10, ln3.getNodeId());
 		ln2.sendMoneyTo(10, ln4.getNodeId());
 		ln2.sendMoneyTo(10, ln5.getNodeId());
+
 		ln2.sendMoneyTo(10, ln6.getNodeId());
 		ln2.sendMoneyTo(10, ln1.getNodeId());
-		ln6.sendMoneyTo(60, ln2.getNodeId());
+		ln6.sendMoneyTo(5, ln2.getNodeId());
+
+		ln6.sendMoneyTo(3.2, ln2.getNodeId());
+		ln6.sendMoneyTo(1.5, ln2.getNodeId());
+		ln6.sendMoneyTo(6, ln2.getNodeId());
+		ln6.sendMoneyTo(20, ln2.getNodeId());
 
 		Blockchain blk = new Blockchain();
 		blk.createFirstBlock();

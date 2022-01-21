@@ -1,6 +1,8 @@
 import java.security.KeyPair;
 import java.security.PrivateKey;
 import java.security.PublicKey;
+import java.util.ArrayList;
+import java.util.List;
 
 public class LightNode extends Node {
     private double wallet;
@@ -8,6 +10,7 @@ public class LightNode extends Node {
     private PrivateKey privateKey;
     private KeyPair keys;
     private final LightBlockChain lightBlkch;
+    private List<Transaction> transactionBuffer = new ArrayList<>();
 
     public LightNode(String name, Network network) {
         super(name, network);
@@ -28,8 +31,23 @@ public class LightNode extends Node {
             System.out.println(name + " Not enough bitcoin to send"); // Whatever the currency
             System.out.println("Rejected transaction");
         } else {
-            network.broadcastTransaction(new Transaction("", this.nodeId, nodeId, amount, System.currentTimeMillis(), 0.1, privateKey));
+            Transaction toSend = new Transaction("", this.nodeId, nodeId, amount, System.currentTimeMillis(), 0.1, privateKey);
+            network.broadcastTransaction(toSend);
+            transactionBuffer.add(toSend);
         }
+    }
+
+    private void checkIfAllTransSent(Block b){
+        List<Transaction> transSent = new ArrayList<>();
+        for(Transaction t: transactionBuffer){
+            List<Transaction> trans = b.getTransaction();
+            if(!trans.contains(t)){
+                network.broadcastTransaction(t);
+            }else{
+                transSent.add(t);
+            }
+        }
+        transactionBuffer.removeAll(transSent);
     }
 
     public double getWallet() {
@@ -53,5 +71,6 @@ public class LightNode extends Node {
 
     public void receiptBlock(Block b) {
         lightBlkch.addLightHeader(b.getHeader());
+        checkIfAllTransSent(b);
     }
 }

@@ -9,7 +9,7 @@ public class Miner extends Node implements Runnable {
     private final List<Transaction> transactionBuffer = new ArrayList<>();
     private final int clientID;
     private Transaction transactionTempo;
-    private int nbOfTransReceived;
+    private int nbMax = 10;
     private int nonce = 0;
     private int difficulty;
     private final Lock lock = new ReentrantLock();
@@ -33,10 +33,11 @@ public class Miner extends Node implements Runnable {
         Block block = new Block(network.copyBlockchainFromFN().getLatestBlock(), transactionBuffer);
         String hash = block.getHeader().calcHeaderHash(++nonce);
         String toBeCheckedSubList = hash.substring(0, difficulty);
-        //System.out.println(nodeId + " " + nonce + " " + hash);
         if (toBeCheckedSubList.equals("0".repeat(difficulty))) {
             block.getHeader().setHeaderHash(hash);
+            //System.out.println(name + " " + nonce + " " + hash);
             network.broadcastBlock(block);
+
         }
 
     }
@@ -73,6 +74,23 @@ public class Miner extends Node implements Runnable {
 
     @Override
     public void run() {
+        while (true) {
+            while (!receiptBlock) {
+                lock.lock();
+                try {
+                    while (!receiptTran && transactionBuffer.isEmpty()) {
+                        conditionBlock.await();
+                    }
+                    mine();
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                } finally {
+                    lock.unlock();
+                }
+            }
+            transactionBuffer.clear();
+            receiptBlock = false;
+        }
         new Thread(() -> {
             while (true) {
                 lock.lock();
@@ -81,11 +99,10 @@ public class Miner extends Node implements Runnable {
                         conditionTran.await();
                     }
                     receiptTran = false;
-                    if (verifySignature(transactionTempo)) {
+                    if (verifySignature(transactionTempo) && transactionBuffer.size() < nbMax) {
                         transactionBuffer.add(transactionTempo);
-                        nbOfTransReceived++;
+                        conditionBlock.signalAll();
                     }
-                    conditionBlock.signalAll();
                 } catch (Exception e) {
                     e.printStackTrace();
                 } finally {
@@ -94,19 +111,5 @@ public class Miner extends Node implements Runnable {
             }
         }).start();
 
-        while (!receiptBlock) {
-            lock.lock();
-            try {
-                while (!receiptTran && transactionBuffer.isEmpty()) {
-                    conditionBlock.await();
-                }
-                mine();
-                nbOfTransReceived = 0;
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            } finally {
-                lock.unlock();
-            }
-        }
     }
 }
