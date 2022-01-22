@@ -45,10 +45,19 @@ public class Network {
     }
 
     public void broadcastBlock(Block b) {
+
         System.out.println("Block " + this.copyBlockchainFromFN().getLatestBlock().getHeader());
         for (Node node : network) {
+            if (node instanceof Miner)
                 node.receiptBlock(b);
-            
+        }
+        for (Node node : network) {
+            if (node instanceof FullNode)
+                node.receiptBlock(b);
+        }
+        for (Node node : network) {
+            if (node instanceof LightNode)
+                node.receiptBlock(b);
         }
         System.out.println("Block " + this.copyBlockchainFromFN().getLatestBlock().getHeader());
         updateAllWallet(b);
@@ -56,10 +65,10 @@ public class Network {
         printWallets();
     }
 
-    public void printWallets(){
-        for (var node: network){
-            if (node instanceof LightNode){
-                System.out.println("Nom client : "+ node.name+" Wallet : "+ ((LightNode)node).getWallet());
+    public void printWallets() {
+        for (var node : network) {
+            if (node instanceof LightNode) {
+                System.out.println("Nom client : " + node.name + " Wallet : " + ((LightNode) node).getWallet());
             }
         }
     }
