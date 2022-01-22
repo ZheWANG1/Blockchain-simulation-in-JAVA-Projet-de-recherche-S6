@@ -101,4 +101,15 @@ public class Network {
     public int getDifficulty() {
         return difficulty;
     }
+
+    public void askAnyRequest() {
+        Block lastBlock = copyBlockchainFromFN().getLatestBlock();
+        if (lastBlock == null)
+            return;
+        for(Node ln: network){
+            if(ln instanceof LightNode){
+                ((LightNode) ln).checkIfAllTransSent(lastBlock);
+            }
+        }
+    }
 }

@@ -1,12 +1,13 @@
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.concurrent.locks.Condition;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
 
 public class Miner extends Node implements Runnable {
 
-    private final List<Transaction> transactionBuffer = new ArrayList<>();
+    private final List<Transaction> transactionBuffer = new CopyOnWriteArrayList<>();
     private final int clientID;
     private Transaction transactionTempo;
     private int nbMax = 10;
@@ -17,6 +18,7 @@ public class Miner extends Node implements Runnable {
     private final Condition conditionBlock = lock.newCondition();
     private boolean receiptTran = false;
     private boolean receiptBlock = false;
+
 
     public Miner(String name, Network network) {
         super(name, network);
@@ -52,7 +54,7 @@ public class Miner extends Node implements Runnable {
     }
 
     public void receiptBlock(Block b) {
-        transactionBuffer.clear();
+        //transactionBuffer.clear();
         receiptBlock = true;
     }
 /*
@@ -73,7 +75,6 @@ public class Miner extends Node implements Runnable {
 
     @Override
     public void run() {
-
         new Thread(() -> {
             while (true) {
                 lock.lock();
@@ -83,9 +84,13 @@ public class Miner extends Node implements Runnable {
                     }
                     receiptTran = false;
                     if (verifySignature(transactionTempo) && transactionBuffer.size() < nbMax) {
-                        transactionBuffer.add(transactionTempo);
-                        conditionBlock.signalAll();
+                        if (!transactionBuffer.contains(transactionTempo)) {
+                            transactionBuffer.add(transactionTempo);
+                        }
                     }
+                    transactionTempo = null;
+
+                    conditionBlock.signalAll();
                 } catch (Exception e) {
                     e.printStackTrace();
                 } finally {
@@ -107,9 +112,14 @@ public class Miner extends Node implements Runnable {
                     lock.unlock();
                 }
                 mine();
-            }
 
+            }
+            transactionBuffer.clear();
             receiptBlock = false;
+            new Thread(() -> {
+                network.askAnyRequest();
+            }).start();
+
         }
 
     }
