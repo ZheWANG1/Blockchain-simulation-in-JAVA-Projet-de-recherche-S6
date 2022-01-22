@@ -32,25 +32,27 @@ public class test {
 		executor.execute(m2);
 		executor.execute(m3);
 		
-		ln1.sendMoneyTo(10, ln2.getNodeId());
-		ln1.sendMoneyTo(10, ln2.getNodeId());
-		ln2.sendMoneyTo(10, ln1.getNodeId());
-		ln2.sendMoneyTo(10, ln2.getNodeId());
-		ln2.sendMoneyTo(10, ln3.getNodeId());
+		ln1.sendMoneyTo(1, ln2.getNodeId());//
+		ln1.sendMoneyTo(2, ln2.getNodeId());//
+		ln2.sendMoneyTo(3, ln1.getNodeId());//
+		ln2.sendMoneyTo(4, ln2.getNodeId());//
+		ln2.sendMoneyTo(5, ln3.getNodeId());//
 
-		ln2.sendMoneyTo(10, ln4.getNodeId());
-		ln2.sendMoneyTo(10, ln5.getNodeId());
-		ln2.sendMoneyTo(10, ln6.getNodeId());
-		ln2.sendMoneyTo(10, ln1.getNodeId());
-		ln6.sendMoneyTo(5, ln2.getNodeId());
+		ln2.sendMoneyTo(6, ln4.getNodeId());//
+		ln2.sendMoneyTo(7, ln5.getNodeId());
+		ln2.sendMoneyTo(8, ln6.getNodeId());
+		ln2.sendMoneyTo(9, ln1.getNodeId());
+		ln6.sendMoneyTo(10, ln2.getNodeId());//
 
-		ln6.sendMoneyTo(3.2, ln2.getNodeId());
-		ln6.sendMoneyTo(1.5, ln2.getNodeId());
-		ln6.sendMoneyTo(6, ln2.getNodeId());
-		ln2.sendMoneyTo(2, ln2.getNodeId());
-		ln5.sendMoneyTo(5, ln2.getNodeId());
-		ln4.sendMoneyTo(4, ln2.getNodeId());
-		ln3.sendMoneyTo(1.5, ln2.getNodeId());
+		ln6.sendMoneyTo(11, ln2.getNodeId());
+		ln6.sendMoneyTo(12, ln2.getNodeId());//
+		ln6.sendMoneyTo(13, ln2.getNodeId());//
+		ln2.sendMoneyTo(14, ln2.getNodeId());//
+		ln5.sendMoneyTo(15, ln2.getNodeId());
+		ln4.sendMoneyTo(16, ln2.getNodeId());
+		ln3.sendMoneyTo(17, ln2.getNodeId());//
+
+
 
 		//Blockchain blk = new Blockchain();
 		//blk.createFirstBlock();

@@ -3,6 +3,7 @@ import java.security.PrivateKey;
 import java.security.PublicKey;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 public class LightNode extends Node {
     private double wallet;
@@ -10,7 +11,7 @@ public class LightNode extends Node {
     private PrivateKey privateKey;
     private KeyPair keys;
     private final LightBlockChain lightBlkch;
-    private List<Transaction> transactionBuffer = new ArrayList<>();
+    private List<Transaction> transactionBuffer = new CopyOnWriteArrayList<>();
 
     public LightNode(String name, Network network) {
         super(name, network);
@@ -37,7 +38,7 @@ public class LightNode extends Node {
         }
     }
 
-    private void checkIfAllTransSent(Block b){
+    public void checkIfAllTransSent(Block b){
         List<Transaction> transSent = new ArrayList<>();
         for(Transaction t: transactionBuffer){
             List<Transaction> trans = b.getTransaction();
@@ -66,9 +67,7 @@ public class LightNode extends Node {
     }
 
     public void receiptBlock(Block b) {
-        new Thread(()->{
-            lightBlkch.addLightHeader(b.getHeader());
-            checkIfAllTransSent(b);
-        }).start();
+        lightBlkch.addLightHeader(b.getHeader());
+        //checkIfAllTransSent(b);
     }
 }
