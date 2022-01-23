@@ -6,13 +6,13 @@ public class LightBlockChain extends Blockchain{
 	private static int cpt = 0;
 	private final int lightBlockID;
 	private final ArrayList<LightBlock> LightBlkchain = new ArrayList<LightBlock>();
-	
+
 	public LightBlockChain() {
 		super();
 		lightBlockID = cpt;
 		cpt++;
 	}
-	
+
 	public void addLightHeader(Header h) {
 		String headerHash = h.getHeaderHash();
 		String previousHeaderHash = h.getPrevHash();
@@ -23,5 +23,5 @@ public class LightBlockChain extends Blockchain{
 			LightBlkchain.remove(0);
 		}
 	}
-	
+
 }

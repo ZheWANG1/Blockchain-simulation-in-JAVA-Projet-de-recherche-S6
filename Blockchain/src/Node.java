@@ -21,9 +21,9 @@ abstract class Node {
         this.name = name;
         this.network = network;
     }
-    
+
     public abstract void receiptBlock(Block b);
-    
+
     public Integer getNodeId() {
         return nodeId;
     }

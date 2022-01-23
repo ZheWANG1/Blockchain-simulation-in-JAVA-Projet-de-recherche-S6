@@ -11,7 +11,7 @@ public class Blockchain {
     private final int blockcid;
     private final List<Block> blkchain = new CopyOnWriteArrayList<>();
 
-    
+
     public Blockchain() {
         synchronized (o) {
             blockcid = cpt++;

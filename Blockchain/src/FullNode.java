@@ -9,5 +9,5 @@ public class FullNode extends Node {
     public void receiptBlock(Block block){
         this.blockchain.addBlock(block);
     }
-    
+
 }

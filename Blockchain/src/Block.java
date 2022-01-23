@@ -49,7 +49,7 @@ public class Block {
 
     public int getNodeID(){return nodeID;}
     public List<Transaction> getTransaction() {
-    	return transactions;
+        return transactions;
     }
 
     @Override
