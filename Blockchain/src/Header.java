@@ -1,3 +1,5 @@
+import java.util.Objects;
+
 public class Header {
 
     private final long timeStamp;
@@ -64,5 +66,16 @@ public class Header {
         return "\nTS : " + timeStamp + "\nhash : " + headerHash + "\nNonce : " + nonce;
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Header header = (Header) o;
+        return headerHash.equals(header.headerHash);
+    }
 
+    @Override
+    public int hashCode() {
+        return Objects.hash(headerHash);
+    }
 }

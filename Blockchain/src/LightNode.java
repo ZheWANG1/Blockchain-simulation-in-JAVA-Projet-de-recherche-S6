@@ -7,16 +7,11 @@ import java.util.concurrent.CopyOnWriteArrayList;
 
 public class LightNode extends Node {
     private double wallet;
-    private PublicKey publicKey;
-    private PrivateKey privateKey;
-    private KeyPair keys;
-    private final LightBlockChain lightBlkch;
     private List<Transaction> transactionBuffer = new CopyOnWriteArrayList<>();
 
     public LightNode(String name, Network network) {
-        super(name, network);
+        super(name, network,new LightBlockChain());
         this.wallet = 80;
-        lightBlkch = new LightBlockChain();
         try {
             keys = RsaUtil.generateKeyPair();
             publicKey = keys.getPublic();
@@ -67,7 +62,7 @@ public class LightNode extends Node {
     }
 
     public void receiptBlock(Block b) {
-        lightBlkch.addLightHeader(b.getHeader());
+        ((LightBlockChain)blockchain).addLightHeader(b.getHeader());
         //checkIfAllTransSent(b);
     }
 }

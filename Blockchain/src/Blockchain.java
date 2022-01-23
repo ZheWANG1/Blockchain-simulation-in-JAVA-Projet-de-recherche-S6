@@ -10,6 +10,7 @@ public class Blockchain {
     private static int cpt = 0;
     private final int blockcid;
     private final List<Block> blkchain = new CopyOnWriteArrayList<>();
+
     
     public Blockchain() {
         synchronized (o) {
@@ -47,6 +48,21 @@ public class Blockchain {
         for (Block block : blkchain) {
             System.out.print(block.toString());
         }
+    }
+
+    public int getSize(){ return blkchain.size();}
+
+    public Block getUpdateBlock(){
+        if (blkchain.size()>6)
+            return blkchain.get(blkchain.size()-6);
+        return null;
+    }
+
+    public Blockchain copyBlkch(){
+        Blockchain blk = new Blockchain();
+        blk.blkchain.clear();
+        blk.blkchain.addAll(this.blkchain);
+        return blk;
     }
 
 }

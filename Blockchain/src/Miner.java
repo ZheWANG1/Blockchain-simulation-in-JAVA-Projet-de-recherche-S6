@@ -1,3 +1,4 @@
+import java.security.PublicKey;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
@@ -9,8 +10,9 @@ public class Miner extends Node implements Runnable {
 
     private final List<Transaction> transactionBuffer = new CopyOnWriteArrayList<>();
     private final int clientID;
+    private final LightNode ln;
     private Transaction transactionTempo;
-    private int nbMax = 10;
+    private int nbMax = 2;
     private int nonce = 0;
     private int difficulty;
     private final Lock lock = new ReentrantLock();
@@ -21,9 +23,17 @@ public class Miner extends Node implements Runnable {
 
 
     public Miner(String name, Network network) {
-        super(name, network);
+        super(name, network, new Blockchain());
         difficulty = network.getDifficulty();
-        clientID = new LightNode(name, network).getNodeId();
+        ln =  new LightNode(name, network);
+        clientID = ln.getNodeId();
+        try {
+            keys = RsaUtil.generateKeyPair();
+            publicKey = keys.getPublic();
+            privateKey = keys.getPrivate();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         network.addNode(this);
     }
 
@@ -32,13 +42,18 @@ public class Miner extends Node implements Runnable {
     }
 
     public void mine() {
-        Block block = new Block(network.copyBlockchainFromFN().getLatestBlock(), transactionBuffer);
+        Block block = new Block(blockchain.getLatestBlock(), transactionBuffer);
         String hash = block.getHeader().calcHeaderHash(++nonce);
         String toBeCheckedSubList = hash.substring(0, difficulty);
         if (toBeCheckedSubList.equals("0".repeat(difficulty))) {
             block.getHeader().setHeaderHash(hash);
             //System.out.println(name + " " + nonce + " " + hash);
-            network.broadcastBlock(block);
+            try {
+                block.setNodeID(nodeId);
+                network.broadcastBlock(block, RsaUtil.sign("",this.privateKey), nodeId, blockchain);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
     }
 
@@ -53,11 +68,34 @@ public class Miner extends Node implements Runnable {
         }
     }
 
-    public void receiptBlock(Block b) {
+    public void receiptBlock(Block b,String signature, int nodeID, Blockchain blk) {
         //transactionBuffer.clear();
-        receiptBlock = true;
+        PublicKey nodePK = network.getPkWithID(nodeID);
+        try {
+            if (RsaUtil.verify("", signature, nodePK)){
+                if (!blockchain.getLatestBlock().equals(b)){
+                    if (this.blockchain.getSize() <= blk.getSize()){
+                        this.blockchain = blk.copyBlkch();
+                        blockchain.addBlock(b);
+                        receiptBlock = true;
+                    }
+                } else {
+                    if (this.blockchain.getSize() < blk.getSize()){
+                        this.blockchain = blk.copyBlkch();
+                        receiptBlock = true;
+                    }
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
-/*
+
+    public LightNode getLn() {
+        return ln;
+    }
+
+    /*
     public String mineBlock(String s) {
         //""" MINE THE BLOCK TILL THE FIRST N LETTERS ARE 0.""
         while (true) {
@@ -112,7 +150,6 @@ public class Miner extends Node implements Runnable {
                     lock.unlock();
                 }
                 mine();
-
             }
             transactionBuffer.clear();
             receiptBlock = false;
@@ -121,6 +158,11 @@ public class Miner extends Node implements Runnable {
             }).start();
 
         }
+
+    }
+
+    @Override
+    public void receiptBlock(Block b) {
 
     }
 }

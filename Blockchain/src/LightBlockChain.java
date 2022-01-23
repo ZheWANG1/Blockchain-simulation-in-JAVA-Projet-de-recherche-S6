@@ -2,12 +2,13 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.Objects;
 
-public class LightBlockChain {
+public class LightBlockChain extends Blockchain{
 	private static int cpt = 0;
 	private final int lightBlockID;
 	private final ArrayList<LightBlock> LightBlkchain = new ArrayList<LightBlock>();
 	
 	public LightBlockChain() {
+		super();
 		lightBlockID = cpt;
 		cpt++;
 	}

@@ -7,6 +7,8 @@ public class Block {
     private final Header header;
     private final int blockId;
     private final List<Transaction> transactions;
+    private int nodeID;
+
 
 
     public Block(Block blockPrev, List<Transaction> transaction) {
@@ -43,8 +45,23 @@ public class Block {
             System.out.print(transaction.toString());
         }
     }
-    
+    public void setNodeID(int Id){nodeID = Id;}
+
+    public int getNodeID(){return nodeID;}
     public List<Transaction> getTransaction() {
     	return transactions;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Block block = (Block) o;
+        return header.equals(block.header);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(header);
     }
 }
