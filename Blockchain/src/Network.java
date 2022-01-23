@@ -16,8 +16,7 @@ public class Network {
         network.add(node);
         //difficulty = network.size() / 10 + 2;
         try {
-            if (node instanceof LightNode)
-                keyTable.put(node.getNodeId(), ((LightNode) node).getPublicKey());
+            keyTable.put(node.getNodeId(), node.getPublicKey());
             return true;
         } catch (Exception e) {
             e.printStackTrace();
@@ -35,21 +34,24 @@ public class Network {
 
     // function updating client wallet with matching ID in the Block
     private void updateAllWallet(Block b) {
+        double totalFee = 0;
         List<Transaction> t = b.getTransaction();
         for (Transaction transaction : t) {
+            double takenFromTrans = (transaction.getTransactionFee())*transaction.getAmount();
+            totalFee +=  takenFromTrans;
             double amount = transaction.getAmount();
             int toID = transaction.getToID();
             updateWalletWithID(amount, toID);
-            updateWalletWithID(-amount, transaction.getFromID());
+            updateWalletWithID(-(amount+takenFromTrans), transaction.getFromID());
         }
+        updateWalletWithID(totalFee, b.getNodeID());
     }
 
-    public void broadcastBlock(Block b) {
-
+    public void broadcastBlock(Block b, String signature, int nodeID, Blockchain blk) {
         System.out.println("Block " + this.copyBlockchainFromFN().getLatestBlock().getHeader());
         for (Node node : network) {
             if (node instanceof Miner)
-                node.receiptBlock(b);
+                ((Miner)node).receiptBlock(b,signature,nodeID, blk);
         }
         for (Node node : network) {
             if (node instanceof FullNode)
@@ -59,10 +61,13 @@ public class Network {
             if (node instanceof LightNode)
                 node.receiptBlock(b);
         }
-        System.out.println("Block " + this.copyBlockchainFromFN().getLatestBlock().getHeader());
-        updateAllWallet(b);
-        System.out.println("\n--BROADCAST--");
-        printWallets();
+        System.out.println("Block " + blk.getLatestBlock().getHeader());
+        Block block = blk.getUpdateBlock();
+        if(block != null) {
+            updateAllWallet(block);
+            System.out.println("--Wallet--");
+            printWallets();
+        }
     }
 
     public void printWallets() {
@@ -85,7 +90,10 @@ public class Network {
             i++;
             associatedLightNode = network.get(i);
         }
-        ((LightNode) associatedLightNode).receiptCoin(amount);
+        if (associatedLightNode instanceof LightNode)
+            ((LightNode) associatedLightNode).receiptCoin(amount);
+        if (associatedLightNode instanceof Miner)
+            ((Miner) associatedLightNode).getLn().receiptCoin(amount);
     }
 
     public Blockchain copyBlockchainFromFN() {
