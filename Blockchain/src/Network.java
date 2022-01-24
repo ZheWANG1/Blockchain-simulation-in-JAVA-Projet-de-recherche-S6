@@ -120,4 +120,8 @@ public class Network {
             }
         }
     }
+
+    public List<Node> getNetwork(){
+        return network;
+    }
 }
