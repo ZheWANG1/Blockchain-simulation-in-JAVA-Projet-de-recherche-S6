@@ -1,9 +1,5 @@
-import java.security.PublicKey;
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
-import java.util.concurrent.locks.Condition;
-import java.util.concurrent.locks.Lock;
-import java.util.concurrent.locks.ReentrantLock;
 
 public class Validator extends Node{
     private final List<Transaction> transactionBuffer = new CopyOnWriteArrayList<>();
@@ -39,7 +35,8 @@ public class Validator extends Node{
     }
 
     public void validate() {
-        while (true) {
+        new Thread(()->{
+        while(true) {
             if (transactionBuffer.size() >= nbMax) {
                 int i = 0;
                 while (i != nbMax)
@@ -67,7 +64,7 @@ public class Validator extends Node{
             }
             transactionBuffer.removeAll(transactionsInBlock);
             chooseValidator();
-        }
+        }}).start();
     }
 
 
