@@ -4,10 +4,15 @@ import java.util.concurrent.Executors;
 public class test {
 
     public static void main(String[] args) {
-    	simulation();
+    	simulationPoW();
     }
 
-    public static void simulation() {
+	public static void simulationPoS(){
+
+	}
+
+
+    public static void simulationPoW() {
     	Network bitcoin = new Network();
     	
     	LightNode ln1 = new LightNode("Jack",bitcoin);
