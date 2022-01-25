@@ -1,4 +1,3 @@
-import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Objects;
@@ -15,8 +14,8 @@ public class Blockchain {
     public Blockchain() {
         synchronized (o) {
             blockcid = cpt++;
+            blkchain.add(createFirstBlock());
         }
-        blkchain.add(createFirstBlock());
     }
 
     public Block createFirstBlock() {
@@ -50,15 +49,17 @@ public class Blockchain {
         }
     }
 
-    public int getSize(){ return blkchain.size();}
+    public int getSize() {
+        return blkchain.size();
+    }
 
-    public Block getUpdateBlock(){
-        if (blkchain.size()>6)
-            return blkchain.get(blkchain.size()-6);
+    public Block getUpdateBlock() {
+        if (blkchain.size() > 6)
+            return blkchain.get(blkchain.size() - 6);
         return null;
     }
 
-    public Blockchain copyBlkch(){
+    public Blockchain copyBlkch() {
         Blockchain blk = new Blockchain();
         blk.blkchain.clear();
         blk.blkchain.addAll(this.blkchain);
