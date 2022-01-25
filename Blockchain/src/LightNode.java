@@ -1,18 +1,17 @@
-import java.security.KeyPair;
-import java.security.PrivateKey;
 import java.security.PublicKey;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
 
 public class LightNode extends Node {
+    private final static double TRANSACTION_FEE = 0.1;
     private double wallet;
     private double stakeAmount;
     private double stakeTime;
     private List<Transaction> transactionBuffer = new CopyOnWriteArrayList<>();
 
     public LightNode(String name, Network network) {
-        super(name, network,new LightBlockChain());
+        super(name, network, new LightBlockChain());
         this.wallet = 80;
         this.stakeAmount = 0;
         this.stakeTime = 0;
@@ -27,23 +26,23 @@ public class LightNode extends Node {
     }
 
     public void sendMoneyTo(double amount, int nodeId) {
-        if (wallet < amount) {
+        if (wallet < amount * (1 + TRANSACTION_FEE)) {
             System.out.println(name + " Not enough bitcoin to send"); // Whatever the currency
             System.out.println("Rejected transaction");
         } else {
-            Transaction toSend = new Transaction("", this.nodeId, nodeId, amount, System.currentTimeMillis(), 0.1, privateKey);
+            Transaction toSend = new Transaction("", this.nodeId, nodeId, amount, System.currentTimeMillis(), TRANSACTION_FEE, privateKey);
             network.broadcastTransaction(toSend);
             transactionBuffer.add(toSend);
         }
     }
 
-    public void checkIfAllTransSent(Block b){
+    public void checkIfAllTransSent(Block b) {
         List<Transaction> transSent = new ArrayList<>();
-        for(Transaction t: transactionBuffer){
+        for (Transaction t : transactionBuffer) {
             List<Transaction> trans = b.getTransaction();
-            if(!trans.contains(t)){
+            if (!trans.contains(t)) {
                 network.broadcastTransaction(t);
-            }else{
+            } else {
                 transSent.add(t);
             }
         }
@@ -65,22 +64,24 @@ public class LightNode extends Node {
         return publicKey;
     }
 
+    @Override
     public void receiptBlock(Block b, String signature, int nodeID, Blockchain blk) {
-        ((LightBlockChain)blockchain).addLightHeader(b.getHeader());
+        ((LightBlockChain) this.blockchain).addLightHeader(b.getHeader());
         //checkIfAllTransSent(b);
     }
 
-    public void stake(int amount){
+    public void stake(int amount) {
         stakeAmount = amount;
         this.wallet -= amount;
         stakeTime = System.currentTimeMillis();
-        System.out.println(name +" deposit "+amount+" as stake");
+        System.out.println(name + " deposit " + amount + " as stake");
     }
 
     public double getStakeAmount() {
         return stakeAmount;
     }
-    public double getStakeTime(){
+
+    public double getStakeTime() {
         return stakeTime;
     }
 }

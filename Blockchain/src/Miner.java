@@ -7,16 +7,15 @@ import java.util.concurrent.locks.ReentrantLock;
 
 public class Miner extends Node implements Runnable {
 
+    private final static int NB_MAX_TRANSACTIONS = 2;
     private final List<Transaction> transactionBuffer = new CopyOnWriteArrayList<>();
-    private final int clientID;
     private final LightNode ln;
-    private Transaction transactionTempo;
-    private int nbMax = 2;
-    private int nonce = 0;
-    private int difficulty;
     private final Lock lock = new ReentrantLock();
     private final Condition conditionTran = lock.newCondition();
     private final Condition conditionBlock = lock.newCondition();
+    private Transaction transactionTempo;
+    private int nonce = 0;
+    private int difficulty;
     private boolean receiptTran = false;
     private boolean receiptBlock = false;
 
@@ -25,7 +24,6 @@ public class Miner extends Node implements Runnable {
         super(name, network, new Blockchain());
         difficulty = network.getDifficulty();
         ln = new LightNode(name, network);
-        clientID = ln.getNodeId();
         try {
             keys = RsaUtil.generateKeyPair();
             publicKey = keys.getPublic();
@@ -67,27 +65,38 @@ public class Miner extends Node implements Runnable {
         }
     }
 
+    @Override
     public void receiptBlock(Block b, String signature, int nodeID, Blockchain blk) {
         //transactionBuffer.clear();
         PublicKey nodePK = network.getPkWithID(nodeID);
         try {
-            if (RsaUtil.verify("", signature, nodePK)) {
+            difficulty = network.getDifficulty();
+            receiptBlock = true;
+            if (nodeID == this.nodeId) {
+                blockchain.addBlock(b);
+                receiptVerified();
+                new Thread(() -> network.askAnyRequest()).start();
+            } else if (RsaUtil.verify("", signature, nodePK)) {
                 if (!blockchain.getLatestBlock().equals(b)) {
                     if (this.blockchain.getSize() <= blk.getSize()) {
                         this.blockchain = blk.copyBlkch();
                         blockchain.addBlock(b);
-                        receiptBlock = true;
+                        receiptVerified();
                     }
-                } else {
-                    if (this.blockchain.getSize() < blk.getSize()) {
-                        this.blockchain = blk.copyBlkch();
-                        receiptBlock = true;
-                    }
+                } else if (this.blockchain.getSize() < blk.getSize()) {
+                    this.blockchain = blk.copyBlkch();
+                    receiptVerified();
                 }
             }
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+    private void receiptVerified() {
+        nonce = 0;
+        transactionBuffer.clear();
+        receiptBlock = false;
     }
 
     public LightNode getLn() {
@@ -104,7 +113,7 @@ public class Miner extends Node implements Runnable {
                         conditionTran.await();
                     }
                     receiptTran = false;
-                    if (verifySignature(transactionTempo) && transactionBuffer.size() < nbMax) {
+                    if (verifySignature(transactionTempo) && transactionBuffer.size() < NB_MAX_TRANSACTIONS) {
                         if (!transactionBuffer.contains(transactionTempo)) {
                             transactionBuffer.add(transactionTempo);
                         }
@@ -134,9 +143,12 @@ public class Miner extends Node implements Runnable {
                 }
                 mine();
             }
-            transactionBuffer.clear();
-            receiptBlock = false;
-            new Thread(() -> network.askAnyRequest()).start();
+            try {
+                Thread.sleep(1000);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+
         }
     }
 }

@@ -67,11 +67,13 @@ public class Validator extends Node{
         }}).start();
     }
 
-
     public void receiptTransaction(Transaction transaction) {
         transactionBuffer.add(transaction);
     }
 
-    public void receiptBlock(Block b){}
+    @Override
+    public void receiptBlock(Block b, String signature, int nodeID, Blockchain blk) {
+
+    }
 }
 

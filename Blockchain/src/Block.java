@@ -64,4 +64,9 @@ public class Block {
     public int hashCode() {
         return Objects.hash(header);
     }
+
+    @Override
+    public String toString() {
+        return header.toString();
+    }
 }
