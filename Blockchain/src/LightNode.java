@@ -65,7 +65,7 @@ public class LightNode extends Node {
         return publicKey;
     }
 
-    public void receiptBlock(Block b) {
+    public void receiptBlock(Block b, String signature, int nodeID, Blockchain blk) {
         ((LightBlockChain)blockchain).addLightHeader(b.getHeader());
         //checkIfAllTransSent(b);
     }

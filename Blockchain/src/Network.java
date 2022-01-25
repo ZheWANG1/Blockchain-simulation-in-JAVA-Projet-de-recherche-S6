@@ -14,7 +14,7 @@ public class Network {
 
     public boolean addNode(Node node) {
         network.add(node);
-        //difficulty = network.size() / 10 + 2;
+        difficulty = network.size() / 20 + 4;
         try {
             keyTable.put(node.getNodeId(), node.getPublicKey());
             return true;
@@ -51,15 +51,15 @@ public class Network {
         System.out.println("Block " + this.copyBlockchainFromFN().getLatestBlock().getHeader());
         for (Node node : network) {
             if (node instanceof Miner)
-                ((Miner)node).receiptBlock(b,signature,nodeID, blk);
+                node.receiptBlock(b,signature,nodeID, blk);
         }
         for (Node node : network) {
             if (node instanceof FullNode)
-                node.receiptBlock(b);
+                node.receiptBlock(b,signature,nodeID, blk);
         }
         for (Node node : network) {
             if (node instanceof LightNode)
-                node.receiptBlock(b);
+                node.receiptBlock(b,signature,nodeID, blk);
         }
         System.out.println("Block " + blk.getLatestBlock().getHeader());
         Block block = blk.getUpdateBlock();
@@ -99,9 +99,7 @@ public class Network {
     public Blockchain copyBlockchainFromFN() {
         for (Node node : network) {
             if (node instanceof FullNode)
-                return ((FullNode) node).getBlockchain();
-
-
+                return node.getBlockchain();
         }
         return null;
     }

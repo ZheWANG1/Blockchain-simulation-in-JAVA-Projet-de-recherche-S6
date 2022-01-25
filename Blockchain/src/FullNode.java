@@ -6,7 +6,7 @@ public class FullNode extends Node {
         network.addNode(this);
     }
 
-    public void receiptBlock(Block block){
+    public void receiptBlock(Block block, String signature, int nodeID, Blockchain blk){
         this.blockchain.addBlock(block);
     }
 

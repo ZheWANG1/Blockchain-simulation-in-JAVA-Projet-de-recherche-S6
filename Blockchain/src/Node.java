@@ -22,7 +22,7 @@ abstract class Node {
         this.network = network;
     }
 
-    public abstract void receiptBlock(Block b);
+    public abstract void receiptBlock(Block b, String signature, int nodeID, Blockchain blk);
 
     public Integer getNodeId() {
         return nodeId;
@@ -31,7 +31,6 @@ abstract class Node {
     public Blockchain getBlockchain(){
         return blockchain;
     }
-
 
     public PublicKey getPublicKey() {
         return publicKey;
