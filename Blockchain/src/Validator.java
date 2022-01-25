@@ -14,16 +14,20 @@ public class Validator extends Node{
     }
 
     public void chooseValidator(){
-        List<Node> listNode = network.getNetwork();
-        double possibility = 0;
+        /**
+         * Function which choose a validator in order to guess a new block
+         */
+        List<Node> listNode = network.getNetwork(); // List of nodes in the network
         LightNode candidate = null;
-        for (Node node : listNode){
-            if(node instanceof LightNode) {
-                double stakeAmount = ((LightNode)node).getStakeAmount();
-                double stakeTime = ((LightNode)node).getStakeTime();
-                if (stakeAmount + stakeTime >= possibility){ // il faut modifier
-                    candidate = ((LightNode) node);
-                    possibility = stakeAmount + stakeTime;
+
+        double probability = 0;// Probability
+        for (Node node : listNode){ // For each nodes in the network
+            if(node instanceof LightNode) { // If found node is an LightNode
+                double stakeAmount = ((LightNode)node).getStakeAmount(); // Get LightNode's stakeAmount
+                double stakeTime = ((LightNode)node).getStakeTime(); // Get LightNode's stakeTime (How long the node have been Staking)
+                if (stakeAmount + stakeTime >= probability){ // il faut modifier // Random acces sim ?
+                    candidate = ((LightNode) node); // The candidate to guess another block
+                    probability = stakeAmount + stakeTime; // ?
                 }
             }
         }
@@ -37,22 +41,25 @@ public class Validator extends Node{
     public void validate() {
         new Thread(()->{
         while(true) {
-            if (transactionBuffer.size() >= nbMax) {
+            if (transactionBuffer.size() >= nbMax) { // If more than nbMax transaction has been received
                 int i = 0;
-                while (i != nbMax)
+                while (i != nbMax) // while i isn't equal to nbMaw
                     try {
-                        if (verifySignature(transactionBuffer.get(i))) {
+                        if (verifySignature(transactionBuffer.get(i))) { // Verify the signature of ith transaction
                             i++;
                         } else {
-                            System.out.println(transactionBuffer.get(i) + "is false");
-                            transactionBuffer.remove(i);
+                            System.out.println(transactionBuffer.get(i) + "is false"); // The transaction is fraudulent
+                            transactionBuffer.remove(i); // Remove fraudulent transaction
                         }
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
             }
+            // List of transaction which can enter the next block
             List<Transaction> transactionsInBlock = transactionBuffer.subList(0, nbMax - 1);
+            // Creation of the new block
             Block block = new Block(blockchain.getLatestBlock(), transactionsInBlock);
+            // Guess of the hash
             String hash = block.getHeader().calcHeaderHash(0);
             block.getHeader().setHeaderHash(hash);
             //System.out.println(name + " " + hash);
