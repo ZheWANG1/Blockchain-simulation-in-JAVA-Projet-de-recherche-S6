@@ -1,17 +1,20 @@
-import java.security.*;
+import java.security.PrivateKey;
 
+/**
+ * Transaction class with transaction information stored
+ */
 public class Transaction {
+    private static final Object o = new Object();
+    private static int cpt = 0;
     private final String transactionHash;
     private final int fromID;
     private final int toID;
     private final double amount;
     private final double transactionFee;
     private final long timeStamp;
-    private String signature;
     private final int transactionID;
-    private static int cpt = 0;
+    private String signature;
     private boolean confirmedTrans = false;
-    private static final Object o = new Object();
 
 
     public Transaction(String transaction, int fromID, int toID, double amount, long timeStamp, double transactionFee, PrivateKey pv) {
@@ -27,7 +30,6 @@ public class Transaction {
         try {
             this.signature = RsaUtil.sign("", pv);
         } catch (Exception e) {
-            // TODO Auto-generated catch block
             e.printStackTrace();
             this.signature = null;
         }
@@ -53,9 +55,27 @@ public class Transaction {
         return signature;
     }
 
+    public String getTransactionHash() {
+        return transactionHash;
+    }
+
+    public int getTransactionID() {
+        return transactionID;
+    }
+
+    public double getTransactionFee() {
+        return transactionFee;
+    }
+
+    public void setConfirmedTrans(boolean confirmedTrans) {
+        this.confirmedTrans = confirmedTrans;
+    }
+
+    public boolean isConfirmedTrans() {
+        return confirmedTrans;
+    }
+
     public String toString() {
         return "" + toID + " sent " + amount + "LD to " + fromID + " timestamp : " + timeStamp + " signature : " + signature + " Transaction fee : " + transactionFee + "\n";
     }
-
-    public double getTransactionFee(){return transactionFee;}
 }
