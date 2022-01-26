@@ -1,5 +1,4 @@
 import java.security.PublicKey;
-import java.security.cert.CertPathChecker;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -11,6 +10,18 @@ public class Network {
     private int difficulty = 4;
 
     public Network() {
+    }
+
+    public int getDifficulty() {
+        return difficulty;
+    }
+
+    public List<Node> getNetwork() {
+        return network;
+    }
+
+    public PublicKey getPkWithID(int id) {
+        return keyTable.get(id);
     }
 
     public boolean addNode(Node node) {
@@ -33,7 +44,11 @@ public class Network {
         }
     }
 
-    // function updating client wallet with matching ID in the Block
+    /**
+     * Function updating client wallet with matching ID in the Block
+     *
+     * @param b The new block
+     */
     private void updateAllWallet(Block b) {
         double totalFee = 0;
         List<Transaction> t = b.getTransaction();
@@ -49,7 +64,6 @@ public class Network {
     }
 
     public void broadcastBlock(Block b, String signature, int nodeID, Blockchain blk) {
-        //System.out.println("Block " + blk.getLatestBlock().getBlockId() + blk.getLatestBlock().getHeader());
         for (Node node : network) {
             if (node instanceof Miner)
                 node.receiptBlock(b, signature, nodeID, blk);
@@ -71,19 +85,12 @@ public class Network {
         }
     }
 
-    public void printWallets() {
-        for (var node : network) {
-            if (node instanceof LightNode) {
-                System.out.println("Nom client : " + node.name + " Wallet : " + ((LightNode) node).getWallet());
-            }
-        }
-    }
-
-    public PublicKey getPkWithID(int id) {
-        return keyTable.get(id);
-    }
-
-    // function updating client wallet with matching ID
+    /**
+     * Function updating client wallet with matching ID
+     *
+     * @param amount   The amount of transaction
+     * @param clientId The beneficiary's node ID
+     */
     private void updateWalletWithID(double amount, int clientId) {
         int i = 0;
         Node associatedLightNode = network.get(i);
@@ -105,10 +112,6 @@ public class Network {
         return null;
     }
 
-    public int getDifficulty() {
-        return difficulty;
-    }
-
     public void askAnyRequest() {
         Block lastBlock = copyBlockchainFromFN().getLatestBlock();
         if (lastBlock == null)
@@ -120,7 +123,11 @@ public class Network {
         }
     }
 
-    public List<Node> getNetwork() {
-        return network;
+    public void printWallets() {
+        for (var node : network) {
+            if (node instanceof LightNode) {
+                System.out.println("Nom client : " + node.name + " Wallet : " + ((LightNode) node).getWallet());
+            }
+        }
     }
 }
