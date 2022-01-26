@@ -5,6 +5,9 @@ import java.util.concurrent.locks.Condition;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
 
+/**
+ * A node class with mining capabilities and equipped with an account that can post transactions
+ */
 public class Miner extends Node implements Runnable {
 
     private final static int NB_MAX_TRANSACTIONS = 2;
@@ -34,10 +37,38 @@ public class Miner extends Node implements Runnable {
         network.addNode(this);
     }
 
+    /**
+     * Get the trading node attached to the mining node
+     *
+     * @return The trading node
+     */
+    public LightNode getLn() {
+        return ln;
+    }
+
+    /**
+     * Verify the signature of a transaction by public key
+     *
+     * @param transaction A transaction
+     * @return Whether the transaction was sent by the initiator himself
+     * @throws Exception
+     */
     public boolean verifySignature(Transaction transaction) throws Exception {
         return RsaUtil.verify("", transaction.getSignature(), network.getPkWithID(transaction.getFromID()));
     }
 
+    /**
+     * Reset operation when the node verifies that the received block is valid
+     */
+    private void receiptVerified() {
+        nonce = 0;
+        transactionBuffer.clear();
+        receiptBlock = false;
+    }
+
+    /**
+     * An attempt to calculate the hash value of the next block
+     */
     public void mine() {
         Block block = new Block(blockchain.getLatestBlock(), transactionBuffer);
         String hash = block.getHeader().calcHeaderHash(++nonce);
@@ -54,6 +85,11 @@ public class Miner extends Node implements Runnable {
         }
     }
 
+    /**
+     * Mining nodes receive transactions from other trading nodes
+     *
+     * @param transaction A transaction
+     */
     public void receiptTransaction(Transaction transaction) {
         lock.lock();
         try {
@@ -91,16 +127,6 @@ public class Miner extends Node implements Runnable {
         } catch (Exception e) {
             e.printStackTrace();
         }
-    }
-
-    private void receiptVerified() {
-        nonce = 0;
-        transactionBuffer.clear();
-        receiptBlock = false;
-    }
-
-    public LightNode getLn() {
-        return ln;
     }
 
     @Override
