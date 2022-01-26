@@ -1,6 +1,14 @@
 import java.util.Objects;
 
 public class Header {
+    /*
+        Class Header
+        timeStamp : long -> Date of creation of the block
+        headerHashPrev : String -> Hash of the last block's header
+        blockTransHash : String -> Hash of all transaction's information
+        headerHash : String -> Hash of the header containing all block's information
+        nonce : int -> Nonce found by a Miner/Validator ?
+     */
 
     private final long timeStamp;
     private final String headerHashPrev;
@@ -9,6 +17,10 @@ public class Header {
     private int nonce;
 
     public Header() {
+        /*
+            Constructor Header
+            Used for the Genesis block's header
+         */
         timeStamp = System.currentTimeMillis();
         blockTransHash = "";
         headerHashPrev = "";
@@ -17,55 +29,79 @@ public class Header {
     }
 
     public Header(Block blockPrev) {
-        timeStamp = System.currentTimeMillis();
-        // GET TRANSACTION HASH
-        String transaction = blockPrev.toStringAllTransaction();
-        blockTransHash = HashUtil.SHA256(transaction);
-        // GET PREVIOUS BLOCK HASH
-        Header h = blockPrev.getHeader();
-        headerHashPrev = h.getHeaderHash();
+        /*
+            Constructor Header
+            blockPrev : Block -> Previous block.
+         */
+        timeStamp = System.currentTimeMillis(); // Get the current date
+        String transaction = blockPrev.toStringAllTransaction(); // ?
+        blockTransHash = HashUtil.SHA256(transaction); // ?
+        Header h = blockPrev.getHeader(); // Get previous block's header
+        headerHashPrev = h.getHeaderHash(); // Get header's hash
         //nonce = ThreadLocalRandom.current().nextInt(0, Integer.MAX_VALUE);
         //headerHash = calcHeaderHash();
     }
 
-    public long getTimeStamp() {
-        return timeStamp;
+    public String calcHeaderHash(int nonce) {
+        /*
+            This function return the header's hash
+            nonce : int -> Nonce found by Miner/Validator
+         */
+        this.nonce = nonce;
+        String concat = headerHashPrev + timeStamp + nonce + blockTransHash; // Whole block's information
+        return HashUtil.SHA256(concat); // Return the hash of the whole block's information
     }
 
-    public int getNonce() {
-        return nonce;
-    }
-
+    // Setter
     public void setHeaderHash(String headerHash) {
+        /*
+            Setter headerHash
+         */
         this.headerHash = headerHash;
     }
-
     public void setNonce(int nonce) {
+        /*
+            Setter nonce
+         */
         this.nonce = nonce;
     }
 
-    public String calcHeaderHash(int nonce) {
-        this.nonce = nonce;
-        String concat = headerHashPrev + timeStamp + nonce + blockTransHash;
-        return HashUtil.SHA256(concat);
+    // Getter
+    public long getTimeStamp() {
+        /*
+            Getter timeStamp
+         */
+        return timeStamp;
     }
-
+    public int getNonce() {
+        /*
+            Getter nonce
+         */
+        return nonce;
+    }
     public String getPrevHash() {
+        /*
+            Getter prevHash
+         */
         return headerHashPrev;
     }
-
     public String getBlockTransHash() {
+        /*
+            Getter blockTransHash
+         */
         return blockTransHash;
     }
-
     public String getHeaderHash() {
+        /*
+            Getter headerHash
+         */
         return headerHash;
     }
 
+    // Others
     public String toString() {
         return "\nTS : " + timeStamp + "\nhash : " + headerHash + "\nNonce : " + nonce;
     }
-
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -73,7 +109,6 @@ public class Header {
         Header header = (Header) o;
         return headerHash.equals(header.headerHash);
     }
-
     @Override
     public int hashCode() {
         return Objects.hash(headerHash);
