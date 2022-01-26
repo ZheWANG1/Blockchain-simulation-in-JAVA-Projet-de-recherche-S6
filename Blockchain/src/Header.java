@@ -11,9 +11,9 @@ public class Header {
      */
 
     private final long timeStamp;
-    private final String headerHashPrev;
-    private final String blockTransHash;
-    private String headerHash;
+    protected final String headerHashPrev;
+    protected final String blockTransHash;
+    protected String headerHash;
     private int nonce;
 
     public Header() {
@@ -38,8 +38,13 @@ public class Header {
         blockTransHash = HashUtil.SHA256(transaction); // ?
         Header h = blockPrev.getHeader(); // Get previous block's header
         headerHashPrev = h.getHeaderHash(); // Get header's hash
-        //nonce = ThreadLocalRandom.current().nextInt(0, Integer.MAX_VALUE);
-        //headerHash = calcHeaderHash();
+    }
+
+    public Header(String hHp, String hH, String trsHash) {
+        timeStamp = 0;
+        headerHashPrev = hHp;
+        headerHash = hH;
+        blockTransHash = trsHash;
     }
 
     public String calcHeaderHash(int nonce) {
@@ -59,6 +64,7 @@ public class Header {
          */
         this.headerHash = headerHash;
     }
+
     public void setNonce(int nonce) {
         /*
             Setter nonce
@@ -73,24 +79,28 @@ public class Header {
          */
         return timeStamp;
     }
+
     public int getNonce() {
         /*
             Getter nonce
          */
         return nonce;
     }
+
     public String getPrevHash() {
         /*
             Getter prevHash
          */
         return headerHashPrev;
     }
+
     public String getBlockTransHash() {
         /*
             Getter blockTransHash
          */
         return blockTransHash;
     }
+
     public String getHeaderHash() {
         /*
             Getter headerHash
@@ -102,6 +112,7 @@ public class Header {
     public String toString() {
         return "\nTS : " + timeStamp + "\nhash : " + headerHash + "\nNonce : " + nonce;
     }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -109,6 +120,7 @@ public class Header {
         Header header = (Header) o;
         return headerHash.equals(header.headerHash);
     }
+
     @Override
     public int hashCode() {
         return Objects.hash(headerHash);
