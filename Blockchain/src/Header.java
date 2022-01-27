@@ -29,9 +29,11 @@ public class Header {
 
     /**
      * Constructor Header
-     * @param blockPrev -> Previous block
+     * @param blockPrev -> Previous blockchain's block
+     * @param blockTransHash ->
      */
     public Header(Block blockPrev, String blockTransHash) {
+        this.blockTransHash = blockTransHash;
         timeStamp = System.currentTimeMillis(); // Get the current date
         Header h = blockPrev.getHeader(); // Get previous block's header
         headerHashPrev = h.getHeaderHash(); // Get header's hash
