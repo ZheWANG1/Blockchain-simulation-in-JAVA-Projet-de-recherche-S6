@@ -9,7 +9,7 @@ abstract class Node {
     private static final Object o = new Object();
     private static int cpt = 0;
     protected final int nodeId;
-    protected final String name;
+    protected String name;
     protected Network network;
     protected Blockchain blockchain;
     protected PublicKey publicKey;
