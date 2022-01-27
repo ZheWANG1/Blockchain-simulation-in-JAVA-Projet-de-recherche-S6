@@ -30,7 +30,7 @@ public class Header {
     /**
      * Constructor Header
      * @param blockPrev -> Previous blockchain's block
-     * @param blockTransHash ->
+     * @param blockTransHash -> Current block's transaction hash
      */
     public Header(Block blockPrev, String blockTransHash) {
         this.blockTransHash = blockTransHash;
@@ -40,10 +40,10 @@ public class Header {
     }
 
     /**
-     *
-     * @param hHp
-     * @param hH
-     * @param trsHash
+     * Constructor Header
+     * @param hHp -> Previous header's hash
+     * @param hH -> Current header's hash
+     * @param trsHash -> Current transaction's hash
      */
     public Header(String hHp, String hH, String trsHash) {
         timeStamp = 0;
@@ -52,17 +52,23 @@ public class Header {
         blockTransHash = trsHash;
     }
 
+    /**
+     * Function which calculate the header's hash
+     * @param nonce -> Random string tested by a miner
+     * @return block's informations hash
+     */
     public String calcHeaderHash(int nonce) {
-        /*
-            This function return the header's hash
-            nonce : int -> Nonce found by Miner/Validator
-         */
         this.nonce = nonce;
         String concat = headerHashPrev + timeStamp + nonce + blockTransHash; // Whole block's information
         return HashUtil.SHA256(concat); // Return the hash of the whole block's information
     }
 
     // Setter
+
+    /**
+     * Setter headerHash
+     * @param headerHash
+     */
     public void setHeaderHash(String headerHash) {
         /*
             Setter headerHash
@@ -70,6 +76,10 @@ public class Header {
         this.headerHash = headerHash;
     }
 
+    /**
+     * Setter nonce
+     * @param nonce
+     */
     public void setNonce(int nonce) {
         /*
             Setter nonce
@@ -78,6 +88,11 @@ public class Header {
     }
 
     // Getter
+
+    /**
+     * Getter timeStamp
+     * @return
+     */
     public long getTimeStamp() {
         /*
             Getter timeStamp
@@ -85,6 +100,10 @@ public class Header {
         return timeStamp;
     }
 
+    /**
+     * Getter nonce
+     * @return
+     */
     public int getNonce() {
         /*
             Getter nonce
@@ -92,6 +111,10 @@ public class Header {
         return nonce;
     }
 
+    /**
+     * Getter previous hash
+     * @return
+     */
     public String getPrevHash() {
         /*
             Getter prevHash
@@ -99,6 +122,10 @@ public class Header {
         return headerHashPrev;
     }
 
+    /**
+     * Getter blockTransHash
+     * @return
+     */
     public String getBlockTransHash() {
         /*
             Getter blockTransHash
@@ -106,6 +133,10 @@ public class Header {
         return blockTransHash;
     }
 
+    /**
+     * Getter headerHash
+     * @return headerHash
+     */
     public String getHeaderHash() {
         /*
             Getter headerHash
@@ -114,6 +145,11 @@ public class Header {
     }
 
     // Others
+
+    /**
+     * toString function
+     * @return
+     */
     public String toString() {
         return "\nTS : " + timeStamp + "\nprevHash : " + headerHashPrev + "\nhash : " + headerHash + "\nNonce : " + nonce;
     }
