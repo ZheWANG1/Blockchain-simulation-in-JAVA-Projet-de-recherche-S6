@@ -1,3 +1,5 @@
+package PoW;
+
 import java.security.PublicKey;
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;

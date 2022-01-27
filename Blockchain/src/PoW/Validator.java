@@ -1,3 +1,5 @@
+package PoW;
+
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -30,9 +32,9 @@ public class Validator extends Node {
         double probability = 0;// Probability
         Map<LightNode, Double> mapProba = new HashMap<>();
         for (Node node : listNode) { // For each nodes in the network
-            if (node instanceof LightNode) { // If found node is an LightNode
-                double stakeAmount = ((LightNode) node).getStakeAmount(); // Get LightNode's stakeAmount
-                double stakeTime = System.currentTimeMillis() - ((LightNode) node).getStakeTime(); // Get LightNode's stakeTime (How long the node have been Staking)
+            if (node instanceof LightNode) { // If found node is an PoW.LightNode
+                double stakeAmount = ((LightNode) node).getStakeAmount(); // Get PoW.LightNode's stakeAmount
+                double stakeTime = System.currentTimeMillis() - ((LightNode) node).getStakeTime(); // Get PoW.LightNode's stakeTime (How long the node have been Staking)
                 mapProba.put((LightNode) node, stakeAmount * stakeTime);
             }
         }

@@ -1,3 +1,5 @@
+package PoW;
+
 import java.util.ArrayList;
 
 /**
@@ -12,7 +14,7 @@ public class LightBlockChain extends Blockchain {
 
     /**
      * Add new light block to this light blockchain
-     * @param h Header of the new block
+     * @param h PoW.Header of the new block
      */
     public void addLightHeader(Header h) {
         String headerHash = h.getHeaderHash();

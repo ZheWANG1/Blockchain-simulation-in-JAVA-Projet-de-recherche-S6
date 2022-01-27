@@ -1,3 +1,4 @@
+package PoW;
 
 public class LightBlock extends Header {
 

@@ -1,4 +1,4 @@
-# Blockchain simulation in JAVA Projet de recherche S6
+# PoW.Blockchain simulation in JAVA Projet de recherche S6
 
 
 

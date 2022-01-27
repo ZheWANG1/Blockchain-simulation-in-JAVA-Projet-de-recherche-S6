@@ -1,14 +1,16 @@
+package PoW;
+
 import java.util.Iterator;
 import java.util.List;
 import java.util.Objects;
 import java.util.concurrent.CopyOnWriteArrayList;
 
 /**
- * Class Blockchain
+ * Class PoW.Blockchain
  *         o : Object -> Used for synchronization
  *         cpt : int -> Used for blockid
  *         blockid : int -> Identifier of a block
- *         blkchain : List<Block> -> List of block representing the Block-chain
+ *         blkchain : List<PoW.Block> -> List of block representing the PoW.Block-chain
  */
 public class Blockchain {
 
@@ -18,8 +20,8 @@ public class Blockchain {
     private final List<Block> blkchain = new CopyOnWriteArrayList<>();
 
     /**
-     * Constructor Blockchain
-     * Create an empty Blockchain
+     * Constructor PoW.Blockchain
+     * Create an empty PoW.Blockchain
      */
     public Blockchain() {
         synchronized (o) {
@@ -88,7 +90,7 @@ public class Blockchain {
 
     /**
      * Function which return the blockchain's 6th valid block
-     * @return Block or null if the blockchain's size is lesser than 6
+     * @return PoW.Block or null if the blockchain's size is lesser than 6
      */
     public Block getUpdateBlock() {
         if (blkchain.size() > 6)
