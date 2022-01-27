@@ -37,8 +37,13 @@ public class Network {
 
     public void broadcastTransaction(Transaction transaction) {
         for (Node node : network) {
+            //Pow
             if (node instanceof Miner) {
                 ((Miner) node).receiptTransaction(transaction);
+            }
+            //Pos
+            if (node instanceof Validator) {
+                ((Validator) node).receiptTransaction(transaction);
             }
         }
     }
