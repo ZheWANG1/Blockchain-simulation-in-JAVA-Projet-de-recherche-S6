@@ -1,14 +1,13 @@
 import java.util.Objects;
 
+/**
+ *  Class Header timeStamp : long -> Date of creation of the block
+ *  headerHashPrev : String -> Hash of the last block's header
+ *  blockTransHash : String -> Hash of all transaction's information
+ *  headerHash : String -> Hash of the header containing all block's information
+ *  nonce : int -> Nonce found by a Miner/Validator ?
+ */
 public class Header {
-    /*
-        Class Header
-        timeStamp : long -> Date of creation of the block
-        headerHashPrev : String -> Hash of the last block's header
-        blockTransHash : String -> Hash of all transaction's information
-        headerHash : String -> Hash of the header containing all block's information
-        nonce : int -> Nonce found by a Miner/Validator ?
-     */
 
     private final long timeStamp;
     protected final String headerHashPrev;
@@ -16,11 +15,11 @@ public class Header {
     protected String headerHash;
     private int nonce;
 
+    /**
+     * Constructor Header
+     * Used for the Genesis block's header
+     */
     public Header() {
-        /*
-            Constructor Header
-            Used for the Genesis block's header
-         */
         timeStamp = System.currentTimeMillis();
         blockTransHash = "";
         headerHashPrev = "";
@@ -28,18 +27,22 @@ public class Header {
         headerHash = calcHeaderHash(nonce);
     }
 
-    public Header(Block blockPrev) {
-        /*
-            Constructor Header
-            blockPrev : Block -> Previous block.
-         */
+    /**
+     * Constructor Header
+     * @param blockPrev -> Previous block
+     */
+    public Header(Block blockPrev, String blockTransHash) {
         timeStamp = System.currentTimeMillis(); // Get the current date
-        String transaction = blockPrev.toStringAllTransaction(); // ?
-        blockTransHash = HashUtil.SHA256(transaction); // ?
         Header h = blockPrev.getHeader(); // Get previous block's header
         headerHashPrev = h.getHeaderHash(); // Get header's hash
     }
 
+    /**
+     *
+     * @param hHp
+     * @param hH
+     * @param trsHash
+     */
     public Header(String hHp, String hH, String trsHash) {
         timeStamp = 0;
         headerHashPrev = hHp;

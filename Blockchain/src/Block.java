@@ -2,13 +2,13 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
+/**
+ * header : Header -> Represent the block header.
+ * blockId : int -> Block identifier.
+ * transaction : List<Transaction> -> List of all the transaction encapsulated in the block.
+ * nodeID : int -> Represent the miner nodeID which mined or staked the block.
+ */
 public class Block {
-    /*
-     * header : Header -> Represent the block header.
-     * blockId : int -> Block identifier.
-     * transaction : List<Transaction> -> List of all the transaction encapsulated in the block.
-     * nodeID : int -> Represent the miner nodeID which mined or staked the block.
-     */
 
     private final Header header;
     private final int blockId;
@@ -16,61 +16,71 @@ public class Block {
     private int nodeID;
 
 
-
+    /**
+     * Constructor Block
+     * @param blockPrev -> Last Block in the blockchain needed in order to get the hash.
+     * @param transaction-> List of transaction to be added into a new block.
+     */
     public Block(Block blockPrev, List<Transaction> transaction) {
-        /*
-          Constructor Block
-          blockPrev -> Last Block in the blockchain needed in order to get the hash.
-          transaction -> List of transaction to be added into a new block.
-         */
-        header = new Header(blockPrev);
         this.transactions = new ArrayList<>(transaction);
+        String trs = this.toStringAllTransaction(); // ?
+        String blockTransHash = HashUtil.SHA256(trs); // ?
+        header = new Header(blockPrev, blockTransHash);
         blockId = blockPrev.blockId + 1;
         //this.printTransactions();
     }
 
+    /**
+     * Constructor Block
+     * No parameters, used in order to create the genesis block
+     */
     public Block() {
-        /*
-            Constructor Block
-            No parameters, used in order to create the genesis block
-         */
         header = new Header();
         this.transactions = new ArrayList<>();
         blockId = 0;
     }
 
     //Getter
+
+    /**
+     * Getter of header
+     * @return header
+     */
     public Header getHeader() {
-        /*
-            Getter of header
-         */
         return header;
     }
-    public int getBlockId() {
-        /*
-            Getter of blockId
-         */
 
+    /**
+     * Getter of blockId
+     * @return blockId
+     */
+    public int getBlockId() {
         return blockId;
     }
+
+    /**
+     * Getter of nodeId
+     * @return nodeId
+     */
     public int getNodeID(){
-        /*
-            Getter of nodeId
-         */
         return nodeID;
     }
+
+    /**
+     * Getter transaction
+     * @return transaction
+     */
     public List<Transaction> getTransaction() {
-        /*
-            Getter of transaction
-         */
         return transactions;
     }
 
     // Setter
+
+    /**
+     * Setter nodeId
+     * @param Id
+     */
     public void setNodeID(int Id){
-        /*
-            Setter nodeId
-         */
         nodeID = Id;
     }
 
@@ -91,21 +101,23 @@ public class Block {
     public String toString() {
         return header.toString();
     }
+
+    /**
+     * Transform into string all transaction's information
+     * @return All transaction's information into a string
+     */
     public String toStringAllTransaction() {
-        /*
-            ToString Function,
-            render all the Transaction into one String
-         */
         StringBuilder trs = new StringBuilder();
         for (Transaction transaction : transactions) {
             trs.append(transaction.toString());
         }
         return trs.toString();
     }
+
+    /**
+     * Function which print all transaction's information
+     */
     public void printTransactions() {
-        /*
-            Print all transaction's information
-         */
         for (Transaction transaction : transactions) {
             System.out.print(transaction.toString());
         }
