@@ -7,7 +7,8 @@ import java.util.Map;
 public class Network {
     private final List<Node> network = new ArrayList<>();
     private final Map<Integer, PublicKey> keyTable = new HashMap<>();
-    private int difficulty = 4;
+    private final int INIT_DIFFICULTY = 4;
+    private int difficulty = INIT_DIFFICULTY;
 
     public Network() {
     }
@@ -24,16 +25,14 @@ public class Network {
         return keyTable.get(id);
     }
 
-    public boolean addNode(Node node) {
+    public void addNode(Node node) {
         network.add(node);
-        difficulty = network.size() / 20 + 4;
+        difficulty = network.size() / 20 + INIT_DIFFICULTY;
         try {
             keyTable.put(node.getNodeId(), node.getPublicKey());
-            return true;
         } catch (Exception e) {
             e.printStackTrace();
         }
-        return false;
     }
 
     public void broadcastTransaction(Transaction transaction) {
@@ -53,6 +52,7 @@ public class Network {
         double totalFee = 0;
         List<Transaction> t = b.getTransaction();
         for (Transaction transaction : t) {
+            transaction.confirmed();
             double takenFromTrans = (transaction.getTransactionFee()) * transaction.getAmount();
             totalFee += takenFromTrans;
             double amount = transaction.getAmount();
@@ -65,18 +65,9 @@ public class Network {
 
     public void broadcastBlock(Block b, String signature, int nodeID, Blockchain blk) {
         for (Node node : network) {
-            if (node instanceof Miner)
-                node.receiptBlock(b, signature, nodeID, blk);
+            new Thread(() -> node.receiptBlock(b, signature, nodeID, blk)).start();
         }
-        for (Node node : network) {
-            if (node instanceof FullNode)
-                node.receiptBlock(b, signature, nodeID, blk);
-        }
-        for (Node node : network) {
-            if (node instanceof LightNode)
-                node.receiptBlock(b, signature, nodeID, blk);
-        }
-        System.out.println("Block " + blk.getLatestBlock().getBlockId() + blk.getLatestBlock().getHeader());
+        System.out.println("Block " + b.getBlockId() + " found by " + nodeID + b.getHeader());
         Block block = blk.getUpdateBlock();
         if (block != null) {
             updateAllWallet(block);
@@ -113,12 +104,9 @@ public class Network {
     }
 
     public void askAnyRequest() {
-        Block lastBlock = copyBlockchainFromFN().getLatestBlock();
-        if (lastBlock == null)
-            return;
         for (Node ln : network) {
-            if (ln instanceof LightNode) {
-                ((LightNode) ln).checkIfAllTransSent(lastBlock);
+            if (ln instanceof LightNode lightNode) {
+                lightNode.checkIfAllTransSent(lightNode.getLastBlock());
             }
         }
     }

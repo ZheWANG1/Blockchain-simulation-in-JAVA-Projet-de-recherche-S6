@@ -10,7 +10,7 @@ import java.util.concurrent.locks.ReentrantLock;
  */
 public class Miner extends Node implements Runnable {
 
-    private final static int NB_MAX_TRANSACTIONS = 2;
+    private final static int NB_MAX_TRANSACTIONS = 10;
     private final List<Transaction> transactionBuffer = new CopyOnWriteArrayList<>();
     private final LightNode ln;
     private final Lock lock = new ReentrantLock();
@@ -51,7 +51,7 @@ public class Miner extends Node implements Runnable {
      *
      * @param transaction A transaction
      * @return Whether the transaction was sent by the initiator himself
-     * @throws Exception
+     * @throws Exception Exception
      */
     public boolean verifySignature(Transaction transaction) throws Exception {
         return RsaUtil.verify("", transaction.getSignature(), network.getPkWithID(transaction.getFromID()));
@@ -74,11 +74,12 @@ public class Miner extends Node implements Runnable {
         String hash = block.getHeader().calcHeaderHash(++nonce);
         String toBeCheckedSubList = hash.substring(0, difficulty);
         if (toBeCheckedSubList.equals("0".repeat(difficulty))) {
+            receiptBlock = true;
             block.getHeader().setHeaderHash(hash);
             //System.out.println(name + " " + nonce + " " + hash);
             try {
                 block.setNodeID(nodeId);
-                network.broadcastBlock(block, RsaUtil.sign("", this.privateKey), nodeId, blockchain);
+                network.broadcastBlock(block, RsaUtil.sign("", this.privateKey), nodeId, blockchain.copyBlkch());
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -103,11 +104,10 @@ public class Miner extends Node implements Runnable {
 
     @Override
     public void receiptBlock(Block b, String signature, int nodeID, Blockchain blk) {
-        //transactionBuffer.clear();
+        receiptBlock = true;
         PublicKey nodePK = network.getPkWithID(nodeID);
         try {
             difficulty = network.getDifficulty();
-            receiptBlock = true;
             if (nodeID == this.nodeId) {
                 blockchain.addBlock(b);
                 receiptVerified();
@@ -169,12 +169,6 @@ public class Miner extends Node implements Runnable {
                 }
                 mine();
             }
-            try {
-                Thread.sleep(1000);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
-
         }
     }
 }

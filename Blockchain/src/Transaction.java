@@ -67,12 +67,12 @@ public class Transaction {
         return transactionFee;
     }
 
-    public void setConfirmedTrans(boolean confirmedTrans) {
-        this.confirmedTrans = confirmedTrans;
+    public synchronized boolean isConfirmedTrans() {
+        return confirmedTrans;
     }
 
-    public boolean isConfirmedTrans() {
-        return confirmedTrans;
+    public synchronized void confirmed() {
+        confirmedTrans = true;
     }
 
     public String toString() {

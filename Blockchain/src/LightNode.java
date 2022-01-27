@@ -1,18 +1,19 @@
 import java.security.PublicKey;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
 
 public class LightNode extends Node {
     private final static double TRANSACTION_FEE = 0.1;
+    private final static int INIT_WALLET = 100;
     private double wallet;
     private double stakeAmount;
     private double stakeTime;
+    private Block lastBlock;
     private List<Transaction> transactionBuffer = new CopyOnWriteArrayList<>();
 
     public LightNode(String name, Network network) {
         super(name, network, new LightBlockChain());
-        this.wallet = 80;
+        this.wallet = INIT_WALLET;
         this.stakeAmount = 0;
         this.stakeTime = 0;
         try {
@@ -37,16 +38,15 @@ public class LightNode extends Node {
     }
 
     public void checkIfAllTransSent(Block b) {
-        List<Transaction> transSent = new ArrayList<>();
+        List<Transaction> transNotSent = new CopyOnWriteArrayList<>();
         for (Transaction t : transactionBuffer) {
             List<Transaction> trans = b.getTransaction();
-            if (!trans.contains(t)) {
+            if (!trans.contains(t) && !t.isConfirmedTrans()) {
                 network.broadcastTransaction(t);
-            } else {
-                transSent.add(t);
+                transNotSent.add(t);
             }
         }
-        transactionBuffer.removeAll(transSent);
+        transactionBuffer = transNotSent;
     }
 
     public double getWallet() {
@@ -66,8 +66,12 @@ public class LightNode extends Node {
 
     @Override
     public void receiptBlock(Block b, String signature, int nodeID, Blockchain blk) {
+        lastBlock = b;
         ((LightBlockChain) this.blockchain).addLightHeader(b.getHeader());
-        //checkIfAllTransSent(b);
+    }
+
+    public Block getLastBlock() {
+        return lastBlock;
     }
 
     public void stake(int amount) {

@@ -110,7 +110,7 @@ public class Header {
 
     // Others
     public String toString() {
-        return "\nTS : " + timeStamp + "\nhash : " + headerHash + "\nNonce : " + nonce;
+        return "\nTS : " + timeStamp + "\nprevHash : " + headerHashPrev + "\nhash : " + headerHash + "\nNonce : " + nonce;
     }
 
     @Override
