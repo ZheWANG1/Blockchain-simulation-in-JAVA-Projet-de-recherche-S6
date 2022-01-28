@@ -8,7 +8,19 @@ import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
 
 /**
- * A node class with mining capabilities and equipped with an account that can post transactions
+ * Class Miner
+ * A node class with mining capabilities and equipped with an account that can cast transactions
+ * NB_MAX_TRANSACTION : int -> Number max of transaction that a miner can add to a block
+ * transactionBuffer : List<Transaction> -> Received transaction waiting to be added into the blockchain
+ * ln : LightNode -> Wallet of the miner
+ * lock : Lock
+ * conditionTran : Condition
+ * conditionBlock : Condition
+ * transactionTempo : Transaction -> Last transaction received
+ * nonce : int -> Nonce found by the miner
+ * difficulty : int -> Number of zero required at the beginning of the block hash
+ * receiptTran : boolean -> Indicate if a transaction has been received
+ * receiptBlock : boolean -> Indicate if a block has been received
  */
 public class Miner extends Node implements Runnable {
 
@@ -24,7 +36,11 @@ public class Miner extends Node implements Runnable {
     private boolean receiptTran = false;
     private boolean receiptBlock = false;
 
-
+    /**
+     * Constructor Miner
+     * @param name -> Name of the miner
+     * @param network -> Network in which the miner is working
+     */
     public Miner(String name, Network network) {
         super(name, network, new Blockchain());
         difficulty = network.getDifficulty();
@@ -40,19 +56,17 @@ public class Miner extends Node implements Runnable {
     }
 
     /**
-     * Get the trading node attached to the mining node
-     *
-     * @return The trading node
+     * Getter ln
+     * @return the lighNode(Wallet) of the miner
      */
     public LightNode getLn() {
         return ln;
     }
 
     /**
-     * Verify the signature of a transaction by public key
-     *
-     * @param transaction A transaction
-     * @return Whether the transaction was sent by the initiator himself
+     * Function which verify the trust of a signature
+     * @param transaction -> A transaction
+     * @return (True/False) Whether the transaction was sent by the initiator himself
      * @throws Exception Exception
      */
     public boolean verifySignature(Transaction transaction) throws Exception {
@@ -60,7 +74,7 @@ public class Miner extends Node implements Runnable {
     }
 
     /**
-     * Reset operation when the node verifies that the received block is valid
+     * Function which reset operation when the node verifies that the received block is valid
      */
     private void receiptVerified() {
         nonce = 0;
@@ -69,7 +83,8 @@ public class Miner extends Node implements Runnable {
     }
 
     /**
-     * An attempt to calculate the hash value of the next block
+     * Function which will try different nonce in attemps to find a correct hash
+     * until he find it or another miner find it.
      */
     public void mine() {
         Block block = new Block(blockchain.getLatestBlock(), transactionBuffer);
@@ -90,8 +105,7 @@ public class Miner extends Node implements Runnable {
 
     /**
      * Mining nodes receive transactions from other trading nodes
-     *
-     * @param transaction A transaction
+     * @param transaction -> A transaction
      */
     public void receiptTransaction(Transaction transaction) {
         lock.lock();
@@ -105,7 +119,7 @@ public class Miner extends Node implements Runnable {
     }
 
     @Override
-    public void receiptBlock(Block b, String signature, int nodeID, Blockchain blk) {
+        public void receiptBlock(Block b, String signature, int nodeID, Blockchain blk) {
         receiptBlock = true;
         PublicKey nodePK = network.getPkWithID(nodeID);
         try {
