@@ -62,7 +62,7 @@ public class LightNode extends Node {
 
     /**
      * Function which check that all the transaction sent are validated 
-     * @param b
+     * @param b -> Block to analyze (Most likely the last verified block)
      */
     public void checkIfAllTransSent(Block b) {
         List<Transaction> transNotSent = new CopyOnWriteArrayList<>();
@@ -76,17 +76,28 @@ public class LightNode extends Node {
         transactionBuffer = transNotSent;
     }
 
+    /**
+     *  Getter wallet
+     * @return Coin's amount
+     */
     public double getWallet() {
         return wallet;
     }
 
+    /**
+     * Function which add or reduce a client's coins amount
+     * @param amount -> Coin's amount
+     */
     public void receiptCoin(double amount) {
-        String order = amount < 0 ? " Lost " : " received ";
-
+        String order = amount < 0 ? " Lost " : " received "; // if amount < 0 than order = Lost else Received
         wallet += amount;
         System.out.println(this.name + order + amount + " bitcoins");
     }
 
+    /**
+     * Getter publicKey
+     * @return Client public key
+     */
     public PublicKey getPublicKey() {
         return publicKey;
     }
@@ -97,10 +108,18 @@ public class LightNode extends Node {
         ((LightBlockChain) this.blockchain).addLightHeader(b.getHeader());
     }
 
+    /**
+     * Getter lastBlock
+     * @return client last block
+     */
     public Block getLastBlock() {
         return lastBlock;
     }
 
+    /**
+     * Function which modify the stake amount of a user
+     * @param amount
+     */
     public void stake(int amount) {
         stakeAmount = amount;
         this.wallet -= amount;
@@ -108,10 +127,18 @@ public class LightNode extends Node {
         System.out.println(name + " deposit " + amount + " as stake");
     }
 
+    /**
+     * Getter stakeAmount
+     * @return Stake's amount
+     */
     public double getStakeAmount() {
         return stakeAmount;
     }
 
+    /**
+     * Getter stakeTime
+     * @return Stake's time
+     */
     public double getStakeTime() {
         return stakeTime;
     }

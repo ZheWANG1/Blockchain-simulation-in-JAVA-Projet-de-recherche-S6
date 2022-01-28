@@ -3,7 +3,8 @@ package PoS;
 import java.util.ArrayList;
 
 /**
- * A light blockchain class used by transaction nodes that keeps only the ten most recent blockheads.
+ * Class LightBlockChain
+ * lightBlkchain : ArrayList<LightBlock> -> List of all Light version of Block
  */
 public class LightBlockChain extends Blockchain {
     private final ArrayList<LightBlock> LightBlkchain = new ArrayList<>();
@@ -13,8 +14,8 @@ public class LightBlockChain extends Blockchain {
     }
 
     /**
-     * Add new light block to this light blockchain
-     * @param h PoW.Header of the new block
+     * Function which add a new light block to this light blockchain
+     * @param h -> PoW.Header of the new block
      */
     public void addLightHeader(Header h) {
         String headerHash = h.getHeaderHash();
