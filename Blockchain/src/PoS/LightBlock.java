@@ -1,3 +1,4 @@
+package PoS;
 /**
  * Class LightBlock
  * Block's lighter version : Has only the hash without the transaction in the block

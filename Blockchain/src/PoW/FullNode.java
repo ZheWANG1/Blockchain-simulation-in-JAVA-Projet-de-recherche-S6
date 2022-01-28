@@ -1,13 +1,15 @@
+package PoW;
+
 /**
- * Class FullNode extending Node
+ * Class PoW.FullNode extending PoW.Node
  *         This class simulate a node which download the whole blockchain acting as one of the network's server.
  */
 public class FullNode extends Node {
 
     /**
-     * Constructor FullNode
-     * @param nom String -> Name of the FullNode
-     * @param network -> Network of the FullNode, one node is connected to the whole network (P2P)
+     * Constructor PoW.FullNode
+     * @param nom String -> Name of the PoW.FullNode
+     * @param network -> PoW.Network of the PoW.FullNode, one node is connected to the whole network (P2P)
      * */
     public FullNode(String nom, Network network) {
         super(nom,network, new Blockchain());

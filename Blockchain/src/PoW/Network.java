@@ -1,3 +1,5 @@
+package PoW;
+
 import java.security.PublicKey;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -37,14 +39,19 @@ public class Network {
 
     public void broadcastTransaction(Transaction transaction) {
         for (Node node : network) {
+            //Pow
             if (node instanceof Miner) {
                 ((Miner) node).receiptTransaction(transaction);
+            }
+            //Pos
+            if (node instanceof Validator) {
+                ((Validator) node).receiptTransaction(transaction);
             }
         }
     }
 
     /**
-     * Function updating client wallet with matching ID in the Block
+     * Function updating client wallet with matching ID in the PoW.Block
      *
      * @param b The new block
      */
@@ -67,7 +74,7 @@ public class Network {
         for (Node node : network) {
             new Thread(() -> node.receiptBlock(b, signature, nodeID, blk)).start();
         }
-        System.out.println("Block " + b.getBlockId() + " found by " + nodeID + b.getHeader());
+        System.out.println("PoW.Block " + b.getBlockId() + " found by " + nodeID + b.getHeader());
         Block block = blk.getUpdateBlock();
         if (block != null) {
             updateAllWallet(block);

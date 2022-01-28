@@ -1,3 +1,5 @@
+package PoS;
+
 import java.security.KeyPair;
 import java.security.PrivateKey;
 import java.security.PublicKey;
@@ -30,7 +32,7 @@ abstract class Node {
      *
      * @param b         The new block
      * @param signature Signature of the miner who found the new block
-     * @param nodeID    Miner's id
+     * @param nodeID    PoW.Miner's id
      * @param blk       The blockchain that this miner has cached
      */
     public abstract void receiptBlock(Block b, String signature, int nodeID, Blockchain blk);
