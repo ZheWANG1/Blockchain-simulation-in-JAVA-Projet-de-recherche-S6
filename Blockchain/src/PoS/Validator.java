@@ -4,6 +4,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.CopyOnWriteArrayList;
+import java.util.concurrent.locks.Condition;
 import java.util.concurrent.locks.ReentrantLock;
 
 public class Validator extends Node {
@@ -14,12 +15,14 @@ public class Validator extends Node {
     private Transaction transactionTempo = null;
     private ReentrantLock lock = new ReentrantLock();
     private boolean receiptTrans = false;
+    private Condition condition = lock.newCondition();
+
 
 
     public Validator(Network network) {
         super("", network, new Blockchain());
         chooseValidator();
-
+        validate();
     }
 
     public void chooseValidator() {
@@ -49,6 +52,7 @@ public class Validator extends Node {
             if (numberRandom < 0) {
                 validator = entry.getKey();
                 this.name = validator.name;
+                System.out.println(validator+" is chosen");
                 break;
             }
         }
@@ -62,16 +66,17 @@ public class Validator extends Node {
         new Thread(() -> {
             while (true) {
                 lock.lock();
-                while (transactionBuffer.size() < nbMax) { // If more than nbMax transaction has been received
+                try{
+                    while (transactionBuffer.size() < nbMax) { // If more than nbMax transaction has been received
                         try {
 
-                            if (!receiptTrans){
-                                wait();
+                            if (!receiptTrans) {
+                                condition.await();
                             }
                             transactionBuffer.add(transactionTempo);
                             receiptTrans = false;
 
-                            int index = transactionBuffer.size()-1;
+                            int index = transactionBuffer.size() - 1;
                             if (!verifySignature(transactionBuffer.get(index))) { // Verify the signature of ith transaction
                                 System.out.println(transactionBuffer.get(index) + "is false"); // The transaction is fraudulent
                                 transactionBuffer.remove(index); // Remove fraudulent transaction
@@ -79,23 +84,26 @@ public class Validator extends Node {
                         } catch (Exception e) {
                             e.printStackTrace();
                         }
+                    }
+                    // List of transaction which can enter the next block
+                    List<Transaction> transactionsInBlock = transactionBuffer.subList(0, nbMax - 1);
+                    // Creation of the new block
+                    Block block = new Block(blockchain.getLatestBlock(), transactionsInBlock);
+                    // Guess of the hash
+                    String hash = block.getHeader().calcHeaderHash(0);
+                    block.getHeader().setHeaderHash(hash);
+                    //System.out.println(name + " " + hash);
+                    try {
+                        block.setNodeID(nodeId);
+                        network.broadcastBlock(block, RsaUtil.sign("", this.privateKey), nodeId, blockchain);
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                    transactionBuffer.removeAll(transactionsInBlock);
+                    chooseValidator();
+                }finally {
+                    lock.unlock();
                 }
-                // List of transaction which can enter the next block
-                List<Transaction> transactionsInBlock = transactionBuffer.subList(0, nbMax - 1);
-                // Creation of the new block
-                Block block = new Block(blockchain.getLatestBlock(), transactionsInBlock);
-                // Guess of the hash
-                String hash = block.getHeader().calcHeaderHash(0);
-                block.getHeader().setHeaderHash(hash);
-                //System.out.println(name + " " + hash);
-                try {
-                    block.setNodeID(nodeId);
-                    network.broadcastBlock(block, RsaUtil.sign("", this.privateKey), nodeId, blockchain);
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-                transactionBuffer.removeAll(transactionsInBlock);
-                chooseValidator();
             }
         }).start();
     }
@@ -105,7 +113,9 @@ public class Validator extends Node {
         try {
             transactionTempo = transaction;
             receiptTrans = true;
-            notifyAll();
+            condition.signalAll();
+        }catch (ExceptionInInitializerError e){
+            e.printStackTrace();
         }finally {
             lock.unlock();
         }
