@@ -8,16 +8,12 @@ public class LightNode extends Node {
     private final static double TRANSACTION_FEE = 0.1;
     private final static int INIT_WALLET = 100;
     private double wallet;
-    private double stakeAmount;
-    private double stakeTime;
     private Block lastBlock;
     private List<Transaction> transactionBuffer = new CopyOnWriteArrayList<>();
 
     public LightNode(String name, Network network) {
         super(name, network, new LightBlockChain());
         this.wallet = INIT_WALLET;
-        this.stakeAmount = 0;
-        this.stakeTime = 0;
         try {
             keys = RsaUtil.generateKeyPair();
             publicKey = keys.getPublic();
@@ -36,6 +32,7 @@ public class LightNode extends Node {
             Transaction toSend = new Transaction("", this.nodeId, nodeId, amount, System.currentTimeMillis(), TRANSACTION_FEE, privateKey);
             network.broadcastTransaction(toSend);
             transactionBuffer.add(toSend);
+            System.out.println(this.name + " Broadcasted a transaction");
         }
     }
 
@@ -76,18 +73,4 @@ public class LightNode extends Node {
         return lastBlock;
     }
 
-    public void stake(int amount) {
-        stakeAmount = amount;
-        this.wallet -= amount;
-        stakeTime = System.currentTimeMillis();
-        System.out.println(name + " deposit " + amount + " as stake");
-    }
-
-    public double getStakeAmount() {
-        return stakeAmount;
-    }
-
-    public double getStakeTime() {
-        return stakeTime;
-    }
 }

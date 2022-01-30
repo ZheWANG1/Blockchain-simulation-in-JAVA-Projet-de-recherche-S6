@@ -43,10 +43,6 @@ public class Network {
             if (node instanceof Miner) {
                 ((Miner) node).receiptTransaction(transaction);
             }
-            //Pos
-            if (node instanceof Validator) {
-                ((Validator) node).receiptTransaction(transaction);
-            }
         }
     }
 
@@ -71,16 +67,18 @@ public class Network {
     }
 
     public void broadcastBlock(Block b, String signature, int nodeID, Blockchain blk) {
+        b.printTransactions();
         for (Node node : network) {
-            new Thread(() -> node.receiptBlock(b, signature, nodeID, blk)).start();
+            node.receiptBlock(b,signature,nodeID, blk);
         }
-        System.out.println("PoW.Block " + b.getBlockId() + " found by " + nodeID + b.getHeader());
+        System.out.println("Block " + b.getBlockId() + " found by " + nodeID + b.getHeader());
         Block block = blk.getUpdateBlock();
         if (block != null) {
             updateAllWallet(block);
             System.out.println("--Wallet--");
             printWallets();
         }
+        System.out.println("Finished");
     }
 
     /**
@@ -98,7 +96,7 @@ public class Network {
         }
         if (associatedLightNode instanceof LightNode)
             ((LightNode) associatedLightNode).receiptCoin(amount);
-        if (associatedLightNode instanceof Miner)
+        if (associatedLightNode instanceof FullNode)
             ((Miner) associatedLightNode).getLn().receiptCoin(amount);
     }
 

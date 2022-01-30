@@ -19,44 +19,27 @@ public class test {
         LightNode ln5 = new LightNode("Jennifer", bitcoin);
         LightNode ln6 = new LightNode("Lise", bitcoin);
 
-        FullNode s1 = new FullNode("Spain Server", bitcoin);
-        FullNode s2 = new FullNode("Alex Server", bitcoin);
-        FullNode s3 = new FullNode("Paris Server", bitcoin);
-        FullNode s4 = new FullNode("England Server", bitcoin);
+        FullNode s1 = new FullNode("Spain Server", bitcoin, false);
+        FullNode s2 = new FullNode("Alex Server", bitcoin, false);
+        FullNode s3 = new FullNode("Paris Server", bitcoin, false);
+        FullNode s4 = new FullNode("England Server", bitcoin, false);
+        FullNode m1 = new FullNode("Miner from England", bitcoin, true);
+        FullNode m2 =  new FullNode("Miner from Mexico", bitcoin, true);
+        FullNode m3 = new FullNode("Miner from Paris", bitcoin, true);
 
-        Miner m1 = new Miner("A", bitcoin);
-        Miner m2 = new Miner("B", bitcoin);
-        Miner m3 = new Miner("C", bitcoin);
 
-        ExecutorService executor = Executors.newFixedThreadPool(4);
+        ExecutorService executor = Executors.newFixedThreadPool(3);
         executor.execute(m1);
         executor.execute(m2);
         executor.execute(m3);
 
-        for (int i = 1; i < 100; i++) {
-            ln1.sendMoneyTo(i * 0.1, ln2.getNodeId());
+
+		for (int i = 1; i < 50; i++) {
+            ln1.sendMoneyTo( 0.1, ln2.getNodeId());
+            ln2.sendMoneyTo(0.1, ln1.getNodeId());
         }
-		/*
-		ln1.sendMoneyTo(1, ln2.getNodeId());
-		ln1.sendMoneyTo(2, ln2.getNodeId());
-		ln2.sendMoneyTo(3, ln1.getNodeId());
-		ln2.sendMoneyTo(4, ln2.getNodeId());
-		ln2.sendMoneyTo(5, ln3.getNodeId());
+        System.out.println("All transaction are sent");
 
-		ln2.sendMoneyTo(6, ln4.getNodeId());
-		ln2.sendMoneyTo(7, ln5.getNodeId());
-		ln2.sendMoneyTo(8, ln6.getNodeId());
-		ln2.sendMoneyTo(9, ln1.getNodeId());
-		ln6.sendMoneyTo(10, ln2.getNodeId());
 
-		ln6.sendMoneyTo(11, ln2.getNodeId());
-		ln6.sendMoneyTo(12, ln2.getNodeId());
-		ln6.sendMoneyTo(13, ln2.getNodeId());
-		ln2.sendMoneyTo(14, ln2.getNodeId());
-		ln5.sendMoneyTo(15, ln2.getNodeId());
-		ln4.sendMoneyTo(16, ln2.getNodeId());
-		ln3.sendMoneyTo(17, ln2.getNodeId());
-
-		 */
     }
 }
