@@ -1,5 +1,8 @@
 package PoS;
 
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+
 public class test {
 
     public static void main(String[] args) {
@@ -21,7 +24,11 @@ public class test {
         LightNode ln5 = new LightNode("Jennifer", bitcoin);
         LightNode ln6 = new LightNode("Lise", bitcoin);
 
+        ExecutorService executor = Executors.newFixedThreadPool(1);
+
         Validator validator = new Validator(bitcoin);
+        executor.execute(validator);
+        validator.run();
 
         for (int i = 1; i < 100; i++) {
             ln1.sendMoneyTo(i * 0.1, ln2.getNodeId());

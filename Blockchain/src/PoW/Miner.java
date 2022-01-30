@@ -10,16 +10,18 @@ import java.util.concurrent.locks.ReentrantLock;
 /**
  * A node class with mining capabilities and equipped with an account that can post transactions
  */
-public class Miner extends Node implements Runnable {
+public abstract class Miner extends Node implements Runnable {
 
     private final static int NB_MAX_TRANSACTIONS = 10;
-    private final List<Transaction> transactionBuffer = new CopyOnWriteArrayList<>();
+    private List<Transaction> transactionBuffer = new CopyOnWriteArrayList<>();
+    private List<Transaction> transactionInSize = new CopyOnWriteArrayList<>();
     private final LightNode ln;
     private final Lock lock = new ReentrantLock();
     private final Condition conditionTran = lock.newCondition();
     private final Condition conditionBlock = lock.newCondition();
     private Transaction transactionTempo;
     private int nonce = 0;
+    private int blockRecu =0;
     private int difficulty;
     private boolean receiptTran = false;
     private boolean receiptBlock = false;
@@ -64,24 +66,42 @@ public class Miner extends Node implements Runnable {
      */
     private void receiptVerified() {
         nonce = 0;
-        transactionBuffer.clear();
+        //transactionBuffer.clear();
         receiptBlock = false;
+    }
+
+    public void updateMiner(Block b){
+        List<Transaction> lt = b.getTransaction();
+        for(Transaction t: lt){
+            transactionBuffer.remove(t);
+        }
+        transactionInSize.clear();
+        if (!transactionBuffer.isEmpty()){
+            for (Transaction t : transactionBuffer) {
+                if (transactionInSize.size() < NB_MAX_TRANSACTIONS)
+                    transactionInSize.add(t);
+            }
+        }
+       // System.out.println("Transaction buffer of "+this.name);
+       // this.printTransactionBuffer();
+
     }
 
     /**
      * An attempt to calculate the hash value of the next block
      */
     public void mine() {
-        Block block = new Block(blockchain.getLatestBlock(), transactionBuffer);
+        Block block = new Block(blockchain.getLatestBlock(), transactionInSize);
         String hash = block.getHeader().calcHeaderHash(++nonce);
         String toBeCheckedSubList = hash.substring(0, difficulty);
         if (toBeCheckedSubList.equals("0".repeat(difficulty))) {
             receiptBlock = true;
             block.getHeader().setHeaderHash(hash);
-            //System.out.println(name + " " + nonce + " " + hash);
+            System.out.println(name + " " + nonce + " " + hash);
             try {
                 block.setNodeID(nodeId);
                 network.broadcastBlock(block, RsaUtil.sign("", this.privateKey), nodeId, blockchain.copyBlkch());
+                System.out.println("Block found by "+ this.name + " and broadcast succesfully");
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -106,6 +126,9 @@ public class Miner extends Node implements Runnable {
 
     @Override
     public void receiptBlock(Block b, String signature, int nodeID, Blockchain blk) {
+        System.out.println("Block reçu par "+this.name+" blocks reçu : " + blockRecu);
+        updateMiner(b);
+        blockRecu++;
         receiptBlock = true;
         PublicKey nodePK = network.getPkWithID(nodeID);
         try {
@@ -113,17 +136,19 @@ public class Miner extends Node implements Runnable {
             if (nodeID == this.nodeId) {
                 blockchain.addBlock(b);
                 receiptVerified();
-                new Thread(() -> network.askAnyRequest()).start();
+                System.out.println("Block reçu par l'emeteur");
             } else if (RsaUtil.verify("", signature, nodePK)) {
                 if (!blockchain.getLatestBlock().equals(b)) {
                     if (this.blockchain.getSize() <= blk.getSize()) {
                         this.blockchain = blk.copyBlkch();
                         blockchain.addBlock(b);
                         receiptVerified();
+                        //this.printTransactionBuffer();
                     }
                 } else if (this.blockchain.getSize() < blk.getSize()) {
                     this.blockchain = blk.copyBlkch();
                     receiptVerified();
+                    //this.printTransactionBuffer();
                 }
             }
         } catch (Exception e) {
@@ -131,6 +156,11 @@ public class Miner extends Node implements Runnable {
         }
     }
 
+    public void printTransactionBuffer(){
+        for (Transaction transaction : transactionBuffer ){
+            System.out.println(transaction.toString());
+        }
+    }
     @Override
     public void run() {
         new Thread(() -> {
@@ -141,9 +171,12 @@ public class Miner extends Node implements Runnable {
                         conditionTran.await();
                     }
                     receiptTran = false;
-                    if (verifySignature(transactionTempo) && transactionBuffer.size() < NB_MAX_TRANSACTIONS) {
+                    if (verifySignature(transactionTempo)) {
                         if (!transactionBuffer.contains(transactionTempo)) {
                             transactionBuffer.add(transactionTempo);
+                            if (transactionBuffer.size() < NB_MAX_TRANSACTIONS){
+                                transactionInSize.add(transactionTempo);
+                            }
                         }
                     }
                     transactionTempo = null;
@@ -159,9 +192,11 @@ public class Miner extends Node implements Runnable {
 
         while (true) {
             while (!receiptBlock) {
+                //System.out.println("Waiting");
                 lock.lock();
                 try {
                     while (!receiptTran && transactionBuffer.isEmpty()) {
+                        //System.out.println("Waiting 2");
                         conditionBlock.await();
                     }
                 } catch (InterruptedException e) {
