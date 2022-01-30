@@ -119,7 +119,7 @@ public class Miner extends Node implements Runnable {
     }
 
     @Override
-        public void receiptBlock(Block b, String signature, int nodeID, Blockchain blk) {
+    public void receiptBlock(Block b, String signature, int nodeID, Blockchain blk) {
         receiptBlock = true;
         PublicKey nodePK = network.getPkWithID(nodeID);
         try {

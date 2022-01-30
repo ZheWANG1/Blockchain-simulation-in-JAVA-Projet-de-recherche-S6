@@ -53,8 +53,8 @@ public class Validator extends Node {
             if (numberRandom < 0) {
                 validator = entry.getKey();
                 this.name = validator.name;
-                System.out.println(validator+" is chosen");
-                validator.setValidator(true, this);
+                System.out.println(validator.name+" is chosen");
+                validator.setValidator(this);
                 break;
             }
         }
@@ -98,12 +98,12 @@ public class Validator extends Node {
                         //System.out.println(name + " " + hash);
                         try {
                             block.setNodeID(nodeId);
-                            network.broadcastBlock(block, RsaUtil.sign("", validator.privateKey), nodeId, blockchain);
+                            network.broadcastBlock(block, RsaUtil.sign("", validator.privateKey), validator.nodeId, blockchain);
                         } catch (Exception e) {
                             e.printStackTrace();
                         }
                         transactionBuffer.removeAll(transactionsInBlock);
-                        validator.setValidator(false,null);
+                        validator.setValidator(null);
                     }
                     chooseValidator();
                 }finally {

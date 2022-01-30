@@ -14,6 +14,7 @@ import java.util.concurrent.CopyOnWriteArrayList;
  * lastBlock : Block -> LastBlock received by the lightNode
  * transactionBuffer : List<Transaction> -> List of transaction sent by the lightNode but not yet in the blockchain
  * |Potential issue with the validity of thje 6th block and the transactionBuffer ?
+ * validator : Validator -> Instance validator if a lightnode is elected as a validator
  */
 public class LightNode extends Node {
     private final static double TRANSACTION_FEE = 0.1;
@@ -23,7 +24,6 @@ public class LightNode extends Node {
     private double stakeTime;
     private Block lastBlock;
     private List<Transaction> transactionBuffer = new CopyOnWriteArrayList<>();
-    private boolean isValidator = false;
     private Validator validator = null;
 
     /**
@@ -148,12 +148,19 @@ public class LightNode extends Node {
         return stakeTime;
     }
 
+    /**
+     * Function which change the identity (validator) of this lightnode
+     * @param validator -> instance of the validator
+     */
     // pour on peut envoyer la transaction a validator dans le network
-    public void setValidator(boolean status, Validator validator){
-        isValidator = status;
+    public void setValidator(Validator validator){
         this.validator = validator;
     }
 
+    /**
+     * Getter validator
+     * @return validator
+     */
     public Validator getValidator(){
         return validator; }
 }
