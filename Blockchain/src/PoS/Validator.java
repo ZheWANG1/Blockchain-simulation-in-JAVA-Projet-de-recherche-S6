@@ -18,10 +18,8 @@ public class Validator extends Node {
     private Condition condition = lock.newCondition();
 
 
-
     public Validator(Network network) {
         super("", network, new Blockchain());
-        chooseValidator();
         validate();
     }
 
@@ -46,6 +44,9 @@ public class Validator extends Node {
             sum += entry.getValue();
         }
 
+        if (sum == 0) // if anyone didn't de posit bitcoin as stake
+            return;
+
         double numberRandom = Math.random() * sum;
         for (Map.Entry<LightNode, Double> entry : mapProba.entrySet()) {
             numberRandom -= entry.getValue();
@@ -53,6 +54,7 @@ public class Validator extends Node {
                 validator = entry.getKey();
                 this.name = validator.name;
                 System.out.println(validator+" is chosen");
+                validator.setValidator(true, this);
                 break;
             }
         }
@@ -67,39 +69,42 @@ public class Validator extends Node {
             while (true) {
                 lock.lock();
                 try{
-                    while (transactionBuffer.size() < nbMax) { // If more than nbMax transaction has been received
+                    if(validator != null) {
+                        while (transactionBuffer.size() < nbMax) { // If more than nbMax transaction has been received
+                            try {
+
+                                if (!receiptTrans) {
+                                    condition.await();
+                                }
+                                transactionBuffer.add(transactionTempo);
+                                receiptTrans = false;
+
+                                int index = transactionBuffer.size() - 1;
+                                if (!verifySignature(transactionBuffer.get(index))) { // Verify the signature of ith transaction
+                                    System.out.println(transactionBuffer.get(index) + "is false"); // The transaction is fraudulent
+                                    transactionBuffer.remove(index); // Remove fraudulent transaction
+                                }
+                            } catch (Exception e) {
+                                e.printStackTrace();
+                            }
+                        }
+                        // List of transaction which can enter the next block
+                        List<Transaction> transactionsInBlock = transactionBuffer.subList(0, nbMax - 1);
+                        // Creation of the new block
+                        Block block = new Block(blockchain.getLatestBlock(), transactionsInBlock);
+                        // Guess of the hash
+                        String hash = block.getHeader().calcHeaderHash(0);
+                        block.getHeader().setHeaderHash(hash);
+                        //System.out.println(name + " " + hash);
                         try {
-
-                            if (!receiptTrans) {
-                                condition.await();
-                            }
-                            transactionBuffer.add(transactionTempo);
-                            receiptTrans = false;
-
-                            int index = transactionBuffer.size() - 1;
-                            if (!verifySignature(transactionBuffer.get(index))) { // Verify the signature of ith transaction
-                                System.out.println(transactionBuffer.get(index) + "is false"); // The transaction is fraudulent
-                                transactionBuffer.remove(index); // Remove fraudulent transaction
-                            }
+                            block.setNodeID(nodeId);
+                            network.broadcastBlock(block, RsaUtil.sign("", validator.privateKey), nodeId, blockchain);
                         } catch (Exception e) {
                             e.printStackTrace();
                         }
+                        transactionBuffer.removeAll(transactionsInBlock);
+                        validator.setValidator(false,null);
                     }
-                    // List of transaction which can enter the next block
-                    List<Transaction> transactionsInBlock = transactionBuffer.subList(0, nbMax - 1);
-                    // Creation of the new block
-                    Block block = new Block(blockchain.getLatestBlock(), transactionsInBlock);
-                    // Guess of the hash
-                    String hash = block.getHeader().calcHeaderHash(0);
-                    block.getHeader().setHeaderHash(hash);
-                    //System.out.println(name + " " + hash);
-                    try {
-                        block.setNodeID(nodeId);
-                        network.broadcastBlock(block, RsaUtil.sign("", this.privateKey), nodeId, blockchain);
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }
-                    transactionBuffer.removeAll(transactionsInBlock);
                     chooseValidator();
                 }finally {
                     lock.unlock();

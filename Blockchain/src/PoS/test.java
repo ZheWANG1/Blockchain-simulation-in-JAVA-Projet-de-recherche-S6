@@ -24,11 +24,16 @@ public class test {
         LightNode ln5 = new LightNode("Jennifer", bitcoin);
         LightNode ln6 = new LightNode("Lise", bitcoin);
 
-        ExecutorService executor = Executors.newFixedThreadPool(1);
-
         Validator validator = new Validator(bitcoin);
-        executor.execute(validator);
-        validator.run();
+
+        ln1.stake(20);
+        ln2.stake(5);
+        ln3.stake(20);
+        ln4.stake(50);
+        ln5.stake(80);
+        ln6.stake(1);
+
+
 
         for (int i = 1; i < 100; i++) {
             ln1.sendMoneyTo(i * 0.1, ln2.getNodeId());

@@ -23,6 +23,8 @@ public class LightNode extends Node {
     private double stakeTime;
     private Block lastBlock;
     private List<Transaction> transactionBuffer = new CopyOnWriteArrayList<>();
+    private boolean isValidator = false;
+    private Validator validator = null;
 
     /**
      * Constructor LightNode
@@ -121,6 +123,9 @@ public class LightNode extends Node {
      * @param amount
      */
     public void stake(int amount) {
+        if(wallet < amount){
+            System.out.println(name+" don't have enough money for stake");
+        }
         stakeAmount = amount;
         this.wallet -= amount;
         stakeTime = System.currentTimeMillis();
@@ -142,4 +147,13 @@ public class LightNode extends Node {
     public double getStakeTime() {
         return stakeTime;
     }
+
+    // pour on peut envoyer la transaction a validator dans le network
+    public void setValidator(boolean status, Validator validator){
+        isValidator = status;
+        this.validator = validator;
+    }
+
+    public Validator getValidator(){
+        return validator; }
 }
