@@ -78,7 +78,7 @@ public class Transaction {
     }
 
     public String toString() {
-        return "" + toID + " sent " + amount + "LD to " + fromID + " timestamp : " + timeStamp + " signature : " + signature + " PoW.Transaction fee : " + transactionFee+"\n";
+        return "" + toID + " sent " + amount + "LD to " + fromID + " timestamp : " + timeStamp + " signature : " + signature + " Transaction fee : " + transactionFee+"\n";
     }
 
 }

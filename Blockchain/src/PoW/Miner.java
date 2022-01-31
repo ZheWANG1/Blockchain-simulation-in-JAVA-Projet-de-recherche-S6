@@ -22,6 +22,7 @@ public abstract class Miner extends Node implements Runnable {
     private Transaction transactionTempo;
     private int nonce = 0;
     private int blockRecu =0;
+    private int transactionRecu =0;
     private int difficulty;
     private boolean receiptTran = false;
     private boolean receiptBlock = false;
@@ -68,6 +69,7 @@ public abstract class Miner extends Node implements Runnable {
         nonce = 0;
         //transactionBuffer.clear();
         receiptBlock = false;
+        //receiptTran = true;
     }
 
     public void updateMiner(Block b){
@@ -78,7 +80,7 @@ public abstract class Miner extends Node implements Runnable {
         transactionInSize.clear();
         if (!transactionBuffer.isEmpty()){
             for (Transaction t : transactionBuffer) {
-                if (transactionInSize.size() < NB_MAX_TRANSACTIONS)
+                if (transactionInSize.size() <= NB_MAX_TRANSACTIONS)
                     transactionInSize.add(t);
             }
         }
@@ -114,6 +116,8 @@ public abstract class Miner extends Node implements Runnable {
      * @param transaction A transaction
      */
     public void receiptTransaction(Transaction transaction) {
+        this.transactionRecu++;
+        System.out.println("Transaction recu par "+this.name+" = "+this.transactionRecu);
         lock.lock();
         try {
             transactionTempo = transaction;
@@ -126,9 +130,9 @@ public abstract class Miner extends Node implements Runnable {
 
     @Override
     public void receiptBlock(Block b, String signature, int nodeID, Blockchain blk) {
-        System.out.println("Block reçu par "+this.name+" blocks reçu : " + blockRecu);
-        updateMiner(b);
         blockRecu++;
+        System.out.println("Block received by "+this.name+" Total blocks received : " + blockRecu);
+        updateMiner(b);
         receiptBlock = true;
         PublicKey nodePK = network.getPkWithID(nodeID);
         try {
@@ -136,7 +140,7 @@ public abstract class Miner extends Node implements Runnable {
             if (nodeID == this.nodeId) {
                 blockchain.addBlock(b);
                 receiptVerified();
-                System.out.println("Block reçu par l'emeteur");
+                System.out.println("Block receive by sender");
             } else if (RsaUtil.verify("", signature, nodePK)) {
                 if (!blockchain.getLatestBlock().equals(b)) {
                     if (this.blockchain.getSize() <= blk.getSize()) {
@@ -164,24 +168,35 @@ public abstract class Miner extends Node implements Runnable {
     @Override
     public void run() {
         new Thread(() -> {
+            long start = System.currentTimeMillis();
+            long end;
             while (true) {
+                end = System.currentTimeMillis();
                 lock.lock();
+
                 try {
                     while (!receiptTran) {
                         conditionTran.await();
                     }
-                    receiptTran = false;
                     if (verifySignature(transactionTempo)) {
                         if (!transactionBuffer.contains(transactionTempo)) {
+                            System.out.println(transactionTempo.toString());
                             transactionBuffer.add(transactionTempo);
-                            if (transactionBuffer.size() < NB_MAX_TRANSACTIONS){
+                            if (transactionBuffer.size() <= NB_MAX_TRANSACTIONS){
                                 transactionInSize.add(transactionTempo);
                             }
+                        }else{
+                            if (end-start > 100) {
+                                start = System.currentTimeMillis();
+                                System.out.println(this.name + " is Signaling miner to mine");
+                                conditionBlock.signalAll();
+                                receiptTran = false;
+                            }
                         }
-                    }
-                    transactionTempo = null;
 
-                    conditionBlock.signalAll();
+                    }
+                    //transactionTempo = null;
+
                 } catch (Exception e) {
                     e.printStackTrace();
                 } finally {
@@ -195,7 +210,7 @@ public abstract class Miner extends Node implements Runnable {
                 //System.out.println("Waiting");
                 lock.lock();
                 try {
-                    while (!receiptTran && transactionBuffer.isEmpty()) {
+                    while (!receiptTran && transactionInSize.isEmpty()) {
                         //System.out.println("Waiting 2");
                         conditionBlock.await();
                     }
