@@ -80,7 +80,7 @@ public abstract class Miner extends Node implements Runnable {
         transactionInSize.clear();
         if (!transactionBuffer.isEmpty()){
             for (Transaction t : transactionBuffer) {
-                if (transactionInSize.size() <= NB_MAX_TRANSACTIONS)
+                if (transactionInSize.size() < NB_MAX_TRANSACTIONS)
                     transactionInSize.add(t);
             }
         }
@@ -182,11 +182,11 @@ public abstract class Miner extends Node implements Runnable {
                         if (!transactionBuffer.contains(transactionTempo)) {
                             System.out.println(transactionTempo.toString());
                             transactionBuffer.add(transactionTempo);
-                            if (transactionBuffer.size() <= NB_MAX_TRANSACTIONS){
+                            if (transactionBuffer.size() < NB_MAX_TRANSACTIONS){
                                 transactionInSize.add(transactionTempo);
                             }
                         }else{
-                            if (end-start > 100) {
+                            if (end-start > 10000) {
                                 start = System.currentTimeMillis();
                                 System.out.println(this.name + " is Signaling miner to mine");
                                 conditionBlock.signalAll();

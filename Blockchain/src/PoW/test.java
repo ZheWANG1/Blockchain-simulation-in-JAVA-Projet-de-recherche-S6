@@ -34,7 +34,7 @@ public class test {
         executor.execute(m3);
 
 
-		for (int i = 1; i < 30; i++) {
+		for (int i = 0; i < 1000; i++) {
             ln1.sendMoneyTo( 0.1, ln2.getNodeId());
         }
         System.out.println("All transaction are sent");
