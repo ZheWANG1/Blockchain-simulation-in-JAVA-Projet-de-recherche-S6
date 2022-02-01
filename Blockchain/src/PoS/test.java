@@ -35,7 +35,7 @@ public class test {
 
 
 
-        for (int i = 1; i < 100; i++) {
+        for (int i = 0; i < 100; i++) {
             ln1.sendMoneyTo(i * 0.1, ln2.getNodeId());
         }
     }

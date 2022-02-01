@@ -96,7 +96,7 @@ public class Network {
         for (Node node : network) {
             new Thread(() -> node.receiptBlock(b, signature, nodeID, blk)).start();
         }
-        System.out.println("PoS.Block " + b.getBlockId() + " found by " + nodeID + b.getHeader());
+        System.out.println("Block " + b.getBlockId() + " found by " + nodeID + b.getHeader());
         Block block = blk.getUpdateBlock();
         if (block != null) {
             updateAllWallet(block);

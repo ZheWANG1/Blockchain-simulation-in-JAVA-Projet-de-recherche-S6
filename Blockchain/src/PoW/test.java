@@ -26,15 +26,16 @@ public class test {
         FullNode m1 = new FullNode("Miner from England", bitcoin, true);
         FullNode m2 =  new FullNode("Miner from Mexico", bitcoin, true);
         FullNode m3 = new FullNode("Miner from Paris", bitcoin, true);
-
+        FullNode m4 = new FullNode("Miner from Spain", bitcoin, true);
 
         ExecutorService executor = Executors.newFixedThreadPool(10);
         executor.execute(m1);
         executor.execute(m2);
         executor.execute(m3);
+        executor.execute(m4);
 
 
-		for (int i = 0; i < 1000; i++) {
+		for (int i = 0; i < 20; i++) {
             ln1.sendMoneyTo( 0.1, ln2.getNodeId());
         }
         System.out.println("All transaction are sent");

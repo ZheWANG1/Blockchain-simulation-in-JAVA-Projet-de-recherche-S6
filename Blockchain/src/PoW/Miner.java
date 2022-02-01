@@ -59,7 +59,7 @@ public abstract class Miner extends Node implements Runnable {
      * @throws Exception Exception
      */
     public boolean verifySignature(Transaction transaction) throws Exception {
-        return RsaUtil.verify("", transaction.getSignature(), network.getPkWithID(transaction.getFromID()));
+        return RsaUtil.verify(transaction.toString(), transaction.getSignature(), network.getPkWithID(transaction.getFromID()));
     }
 
     /**
@@ -102,7 +102,7 @@ public abstract class Miner extends Node implements Runnable {
             System.out.println(name + " " + nonce + " " + hash);
             try {
                 block.setNodeID(nodeId);
-                network.broadcastBlock(block, RsaUtil.sign("", this.privateKey), nodeId, blockchain.copyBlkch());
+                network.broadcastBlock(block, RsaUtil.sign(block.toString(), this.privateKey), nodeId, blockchain.copyBlkch());
                 System.out.println("Block found by "+ this.name + " and broadcast succesfully");
             } catch (Exception e) {
                 e.printStackTrace();
@@ -117,7 +117,7 @@ public abstract class Miner extends Node implements Runnable {
      */
     public void receiptTransaction(Transaction transaction) {
         this.transactionRecu++;
-        System.out.println("Transaction recu par "+this.name+" = "+this.transactionRecu);
+        System.out.println("Transaction received by "+this.name+" = "+this.transactionRecu);
         lock.lock();
         try {
             transactionTempo = transaction;
@@ -140,8 +140,8 @@ public abstract class Miner extends Node implements Runnable {
             if (nodeID == this.nodeId) {
                 blockchain.addBlock(b);
                 receiptVerified();
-                System.out.println("Block receive by sender");
-            } else if (RsaUtil.verify("", signature, nodePK)) {
+                System.out.println("Block received by sender");
+            } else if (RsaUtil.verify(b.toString(), signature, nodePK)) {
                 if (!blockchain.getLatestBlock().equals(b)) {
                     if (this.blockchain.getSize() <= blk.getSize()) {
                         this.blockchain = blk.copyBlkch();
@@ -188,7 +188,7 @@ public abstract class Miner extends Node implements Runnable {
                         }else{
                             if (end-start > 10000) {
                                 start = System.currentTimeMillis();
-                                System.out.println(this.name + " is Signaling miner to mine");
+                                System.out.println(this.name + " is mining");
                                 conditionBlock.signalAll();
                                 receiptTran = false;
                             }
