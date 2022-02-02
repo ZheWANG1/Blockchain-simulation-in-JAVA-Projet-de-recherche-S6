@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.concurrent.locks.Condition;
+import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
 
 public class Validator extends Node {
@@ -12,9 +13,9 @@ public class Validator extends Node {
     private final int nbMax = 10;
     private LightNode validator = null;
     private Transaction transactionTempo = null;
-    private ReentrantLock lock = new ReentrantLock();
+    private final Lock lock = new ReentrantLock();
     private boolean receiptTrans = false;
-    private Condition condition = lock.newCondition();
+    private final Condition condition = lock.newCondition();
 
 
     public Validator(Network network) {
@@ -23,14 +24,14 @@ public class Validator extends Node {
         validate();
     }
 
+    /**
+     * Function which choose a validator in order to guess a new block
+     */
     public void chooseValidator() {
-        /**
-         * Function which choose a validator in order to guess a new block
-         */
         List<Node> listNode = network.getNetwork(); // List of nodes in the network
 
         Map<LightNode, Double> mapProba = new HashMap<>();
-        for (Node node : listNode) { // For each nodes in the network
+        for (Node node : listNode) { // For each node in the network
             if (node instanceof LightNode) { // If found node is an PoW.LightNode
                 double stakeAmount = ((LightNode) node).getStakeAmount(); // Get PoW.LightNode's stakeAmount
                 double stakeTime = System.currentTimeMillis() - ((LightNode) node).getStakeTime(); // Get PoW.LightNode's stakeTime (How long the node have been Staking)
@@ -51,7 +52,7 @@ public class Validator extends Node {
             if (numberRandom < 0) {
                 validator = entry.getKey();
                 this.name = validator.name;
-                System.out.println(validator.name+" is chosen");
+                System.out.println(validator.name + " is chosen");
                 validator.setValidator(this);
                 break;
             }
@@ -66,8 +67,8 @@ public class Validator extends Node {
         new Thread(() -> {
             while (true) {
                 lock.lock();
-                try{
-                    if(validator != null) {
+                try {
+                    if (validator != null) {
                         long end = 0;
                         long start = System.currentTimeMillis();
                         while (transactionBuffer.size() < nbMax) { // If more than nbMax transaction has been received
@@ -90,8 +91,7 @@ public class Validator extends Node {
                             end = System.currentTimeMillis();
                         }
                         // List of transaction which can enter the next block
-                        List<Transaction> transactionsInBlock = new CopyOnWriteArrayList<>();
-                        transactionsInBlock = transactionBuffer.subList(0, nbMax - 1);
+                        List<Transaction> transactionsInBlock = transactionBuffer.subList(0, nbMax - 1);
                         // Creation of the new block
                         Block block = new Block(blockchain.getLatestBlock(), transactionsInBlock);
                         // Guess of the hash
@@ -110,7 +110,7 @@ public class Validator extends Node {
                         validator.setValidator(null);
                     }
                     chooseValidator();
-                }finally {
+                } finally {
                     lock.unlock();
                 }
             }
@@ -123,9 +123,9 @@ public class Validator extends Node {
             transactionTempo = transaction;
             receiptTrans = true;
             condition.signalAll();
-        }catch (ExceptionInInitializerError e){
+        } catch (ExceptionInInitializerError e) {
             e.printStackTrace();
-        }finally {
+        } finally {
             lock.unlock();
         }
 

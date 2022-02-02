@@ -1,8 +1,5 @@
 package PoS;
 
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-
 public class test {
 
     public static void main(String[] args) {
@@ -32,7 +29,6 @@ public class test {
         ln4.stake(50);
         ln5.stake(80);
         ln6.stake(1);
-
 
 
         for (int i = 0; i < 100; i++) {

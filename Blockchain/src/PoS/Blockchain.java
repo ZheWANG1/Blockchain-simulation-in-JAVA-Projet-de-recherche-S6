@@ -7,10 +7,10 @@ import java.util.concurrent.CopyOnWriteArrayList;
 
 /**
  * Class PoW.Blockchain
- *         o : Object -> Used for synchronization
- *         cpt : int -> Used for blockid
- *         blockid : int -> Identifier of a block
- *         blkchain : List<PoW.Block> -> List of block representing the PoW.Block-chain
+ * o : Object -> Used for synchronization
+ * cpt : int -> Used for blockid
+ * blockid : int -> Identifier of a block
+ * blkchain : List<PoW.Block> -> List of block representing the PoW.Block-chain
  */
 public class Blockchain {
 
@@ -32,6 +32,7 @@ public class Blockchain {
 
     /**
      * Function which create the first blockchain's block
+     *
      * @return genesisBlock -> First block of the blockchain
      */
     public Block createFirstBlock() {
@@ -41,6 +42,7 @@ public class Blockchain {
 
     /**
      * Function which return the latest blockchain's block
+     *
      * @return latest blockchain's block
      */
     public Block getLatestBlock() {
@@ -49,6 +51,7 @@ public class Blockchain {
 
     /**
      * Function which add a block into the blockchain
+     *
      * @param block
      */
     public synchronized void addBlock(Block block) {
@@ -57,6 +60,7 @@ public class Blockchain {
 
     /**
      * Function which verify the blockchain's validity
+     *
      * @return True or False depending on if the blockchain is valid or not
      */
     public boolean chainValidation() {
@@ -82,6 +86,7 @@ public class Blockchain {
 
     /**
      * Function which return blockchain's size
+     *
      * @return blockchain's size
      */
     public int getSize() {
@@ -90,6 +95,7 @@ public class Blockchain {
 
     /**
      * Function which return the blockchain's 6th valid block
+     *
      * @return PoW.Block or null if the blockchain's size is lesser than 6
      */
     public Block getUpdateBlock() {
@@ -100,6 +106,7 @@ public class Blockchain {
 
     /**
      * Function which return the blockchain's copy
+     *
      * @return blockchain's copy
      */
     public Blockchain copyBlkch() {

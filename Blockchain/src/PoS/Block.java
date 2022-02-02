@@ -20,16 +20,16 @@ public class Block {
 
     /**
      * Constructor PoW.Block
-     * @param blockPrev -> Last PoW.Block in the blockchain needed in order to get the hash.
-     * @param transaction-> List of transaction to be added into a new block.
+     *
+     * @param blockPrev   Last PoW.Block in the blockchain needed in order to get the hash.
+     * @param transaction List of transaction to be added into a new block.
      */
     public Block(Block blockPrev, List<Transaction> transaction) {
         this.transactions = new ArrayList<>(transaction);
-        String trs = this.toStringAllTransaction(); // ?
-        String blockTransHash = HashUtil.SHA256(trs); // ?
+        String trs = this.toStringAllTransaction();
+        String blockTransHash = HashUtil.SHA256(trs);
         header = new Header(blockPrev, blockTransHash);
         blockId = blockPrev.blockId + 1;
-        //this.printTransactions();
     }
 
     /**
@@ -42,10 +42,9 @@ public class Block {
         blockId = 0;
     }
 
-    //Getter
-
     /**
      * Getter of header
+     *
      * @return header
      */
     public Header getHeader() {
@@ -54,6 +53,7 @@ public class Block {
 
     /**
      * Getter of blockId
+     *
      * @return blockId
      */
     public int getBlockId() {
@@ -62,28 +62,29 @@ public class Block {
 
     /**
      * Getter of nodeId
+     *
      * @return nodeId
      */
-    public int getNodeID(){
+    public int getNodeID() {
         return nodeID;
     }
 
     /**
+     * Setter nodeId
+     *
+     * @param Id node's id
+     */
+    public void setNodeID(int Id) {
+        nodeID = Id;
+    }
+
+    /**
      * Getter transaction
+     *
      * @return transaction
      */
     public List<Transaction> getTransaction() {
         return transactions;
-    }
-
-    // Setter
-
-    /**
-     * Setter nodeId
-     * @param Id
-     */
-    public void setNodeID(int Id){
-        nodeID = Id;
     }
 
     @Override
@@ -106,6 +107,7 @@ public class Block {
 
     /**
      * Transform into string all transaction's information
+     *
      * @return All transaction's information into a string
      */
     public String toStringAllTransaction() {

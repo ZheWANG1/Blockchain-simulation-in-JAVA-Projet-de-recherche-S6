@@ -3,17 +3,17 @@ package PoS;
 import java.util.Objects;
 
 /**
- *  Class PoW.Header timeStamp : long -> Date of creation of the block
- *  headerHashPrev : String -> Hash of the last block's header
- *  blockTransHash : String -> Hash of all transaction's information
- *  headerHash : String -> Hash of the header containing all block's information
- *  nonce : int -> Nonce found by a PoW.Miner/PoW.Validator ?
+ * Class PoW.Header timeStamp : long -> Date of creation of the block
+ * headerHashPrev : String -> Hash of the last block's header
+ * blockTransHash : String -> Hash of all transaction's information
+ * headerHash : String -> Hash of the header containing all block's information
+ * nonce : int -> Nonce found by a PoW.Miner/PoW.Validator ?
  */
 public class Header {
 
-    private final long timeStamp;
     protected final String headerHashPrev;
     protected final String blockTransHash;
+    private final long timeStamp;
     protected String headerHash;
     private int nonce;
 
@@ -31,7 +31,8 @@ public class Header {
 
     /**
      * Constructor PoW.Header
-     * @param blockPrev -> Previous blockchain's block
+     *
+     * @param blockPrev      -> Previous blockchain's block
      * @param blockTransHash -> Current block's transaction hash
      */
     public Header(Block blockPrev, String blockTransHash) {
@@ -43,8 +44,9 @@ public class Header {
 
     /**
      * Constructor PoW.Header
-     * @param hHp -> Previous header's hash
-     * @param hH -> Current header's hash
+     *
+     * @param hHp     -> Previous header's hash
+     * @param hH      -> Current header's hash
      * @param trsHash -> Current transaction's hash
      */
     public Header(String hHp, String hH, String trsHash) {
@@ -56,6 +58,7 @@ public class Header {
 
     /**
      * Function which calculate the header's hash
+     *
      * @param nonce -> Random string tested by a miner
      * @return block's informations hash
      */
@@ -68,31 +71,8 @@ public class Header {
     // Setter
 
     /**
-     * Setter headerHash
-     * @param headerHash
-     */
-    public void setHeaderHash(String headerHash) {
-        /*
-            Setter headerHash
-         */
-        this.headerHash = headerHash;
-    }
-
-    /**
-     * Setter nonce
-     * @param nonce
-     */
-    public void setNonce(int nonce) {
-        /*
-            Setter nonce
-         */
-        this.nonce = nonce;
-    }
-
-    // Getter
-
-    /**
      * Getter timeStamp
+     *
      * @return
      */
     public long getTimeStamp() {
@@ -104,6 +84,7 @@ public class Header {
 
     /**
      * Getter nonce
+     *
      * @return
      */
     public int getNonce() {
@@ -113,8 +94,23 @@ public class Header {
         return nonce;
     }
 
+    // Getter
+
+    /**
+     * Setter nonce
+     *
+     * @param nonce
+     */
+    public void setNonce(int nonce) {
+        /*
+            Setter nonce
+         */
+        this.nonce = nonce;
+    }
+
     /**
      * Getter previous hash
+     *
      * @return
      */
     public String getPrevHash() {
@@ -126,6 +122,7 @@ public class Header {
 
     /**
      * Getter blockTransHash
+     *
      * @return
      */
     public String getBlockTransHash() {
@@ -137,6 +134,7 @@ public class Header {
 
     /**
      * Getter headerHash
+     *
      * @return headerHash
      */
     public String getHeaderHash() {
@@ -146,10 +144,23 @@ public class Header {
         return headerHash;
     }
 
+    /**
+     * Setter headerHash
+     *
+     * @param headerHash
+     */
+    public void setHeaderHash(String headerHash) {
+        /*
+            Setter headerHash
+         */
+        this.headerHash = headerHash;
+    }
+
     // Others
 
     /**
      * toString function
+     *
      * @return
      */
     public String toString() {

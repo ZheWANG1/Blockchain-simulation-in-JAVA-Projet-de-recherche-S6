@@ -7,6 +7,7 @@ import java.security.NoSuchAlgorithmException;
 public class HashUtil {
     /**
      * Class PoW.HashUtil
+     *
      * @param str
      * @return Hashed string
      */
@@ -25,6 +26,7 @@ public class HashUtil {
 
     /**
      * Function which transform byte into hexadecimal
+     *
      * @param bytes
      * @return String
      */

@@ -23,6 +23,7 @@ public class Network {
 
     /**
      * Getter difficulty
+     *
      * @return difficulty
      */
     public int getDifficulty() {
@@ -31,6 +32,7 @@ public class Network {
 
     /**
      * Getter network
+     *
      * @return List of node in the network
      */
     public List<Node> getNetwork() {
@@ -38,7 +40,8 @@ public class Network {
     }
 
     /**
-     * Function which return the publicKey of an node
+     * Function which return the publicKey of a node
+     *
      * @param id -> Node's identifier
      * @return Node's public key
      */
@@ -48,6 +51,7 @@ public class Network {
 
     /**
      * Function which add a node to the network
+     *
      * @param node -> Node to be added
      */
     public void addNode(Node node) {
@@ -62,11 +66,12 @@ public class Network {
 
     /**
      * Broadcast a transaction in the network
-     * @param transaction -> Transaction to be broadcasted
+     *
+     * @param transaction -> Transaction to be broadcast
      */
     public void broadcastTransaction(Transaction transaction) {
         for (Node node : network) {
-            if (node instanceof LightNode && ((LightNode)node).getValidator() != null) {
+            if (node instanceof LightNode && ((LightNode) node).getValidator() != null) {
                 Validator validator = ((LightNode) node).getValidator();
                 validator.receiptTransaction(transaction);
             }
@@ -75,6 +80,7 @@ public class Network {
 
     /**
      * Function updating client wallet with matching ID in the Block
+     *
      * @param b -> The new block
      */
     private void updateAllWallet(Block b) {
@@ -107,6 +113,7 @@ public class Network {
 
     /**
      * Function updating client wallet with matching ID
+     *
      * @param amount   The amount of transaction
      * @param clientId The beneficiary's node ID
      */
@@ -124,6 +131,7 @@ public class Network {
 
     /**
      * Function which copy the current blockchain of a node
+     *
      * @return network blockchain
      */
     public Blockchain copyBlockchainFromFN() {

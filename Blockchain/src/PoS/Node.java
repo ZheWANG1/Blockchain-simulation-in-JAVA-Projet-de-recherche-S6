@@ -29,9 +29,10 @@ abstract class Node {
 
     /**
      * Constructor Node
-     * @param name -> Node's name
-     * @param network -> Node's network
-     * @param blk -> Node's blockchain
+     *
+     * @param name    Node's name
+     * @param network Node's network
+     * @param blk     Node's blockchain
      */
     public Node(String name, Network network, Blockchain blk) {
         synchronized (o) {
@@ -54,6 +55,7 @@ abstract class Node {
 
     /**
      * Getter nodeId
+     *
      * @return Node Identifier
      */
     public Integer getNodeId() {
@@ -62,6 +64,7 @@ abstract class Node {
 
     /**
      * Getter blockchain
+     *
      * @return blockchain
      */
     public Blockchain getBlockchain() {
@@ -70,6 +73,7 @@ abstract class Node {
 
     /**
      * Getter publicKey
+     *
      * @return Node's publicKey
      */
     public PublicKey getPublicKey() {

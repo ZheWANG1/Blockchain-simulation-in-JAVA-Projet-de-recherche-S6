@@ -26,11 +26,10 @@ public class Block {
      */
     public Block(Block blockPrev, List<Transaction> transaction) {
         this.transactions = new ArrayList<>(transaction);
-        String trs = this.toStringAllTransaction(); // ?
-        String blockTransHash = HashUtil.SHA256(trs); // ?
+        String trs = this.toStringAllTransaction();
+        String blockTransHash = HashUtil.SHA256(trs);
         header = new Header(blockPrev, blockTransHash);
         blockId = blockPrev.blockId + 1;
-        //this.printTransactions();
     }
 
     /**
@@ -42,8 +41,6 @@ public class Block {
         this.transactions = new ArrayList<>();
         blockId = 0;
     }
-
-    //Getter
 
     /**
      * Getter of header
@@ -80,8 +77,6 @@ public class Block {
     public void setNodeID(int Id) {
         nodeID = Id;
     }
-
-    // Setter
 
     /**
      * Getter transaction

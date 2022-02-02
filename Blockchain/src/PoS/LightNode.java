@@ -13,7 +13,7 @@ import java.util.concurrent.CopyOnWriteArrayList;
  * stakeTime : double -> LightNode's time served in the validation process
  * lastBlock : Block -> LastBlock received by the lightNode
  * transactionBuffer : List<Transaction> -> List of transaction sent by the lightNode but not yet in the blockchain
- * |Potential issue with the validity of thje 6th block and the transactionBuffer ?
+ * |Potential issue with the validity of the 6th block and the transactionBuffer ?
  * validator : Validator -> Instance validator if a lightnode is elected as a validator
  */
 public class LightNode extends Node {
@@ -28,7 +28,8 @@ public class LightNode extends Node {
 
     /**
      * Constructor LightNode
-     * @param name -> LightNode's name ( Client name )
+     *
+     * @param name    -> LightNode's name ( Client name )
      * @param network -> Network in which the lightNode is in
      */
     public LightNode(String name, Network network) {
@@ -48,6 +49,7 @@ public class LightNode extends Node {
 
     /**
      * Function which send a transaction to the network in order to be added in all blockchain
+     *
      * @param amount -> Amount of coin to be sent
      * @param nodeId -> Identifier of the receiver
      */
@@ -63,7 +65,8 @@ public class LightNode extends Node {
     }
 
     /**
-     * Function which check that all the transaction sent are validated 
+     * Function which check that all the transaction sent are validated
+     *
      * @param b -> Block to analyze (Most likely the last verified block)
      */
     public void checkIfAllTransSent(Block b) {
@@ -79,7 +82,8 @@ public class LightNode extends Node {
     }
 
     /**
-     *  Getter wallet
+     * Getter wallet
+     *
      * @return Coin's amount
      */
     public double getWallet() {
@@ -88,6 +92,7 @@ public class LightNode extends Node {
 
     /**
      * Function which add or reduce a client's coins amount
+     *
      * @param amount -> Coin's amount
      */
     public void receiptCoin(double amount) {
@@ -98,6 +103,7 @@ public class LightNode extends Node {
 
     /**
      * Getter publicKey
+     *
      * @return Client public key
      */
     public PublicKey getPublicKey() {
@@ -112,6 +118,7 @@ public class LightNode extends Node {
 
     /**
      * Getter lastBlock
+     *
      * @return client last block
      */
     public Block getLastBlock() {
@@ -120,11 +127,12 @@ public class LightNode extends Node {
 
     /**
      * Function which modify the stake amount of a user
+     *
      * @param amount
      */
     public void stake(int amount) {
-        if(wallet < amount){
-            System.out.println(name+" don't have enough money for stake");
+        if (wallet < amount) {
+            System.out.println(name + " don't have enough money for stake");
         }
         stakeAmount = amount;
         this.wallet -= amount;
@@ -134,6 +142,7 @@ public class LightNode extends Node {
 
     /**
      * Getter stakeAmount
+     *
      * @return Stake's amount
      */
     public double getStakeAmount() {
@@ -142,6 +151,7 @@ public class LightNode extends Node {
 
     /**
      * Getter stakeTime
+     *
      * @return Stake's time
      */
     public double getStakeTime() {
@@ -149,18 +159,20 @@ public class LightNode extends Node {
     }
 
     /**
-     * Function which change the identity (validator) of this lightnode
-     * @param validator -> instance of the validator
+     * Getter validator
+     *
+     * @return validator
      */
-    // pour on peut envoyer la transaction a validator dans le network
-    public void setValidator(Validator validator){
-        this.validator = validator;
+    public Validator getValidator() {
+        return validator;
     }
 
     /**
-     * Getter validator
-     * @return validator
+     * Function which change the identity (validator) of this lightnode
+     *
+     * @param validator -> instance of the validator
      */
-    public Validator getValidator(){
-        return validator; }
+    public void setValidator(Validator validator) {
+        this.validator = validator;
+    }
 }
