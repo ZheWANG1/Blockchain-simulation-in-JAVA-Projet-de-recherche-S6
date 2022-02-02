@@ -18,7 +18,6 @@ public class Transaction {
     private String signature;
     private boolean confirmedTrans = false;
 
-
     public Transaction(String transaction, int fromID, int toID, double amount, long timeStamp, double transactionFee, PrivateKey pv) {
         synchronized (o) {
             transactionID = cpt++;

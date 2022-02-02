@@ -30,7 +30,6 @@ public class RsaUtil {
      * @throws Exception Exception
      */
     public static String sign(String plainText, PrivateKey privateKey) throws Exception {
-        // Sender privateKey
         Signature privateSignature = Signature.getInstance("SHA256withRSA");
         privateSignature.initSign(privateKey);
         privateSignature.update(plainText.getBytes(StandardCharsets.UTF_8));

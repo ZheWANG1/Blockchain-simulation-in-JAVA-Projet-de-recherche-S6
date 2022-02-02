@@ -87,7 +87,6 @@ public abstract class Miner extends Node implements Runnable {
         }
         // System.out.println("Transaction buffer of "+this.name);
         // this.printTransactionBuffer();
-
     }
 
     /**
@@ -195,10 +194,7 @@ public abstract class Miner extends Node implements Runnable {
                                 receiptTran = false;
                             }
                         }
-
                     }
-                    //transactionTempo = null;
-
                 } catch (Exception e) {
                     e.printStackTrace();
                 } finally {

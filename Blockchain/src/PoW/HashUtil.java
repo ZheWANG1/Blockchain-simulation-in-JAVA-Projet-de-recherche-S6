@@ -31,9 +31,6 @@ public class HashUtil {
      * @return String string
      */
     private static String byte2Hex(byte[] bytes) {
-        /*
-            Transform base 2 words into base 16 words
-         */
         StringBuilder stringBuffer = new StringBuilder();
         String temp;
         for (byte aByte : bytes) {

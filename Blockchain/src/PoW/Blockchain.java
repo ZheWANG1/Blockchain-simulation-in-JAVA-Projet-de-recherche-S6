@@ -33,7 +33,7 @@ public class Blockchain {
     /**
      * Function which create the first blockchain's block
      *
-     * @return genesisBlock -> First block of the blockchain
+     * @return genesisBlock First block of the blockchain
      */
     public Block createFirstBlock() {
         return new Block();
@@ -109,13 +109,9 @@ public class Blockchain {
      * @return blockchain's copy
      */
     public Blockchain copyBlkch() {
-        /*
-            Function which return the blockchain's copy
-         */
         Blockchain blk = new Blockchain();
         blk.blkchain.clear();
         blk.blkchain.addAll(this.blkchain);
         return blk;
     }
-
 }

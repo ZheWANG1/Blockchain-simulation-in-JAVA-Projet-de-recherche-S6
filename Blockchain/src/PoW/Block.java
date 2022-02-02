@@ -21,8 +21,8 @@ public class Block {
     /**
      * Constructor PoW.Block
      *
-     * @param blockPrev     -> Last PoW.Block in the blockchain needed in order to get the hash.
-     * @param transaction-> List of transaction to be added into a new block.
+     * @param blockPrev   Last PoW.Block in the blockchain needed in order to get the hash.
+     * @param transaction List of transaction to be added into a new block.
      */
     public Block(Block blockPrev, List<Transaction> transaction) {
         this.transactions = new ArrayList<>(transaction);

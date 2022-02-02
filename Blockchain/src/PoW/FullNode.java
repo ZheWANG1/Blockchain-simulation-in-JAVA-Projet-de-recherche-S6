@@ -10,8 +10,8 @@ public class FullNode extends Miner {
     /**
      * Constructor PoW.FullNode
      *
-     * @param nom     String -> Name of the PoW.FullNode
-     * @param network -> PoW.Network of the PoW.FullNode, one node is connected to the whole network (P2P)
+     * @param nom     Name of the PoW.FullNode
+     * @param network PoW.Network of the PoW.FullNode, one node is connected to the whole network (P2P)
      */
     public FullNode(String nom, Network network, boolean isMiner) {
         super(nom, network);

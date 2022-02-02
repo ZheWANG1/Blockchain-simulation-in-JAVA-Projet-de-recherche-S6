@@ -7,9 +7,10 @@ import java.util.List;
 import java.util.Map;
 
 public class Network {
+    private final static int INIT_DIFFICULTY = 4;
+    private final static int CHANGE_DIFFICULTY = 20;
     private final List<Node> network = new ArrayList<>();
     private final Map<Integer, PublicKey> keyTable = new HashMap<>();
-    private final int INIT_DIFFICULTY = 4;
     private int difficulty = INIT_DIFFICULTY;
 
     public Network() {
@@ -29,7 +30,7 @@ public class Network {
 
     public void addNode(Node node) {
         network.add(node);
-        difficulty = network.size() / 20 + INIT_DIFFICULTY;
+        difficulty = network.size() / CHANGE_DIFFICULTY + INIT_DIFFICULTY;
         try {
             keyTable.put(node.getNodeId(), node.getPublicKey());
         } catch (Exception e) {
@@ -56,10 +57,10 @@ public class Network {
         List<Transaction> t = b.getTransaction();
         for (Transaction transaction : t) {
             transaction.confirmed();
+            int toID = transaction.getToID();
+            double amount = transaction.getAmount();
             double takenFromTrans = (transaction.getTransactionFee()) * transaction.getAmount();
             totalFee += takenFromTrans;
-            double amount = transaction.getAmount();
-            int toID = transaction.getToID();
             updateWalletWithID(amount, toID);
             updateWalletWithID(-(amount + takenFromTrans), transaction.getFromID());
         }
@@ -91,8 +92,7 @@ public class Network {
         int i = 0;
         Node associatedLightNode = network.get(i);
         while (associatedLightNode.getNodeId() != clientId) {
-            i++;
-            associatedLightNode = network.get(i);
+            associatedLightNode = network.get(++i);
         }
         if (associatedLightNode instanceof LightNode)
             ((LightNode) associatedLightNode).receiptCoin(amount);

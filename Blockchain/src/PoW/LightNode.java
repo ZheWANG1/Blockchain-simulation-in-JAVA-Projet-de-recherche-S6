@@ -40,10 +40,11 @@ public class LightNode extends Node {
         List<Transaction> transNotSent = new CopyOnWriteArrayList<>();
         for (Transaction t : transactionBuffer) {
             List<Transaction> trans = b.getTransaction();
-            if (!trans.contains(t) && !t.isConfirmedTrans()) {
-                network.broadcastTransaction(t);
-                transNotSent.add(t);
+            if (trans.contains(t) || t.isConfirmedTrans()) {
+                continue;
             }
+            network.broadcastTransaction(t);
+            transNotSent.add(t);
         }
         transactionBuffer = transNotSent;
     }
