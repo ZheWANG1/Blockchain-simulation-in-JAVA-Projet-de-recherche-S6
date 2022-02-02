@@ -7,7 +7,8 @@ import java.security.NoSuchAlgorithmException;
 public class HashUtil {
     /**
      * Class PoW.HashUtil
-     * @param str
+     *
+     * @param str string
      * @return Hashed string
      */
     public static String SHA256(String str) {
@@ -25,15 +26,16 @@ public class HashUtil {
 
     /**
      * Function which transform byte into hexadecimal
-     * @param bytes
-     * @return String
+     *
+     * @param bytes bytes
+     * @return String string
      */
     private static String byte2Hex(byte[] bytes) {
         /*
             Transform base 2 words into base 16 words
          */
         StringBuilder stringBuffer = new StringBuilder();
-        String temp = null;
+        String temp;
         for (byte aByte : bytes) {
             temp = Integer.toHexString(aByte & 0xFF);
             if (temp.length() == 1) {

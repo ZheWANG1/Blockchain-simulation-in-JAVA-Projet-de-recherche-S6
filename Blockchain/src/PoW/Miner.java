@@ -14,16 +14,16 @@ public abstract class Miner extends Node implements Runnable {
 
     private final static int NB_MAX_TRANSACTIONS = 10;
     private final static int TIME_TO_WAIT = 10000;
-    private List<Transaction> transactionBuffer = new CopyOnWriteArrayList<>();
-    private List<Transaction> transactionInSize = new CopyOnWriteArrayList<>();
     private final LightNode ln;
     private final Lock lock = new ReentrantLock();
     private final Condition conditionTran = lock.newCondition();
     private final Condition conditionBlock = lock.newCondition();
+    private final List<Transaction> transactionBuffer = new CopyOnWriteArrayList<>();
+    private final List<Transaction> transactionInSize = new CopyOnWriteArrayList<>();
     private Transaction transactionTempo;
     private int nonce = 0;
-    private int blockRecu =0;
-    private int transactionRecu =0;
+    private int blockRecu = 0;
+    private int transactionRecu = 0;
     private int difficulty;
     private boolean receiptTran = false;
     private boolean receiptBlock = false;
@@ -73,20 +73,20 @@ public abstract class Miner extends Node implements Runnable {
         //receiptTran = true;
     }
 
-    public void updateMiner(Block b){
+    public void updateMiner(Block b) {
         List<Transaction> lt = b.getTransaction();
-        for(Transaction t: lt){
+        for (Transaction t : lt) {
             transactionBuffer.remove(t);
         }
         transactionInSize.clear();
-        if (!transactionBuffer.isEmpty()){
+        if (!transactionBuffer.isEmpty()) {
             for (Transaction t : transactionBuffer) {
                 if (transactionInSize.size() < NB_MAX_TRANSACTIONS)
                     transactionInSize.add(t);
             }
         }
-       // System.out.println("Transaction buffer of "+this.name);
-       // this.printTransactionBuffer();
+        // System.out.println("Transaction buffer of "+this.name);
+        // this.printTransactionBuffer();
 
     }
 
@@ -104,7 +104,7 @@ public abstract class Miner extends Node implements Runnable {
             try {
                 block.setNodeID(nodeId);
                 network.broadcastBlock(block, RsaUtil.sign(block.toString(), this.privateKey), nodeId, blockchain.copyBlkch());
-                System.out.println("Block found by "+ this.name + " and broadcast succesfully");
+                System.out.println("Block found by " + this.name + " and broadcast succesfully");
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -118,7 +118,7 @@ public abstract class Miner extends Node implements Runnable {
      */
     public void receiptTransaction(Transaction transaction) {
         this.transactionRecu++;
-        System.out.println("Transaction received by "+this.name+" = "+this.transactionRecu);
+        System.out.println("Transaction received by " + this.name + " = " + this.transactionRecu);
         lock.lock();
         try {
             transactionTempo = transaction;
@@ -132,7 +132,7 @@ public abstract class Miner extends Node implements Runnable {
     @Override
     public void receiptBlock(Block b, String signature, int nodeID, Blockchain blk) {
         blockRecu++;
-        System.out.println("Block received by "+this.name+" Total blocks received : " + blockRecu);
+        System.out.println("Block received by " + this.name + " Total blocks received : " + blockRecu);
         updateMiner(b);
         receiptBlock = true;
         PublicKey nodePK = network.getPkWithID(nodeID);
@@ -161,11 +161,12 @@ public abstract class Miner extends Node implements Runnable {
         }
     }
 
-    public void printTransactionBuffer(){
-        for (Transaction transaction : transactionBuffer ){
+    public void printTransactionBuffer() {
+        for (Transaction transaction : transactionBuffer) {
             System.out.println(transaction.toString());
         }
     }
+
     @Override
     public void run() {
         new Thread(() -> {
@@ -183,11 +184,11 @@ public abstract class Miner extends Node implements Runnable {
                         if (!transactionBuffer.contains(transactionTempo)) {
                             System.out.println(transactionTempo.toString());
                             transactionBuffer.add(transactionTempo);
-                            if (transactionBuffer.size() < NB_MAX_TRANSACTIONS){
+                            if (transactionBuffer.size() < NB_MAX_TRANSACTIONS) {
                                 transactionInSize.add(transactionTempo);
                             }
-                        }else{
-                            if (end-start > TIME_TO_WAIT) {
+                        } else {
+                            if (end - start > TIME_TO_WAIT) {
                                 start = System.currentTimeMillis();
                                 System.out.println(this.name + " is mining");
                                 conditionBlock.signalAll();
@@ -206,7 +207,8 @@ public abstract class Miner extends Node implements Runnable {
             }
         }).start();
 
-        while (true) {
+        boolean interrupt = false;
+        while (!interrupt) {
             while (!receiptBlock) {
                 //System.out.println("Waiting");
                 lock.lock();
@@ -217,6 +219,7 @@ public abstract class Miner extends Node implements Runnable {
                     }
                 } catch (InterruptedException e) {
                     e.printStackTrace();
+                    interrupt = true;
                 } finally {
                     lock.unlock();
                 }

@@ -3,17 +3,17 @@ package PoW;
 import java.util.Objects;
 
 /**
- *  Class PoW.Header timeStamp : long -> Date of creation of the block
- *  headerHashPrev : String -> Hash of the last block's header
- *  blockTransHash : String -> Hash of all transaction's information
- *  headerHash : String -> Hash of the header containing all block's information
- *  nonce : int -> Nonce found by a PoW.Miner/PoW.Validator ?
+ * Class PoW.Header timeStamp : long -> Date of creation of the block
+ * headerHashPrev : String -> Hash of the last block's header
+ * blockTransHash : String -> Hash of all transaction's information
+ * headerHash : String -> Hash of the header containing all block's information
+ * nonce : int -> Nonce found by a PoW.Miner/PoW.Validator ?
  */
 public class Header {
 
-    private final long timeStamp;
     protected final String headerHashPrev;
     protected final String blockTransHash;
+    private final long timeStamp;
     protected String headerHash;
     private int nonce;
 
@@ -31,8 +31,9 @@ public class Header {
 
     /**
      * Constructor PoW.Header
-     * @param blockPrev -> Previous blockchain's block
-     * @param blockTransHash -> Current block's transaction hash
+     *
+     * @param blockPrev      Previous blockchain's block
+     * @param blockTransHash Current block's transaction hash
      */
     public Header(Block blockPrev, String blockTransHash) {
         this.blockTransHash = blockTransHash;
@@ -43,9 +44,10 @@ public class Header {
 
     /**
      * Constructor PoW.Header
-     * @param hHp -> Previous header's hash
-     * @param hH -> Current header's hash
-     * @param trsHash -> Current transaction's hash
+     *
+     * @param hHp     Previous header's hash
+     * @param hH      Current header's hash
+     * @param trsHash Current transaction's hash
      */
     public Header(String hHp, String hH, String trsHash) {
         timeStamp = 0;
@@ -56,8 +58,9 @@ public class Header {
 
     /**
      * Function which calculate the header's hash
-     * @param nonce -> Random string tested by a miner
-     * @return block's informations hash
+     *
+     * @param nonce Random string tested by a miner
+     * @return Block's information hash
      */
     public String calcHeaderHash(int nonce) {
         this.nonce = nonce;
@@ -68,89 +71,54 @@ public class Header {
     // Setter
 
     /**
-     * Setter headerHash
-     * @param headerHash
-     */
-    public void setHeaderHash(String headerHash) {
-        /*
-            Setter headerHash
-         */
-        this.headerHash = headerHash;
-    }
-
-    /**
-     * Setter nonce
-     * @param nonce
-     */
-    public void setNonce(int nonce) {
-        /*
-            Setter nonce
-         */
-        this.nonce = nonce;
-    }
-
-    // Getter
-
-    /**
      * Getter timeStamp
-     * @return
+     *
+     * @return timeStamp
      */
     public long getTimeStamp() {
-        /*
-            Getter timeStamp
-         */
         return timeStamp;
     }
 
     /**
-     * Getter nonce
-     * @return
-     */
-    public int getNonce() {
-        /*
-            Getter nonce
-         */
-        return nonce;
-    }
-
-    /**
      * Getter previous hash
-     * @return
+     *
+     * @return previous hash
      */
     public String getPrevHash() {
-        /*
-            Getter prevHash
-         */
         return headerHashPrev;
     }
 
     /**
      * Getter blockTransHash
-     * @return
+     *
+     * @return hash of transactions in the block
      */
     public String getBlockTransHash() {
-        /*
-            Getter blockTransHash
-         */
         return blockTransHash;
     }
 
     /**
      * Getter headerHash
+     *
      * @return headerHash
      */
     public String getHeaderHash() {
-        /*
-            Getter headerHash
-         */
         return headerHash;
     }
 
-    // Others
+    /**
+     * Setter headerHash
+     *
+     * @param headerHash hash of header
+     */
+    public void setHeaderHash(String headerHash) {
+        this.headerHash = headerHash;
+    }
 
     /**
      * toString function
-     * @return
+     *
+     * @return string
      */
     public String toString() {
         return "\nTS : " + timeStamp + "\nprevHash : " + headerHashPrev + "\nhash : " + headerHash + "\nNonce : " + nonce;

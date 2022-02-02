@@ -20,7 +20,8 @@ public class Block {
 
     /**
      * Constructor PoW.Block
-     * @param blockPrev -> Last PoW.Block in the blockchain needed in order to get the hash.
+     *
+     * @param blockPrev     -> Last PoW.Block in the blockchain needed in order to get the hash.
      * @param transaction-> List of transaction to be added into a new block.
      */
     public Block(Block blockPrev, List<Transaction> transaction) {
@@ -46,6 +47,7 @@ public class Block {
 
     /**
      * Getter of header
+     *
      * @return header
      */
     public Header getHeader() {
@@ -54,6 +56,7 @@ public class Block {
 
     /**
      * Getter of blockId
+     *
      * @return blockId
      */
     public int getBlockId() {
@@ -62,28 +65,31 @@ public class Block {
 
     /**
      * Getter of nodeId
+     *
      * @return nodeId
      */
-    public int getNodeID(){
+    public int getNodeID() {
         return nodeID;
     }
 
     /**
-     * Getter transaction
-     * @return transaction
+     * Setter nodeId
+     *
+     * @param Id node's id
      */
-    public List<Transaction> getTransaction() {
-        return transactions;
+    public void setNodeID(int Id) {
+        nodeID = Id;
     }
 
     // Setter
 
     /**
-     * Setter nodeId
-     * @param Id
+     * Getter transaction
+     *
+     * @return transaction
      */
-    public void setNodeID(int Id){
-        nodeID = Id;
+    public List<Transaction> getTransaction() {
+        return transactions;
     }
 
     @Override
@@ -106,6 +112,7 @@ public class Block {
 
     /**
      * Transform into string all transaction's information
+     *
      * @return All transaction's information into a string
      */
     public String toStringAllTransaction() {

@@ -14,6 +14,7 @@ public class LightBlockChain extends Blockchain {
 
     /**
      * Add new light block to this light blockchain
+     *
      * @param h PoW.Header of the new block
      */
     public void addLightHeader(Header h) {

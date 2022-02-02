@@ -69,7 +69,7 @@ public class Network {
     public void broadcastBlock(Block b, String signature, int nodeID, Blockchain blk) {
         b.printTransactions();
         for (Node node : network) {
-            node.receiptBlock(b,signature,nodeID, blk);
+            node.receiptBlock(b, signature, nodeID, blk);
         }
         System.out.println("Block " + b.getBlockId() + " found by " + nodeID + b.getHeader());
         Block block = blk.getUpdateBlock();
