@@ -13,6 +13,7 @@ import java.util.concurrent.locks.ReentrantLock;
 public abstract class Miner extends Node implements Runnable {
 
     private final static int NB_MAX_TRANSACTIONS = 10;
+    private final static int TIME_TO_WAIT = 10000;
     private List<Transaction> transactionBuffer = new CopyOnWriteArrayList<>();
     private List<Transaction> transactionInSize = new CopyOnWriteArrayList<>();
     private final LightNode ln;
@@ -186,7 +187,7 @@ public abstract class Miner extends Node implements Runnable {
                                 transactionInSize.add(transactionTempo);
                             }
                         }else{
-                            if (end-start > 10000) {
+                            if (end-start > TIME_TO_WAIT) {
                                 start = System.currentTimeMillis();
                                 System.out.println(this.name + " is mining");
                                 conditionBlock.signalAll();

@@ -9,13 +9,11 @@ import java.util.concurrent.locks.ReentrantLock;
 
 public class Validator extends Node {
     private final List<Transaction> transactionBuffer = new CopyOnWriteArrayList<>();
-    private final int clientID = 0;
     private final int nbMax = 10;
     private LightNode validator = null;
     private Transaction transactionTempo = null;
     private ReentrantLock lock = new ReentrantLock();
     private boolean receiptTrans = false;
-    private boolean receiptBlock = false;
     private Condition condition = lock.newCondition();
 
 
