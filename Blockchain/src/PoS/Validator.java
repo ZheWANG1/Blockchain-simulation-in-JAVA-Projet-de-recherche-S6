@@ -55,7 +55,7 @@ public class Validator extends Node implements Runnable {
     }
 
     public boolean verifySignature(Transaction transaction) throws Exception {
-        return RsaUtil.verify("", transaction.getSignature(), network.getPkWithID(transaction.getFromID()));
+        return RsaUtil.verify(transaction.toString(), transaction.getSignature(), network.getPkWithID(transaction.getFromID()));
     }
 
     public void validate() {

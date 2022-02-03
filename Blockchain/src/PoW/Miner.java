@@ -75,6 +75,7 @@ public abstract class Miner extends Node implements Runnable {
 
     public void updateMiner(Block b) {
         List<Transaction> lt = b.getTransaction();
+        //printTransactionBuffer()
         for (Transaction t : lt) {
             transactionBuffer.remove(t);
         }
@@ -166,6 +167,15 @@ public abstract class Miner extends Node implements Runnable {
         }
     }
 
+    private void waitAndMine() {
+        if (end - start > TIME_TO_WAIT) {
+            start = System.currentTimeMillis();
+            System.out.println(this.name + " is mining");
+            mineWithoutTransaction = true;
+            conditionBlock.signalAll();
+        }
+    }
+
     @Override
     public void run() {
         new Thread(() -> {
@@ -219,6 +229,7 @@ public abstract class Miner extends Node implements Runnable {
                 } finally {
                     lock.unlock();
                 }
+
                 mine();
             }
         }

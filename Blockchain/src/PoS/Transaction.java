@@ -29,7 +29,7 @@ public class Transaction {
         this.transactionFee = transactionFee;
         this.transactionHash = HashUtil.SHA256(this.toString());
         try {
-            this.signature = RsaUtil.sign("", pv);
+            this.signature = RsaUtil.sign(this.toString(), pv);
         } catch (Exception e) {
             e.printStackTrace();
             this.signature = null;
@@ -77,7 +77,7 @@ public class Transaction {
     }
 
     public String toString() {
-        return "" + toID + " sent " + amount + "LD to " + fromID + " timestamp : " + timeStamp + " signature : " + signature + " PoW.Transaction fee : " + transactionFee + "\n";
+        return "" + toID + " sent " + amount + "LD to " + fromID + " timestamp : " + timeStamp + " PoW.Transaction fee : " + transactionFee + "\n";
     }
 
 }
