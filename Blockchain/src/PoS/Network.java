@@ -139,7 +139,7 @@ public class Network {
             if (node instanceof FullNode)
                 return node.getBlockchain();
         }
-        return null;
+        throw new NullPointerException();
     }
 
     /**

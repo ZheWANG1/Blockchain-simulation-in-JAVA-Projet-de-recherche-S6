@@ -8,7 +8,7 @@ import java.util.Map;
 
 public class Network {
     private final static int INIT_DIFFICULTY = 4;
-    private final static int CHANGE_DIFFICULTY = 20;
+    private final static int CHANGE_DIFFICULTY = 50;
     private final List<Node> network = new ArrayList<>();
     private final Map<Integer, PublicKey> keyTable = new HashMap<>();
     private int difficulty = INIT_DIFFICULTY;

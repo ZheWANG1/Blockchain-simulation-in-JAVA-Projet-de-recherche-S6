@@ -28,5 +28,4 @@ public class LightBlockChain extends Blockchain {
             LightBlkchain.remove(0);
         }
     }
-
 }

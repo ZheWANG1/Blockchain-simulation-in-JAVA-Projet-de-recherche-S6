@@ -27,7 +27,8 @@ public abstract class Miner extends Node implements Runnable {
     private int difficulty;
     private boolean receiptTran = false;
     private boolean receiptBlock = false;
-
+    private boolean mineWithoutTransaction = false;
+    private long start, end;
 
     public Miner(String name, Network network) {
         super(name, network, new Blockchain());
@@ -99,6 +100,7 @@ public abstract class Miner extends Node implements Runnable {
         String toBeCheckedSubList = hash.substring(0, difficulty);
         if (toBeCheckedSubList.equals("0".repeat(difficulty))) {
             receiptBlock = true;
+            mineWithoutTransaction = false;
             block.getHeader().setHeaderHash(hash);
             System.out.println(name + " " + nonce + " " + hash);
             try {
@@ -135,6 +137,7 @@ public abstract class Miner extends Node implements Runnable {
         System.out.println("Block received by " + this.name + " Total blocks received : " + blockRecu);
         updateMiner(b);
         receiptBlock = true;
+        mineWithoutTransaction = false;
         PublicKey nodePK = network.getPkWithID(nodeID);
         try {
             difficulty = network.getDifficulty();
@@ -179,8 +182,7 @@ public abstract class Miner extends Node implements Runnable {
     @Override
     public void run() {
         new Thread(() -> {
-            long start = System.currentTimeMillis();
-            long end;
+            start = System.currentTimeMillis();
             while (true) {
                 end = System.currentTimeMillis();
                 lock.lock();
@@ -189,21 +191,16 @@ public abstract class Miner extends Node implements Runnable {
                     while (!receiptTran) {
                         conditionTran.await();
                     }
-                    if (verifySignature(transactionTempo)) {
-                        if (!transactionBuffer.contains(transactionTempo)) {
-                            System.out.println(transactionTempo.toString());
+                    if (transactionTempo != null) {
+                        if (!transactionBuffer.contains(transactionTempo) && verifySignature(transactionTempo)) {
                             transactionBuffer.add(transactionTempo);
                             if (transactionBuffer.size() < NB_MAX_TRANSACTIONS) {
                                 transactionInSize.add(transactionTempo);
                             }
-                        } else {
-                            if (end - start > TIME_TO_WAIT) {
-                                start = System.currentTimeMillis();
-                                System.out.println(this.name + " is mining");
-                                conditionBlock.signalAll();
-                                receiptTran = false;
-                            }
+                            transactionTempo = null;
                         }
+                    } else {
+                        waitAndMine();
                     }
                 } catch (Exception e) {
                     e.printStackTrace();
@@ -219,10 +216,11 @@ public abstract class Miner extends Node implements Runnable {
                 //System.out.println("Waiting");
                 lock.lock();
                 try {
-                    while (!receiptTran && transactionInSize.isEmpty()) {
-                        //System.out.println("Waiting 2");
-                        conditionBlock.await();
-                    }
+                    if (!mineWithoutTransaction)
+                        while (transactionInSize.isEmpty() && !mineWithoutTransaction) {
+                            //System.out.println("Waiting 2");
+                            conditionBlock.await();
+                        }
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                     interrupt = true;

@@ -8,15 +8,16 @@ import java.util.concurrent.locks.Condition;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
 
-public class Validator extends Node implements Runnable {
+public class Validator implements Runnable {
+    private final static int NB_Max = 10;
     private final List<Transaction> transactionBuffer = new CopyOnWriteArrayList<>();
-    private final int nbMax = 10;
+    private final Lock lock = new ReentrantLock();
+    private final Condition condition = lock.newCondition();
+    private final Network network;
     private LightNode validator = null;
     private Transaction transactionTempo = null;
-    private final Lock lock = new ReentrantLock();
     private boolean receiptTrans = false;
-    private final Condition condition = lock.newCondition();
-
+    private String name;
 
     public Validator(Network network) {
         this.network = network;
@@ -59,7 +60,8 @@ public class Validator extends Node implements Runnable {
     }
 
     public void validate() {
-        while (true) {
+        boolean interrupt = false;
+        while (!interrupt) {
             lock.lock();
             try {
                 if (validator != null) {
@@ -78,7 +80,7 @@ public class Validator extends Node implements Runnable {
                         }
                     }
                     // List of transaction which can enter the next block
-                    List<Transaction> transactionsInBlock = transactionBuffer.subList(0, nbMax - 1);
+                    List<Transaction> transactionsInBlock = transactionBuffer.subList(0, NB_Max - 1);
                     // Creation of the new block
                     Block block = new Block(blkchainTempo.getLatestBlock(), transactionsInBlock);
                     // Guess of the hash
@@ -94,8 +96,9 @@ public class Validator extends Node implements Runnable {
                     validator.setValidator(null);
                 }
                 chooseValidator();
-            } catch (Exception ignore) {
-
+            } catch (Exception e) {
+                e.printStackTrace();
+                interrupt = true;
             } finally {
                 lock.unlock();
             }
@@ -120,4 +123,3 @@ public class Validator extends Node implements Runnable {
         validate();
     }
 }
-
