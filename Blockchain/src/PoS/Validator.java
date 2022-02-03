@@ -8,6 +8,16 @@ import java.util.concurrent.locks.Condition;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
 
+ /**
+  * Class Validator
+  * transactionBuffer : List<Transaction> -> A list of transactions which are waiting processing
+  * nbMax : int -> Amount maximum of transactions in a block
+  * validator : LightNode -> the light node which is elected as a validator
+  * transactionTempo : Transaction -> Currently a received transaction
+  * lock : concurrent.locks.Lock -> Technique for implement concurrent program
+  * receiptTrans : boolean -> a transaction is received
+  * condition : concurrent.locks.condition -> Technique for implement concurrent program
+  */
 public class Validator implements Runnable {
     private final static int NB_Max = 10;
     private final List<Transaction> transactionBuffer = new CopyOnWriteArrayList<>();
