@@ -1,4 +1,4 @@
-package PoS;
+ package PoS;
 
 import java.util.HashMap;
 import java.util.List;
@@ -19,8 +19,7 @@ public class Validator extends Node implements Runnable {
 
 
     public Validator(Network network) {
-        super("", network, new Blockchain());
-        network.addNode(this);
+        this.network = network;
     }
 
     /**
@@ -64,7 +63,8 @@ public class Validator extends Node implements Runnable {
             lock.lock();
             try {
                 if (validator != null) {
-                    while (transactionBuffer.size() < nbMax) { // If more than nbMax transaction has been received
+                    Blockchain blkchainTempo = network.copyBlockchainFromFN();
+                    while (transactionBuffer.size() < NB_Max) { // If more than nbMax transaction has been received
                         if (!receiptTrans) {
                             condition.await();
                         }
@@ -80,14 +80,14 @@ public class Validator extends Node implements Runnable {
                     // List of transaction which can enter the next block
                     List<Transaction> transactionsInBlock = transactionBuffer.subList(0, nbMax - 1);
                     // Creation of the new block
-                    Block block = new Block(blockchain.getLatestBlock(), transactionsInBlock);
+                    Block block = new Block(blkchainTempo.getLatestBlock(), transactionsInBlock);
                     // Guess of the hash
                     String hash = block.getHeader().calcHeaderHash(0);
                     block.getHeader().setHeaderHash(hash);
 
-                    block.setNodeID(nodeId);
+                    block.setNodeID(validator.getNodeId());
                     System.out.println(this.name + " broadcast block");
-                    network.broadcastBlock(block, RsaUtil.sign("", validator.privateKey), validator.nodeId, blockchain);
+                    network.broadcastBlock(block, RsaUtil.sign(block.toString(), validator.privateKey), validator.nodeId, blkchainTempo);
                     System.out.println("Broadcast finished");
 
                     transactionBuffer.removeAll(transactionsInBlock);
@@ -113,11 +113,6 @@ public class Validator extends Node implements Runnable {
         } finally {
             lock.unlock();
         }
-    }
-
-    @Override
-    public void receiptBlock(Block b, String signature, int nodeID, Blockchain blk) {
-        blockchain.addBlock(b);
     }
 
     @Override
