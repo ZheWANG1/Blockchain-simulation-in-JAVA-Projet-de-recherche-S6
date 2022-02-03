@@ -8,6 +8,16 @@ import java.util.concurrent.locks.Condition;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
 
+/**
+ * Class PoS.Validator
+ * transactionBuffer : List<Transaction> -> A list of transactions which are waiting processing
+ * nbMax : int -> Amount maximum of transactions in a block
+ * validator : LightNode -> the light node which is elected as a validator
+ * transactionTempo : Transaction -> Currently a received transaction
+ * lock : concurrent.locks.Lock -> Technique for implement concurrent program
+ * receiptTrans : boolean -> ?
+ * condition : concurrent.locks.condition -> Technique for implement concurrent program
+ */
 public class Validator extends Node {
     private final List<Transaction> transactionBuffer = new CopyOnWriteArrayList<>();
     private final int nbMax = 10;
@@ -20,7 +30,7 @@ public class Validator extends Node {
 
     public Validator(Network network) {
         super("", network, new Blockchain());
-        network.addNode(this);
+        network.addNode(this); //?
         validate();
     }
 
