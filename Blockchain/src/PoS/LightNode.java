@@ -1,6 +1,5 @@
 package PoS;
 
-import java.security.PublicKey;
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
 
@@ -29,8 +28,8 @@ public class LightNode extends Node {
     /**
      * Constructor LightNode
      *
-     * @param name    -> LightNode's name ( Client name )
-     * @param network -> Network in which the lightNode is in
+     * @param name    LightNode's name ( Client name )
+     * @param network Network in which the lightNode is in
      */
     public LightNode(String name, Network network) {
         super(name, network, new LightBlockChain());
@@ -47,11 +46,40 @@ public class LightNode extends Node {
         network.addNode(this);
     }
 
+    public double getWallet() {
+        return wallet;
+    }
+
+    public double getStakeAmount() {
+        return stakeAmount;
+    }
+
+    public double getStakeTime() {
+        return stakeTime;
+    }
+
+    public Block getLastBlock() {
+        return lastBlock;
+    }
+
+    public Validator getValidator() {
+        return validator;
+    }
+
+    /**
+     * Function which change the identity (validator) of this lightnode
+     *
+     * @param validator instance of the validator
+     */
+    public void setValidator(Validator validator) {
+        this.validator = validator;
+    }
+
     /**
      * Function which send a transaction to the network in order to be added in all blockchain
      *
-     * @param amount -> Amount of coin to be sent
-     * @param nodeId -> Identifier of the receiver
+     * @param amount Amount of coin to be sent
+     * @param nodeId Identifier of the receiver
      */
     public void sendMoneyTo(double amount, int nodeId) {
         if (wallet < amount * (1 + TRANSACTION_FEE)) {
@@ -67,7 +95,7 @@ public class LightNode extends Node {
     /**
      * Function which check that all the transaction sent are validated
      *
-     * @param b -> Block to analyze (Most likely the last verified block)
+     * @param b Block to analyze (Most likely the last verified block)
      */
     public void checkIfAllTransSent(Block b) {
         List<Transaction> transNotSent = new CopyOnWriteArrayList<>();
@@ -82,32 +110,14 @@ public class LightNode extends Node {
     }
 
     /**
-     * Getter wallet
-     *
-     * @return Coin's amount
-     */
-    public double getWallet() {
-        return wallet;
-    }
-
-    /**
      * Function which add or reduce a client's coins amount
      *
-     * @param amount -> Coin's amount
+     * @param amount Coin's amount
      */
     public void receiptCoin(double amount) {
         String order = amount < 0 ? " Lost " : " received "; // if amount < 0 than order = Lost else Received
         wallet += amount;
         System.out.println(this.name + order + amount + " bitcoins");
-    }
-
-    /**
-     * Getter publicKey
-     *
-     * @return Client public key
-     */
-    public PublicKey getPublicKey() {
-        return publicKey;
     }
 
     @Override
@@ -117,18 +127,9 @@ public class LightNode extends Node {
     }
 
     /**
-     * Getter lastBlock
-     *
-     * @return client last block
-     */
-    public Block getLastBlock() {
-        return lastBlock;
-    }
-
-    /**
      * Function which modify the stake amount of a user
      *
-     * @param amount
+     * @param amount the stake amount of a user
      */
     public void stake(int amount) {
         if (wallet < amount) {
@@ -138,41 +139,5 @@ public class LightNode extends Node {
         this.wallet -= amount;
         stakeTime = System.currentTimeMillis();
         System.out.println(name + " deposit " + amount + " as stake");
-    }
-
-    /**
-     * Getter stakeAmount
-     *
-     * @return Stake's amount
-     */
-    public double getStakeAmount() {
-        return stakeAmount;
-    }
-
-    /**
-     * Getter stakeTime
-     *
-     * @return Stake's time
-     */
-    public double getStakeTime() {
-        return stakeTime;
-    }
-
-    /**
-     * Getter validator
-     *
-     * @return validator
-     */
-    public Validator getValidator() {
-        return validator;
-    }
-
-    /**
-     * Function which change the identity (validator) of this lightnode
-     *
-     * @param validator -> instance of the validator
-     */
-    public void setValidator(Validator validator) {
-        this.validator = validator;
     }
 }

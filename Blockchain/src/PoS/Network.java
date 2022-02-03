@@ -52,7 +52,7 @@ public class Network {
     /**
      * Function which add a node to the network
      *
-     * @param node -> Node to be added
+     * @param node Node to be added
      */
     public void addNode(Node node) {
         network.add(node);
@@ -67,7 +67,7 @@ public class Network {
     /**
      * Broadcast a transaction in the network
      *
-     * @param transaction -> Transaction to be broadcast
+     * @param transaction Transaction to be broadcast
      */
     public void broadcastTransaction(Transaction transaction) {
         for (Node node : network) {
@@ -81,7 +81,7 @@ public class Network {
     /**
      * Function updating client wallet with matching ID in the Block
      *
-     * @param b -> The new block
+     * @param b The new block
      */
     private void updateAllWallet(Block b) {
         double totalFee = 0;

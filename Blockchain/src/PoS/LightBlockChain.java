@@ -16,11 +16,11 @@ public class LightBlockChain extends Blockchain {
     /**
      * Function which add a new light block to this light blockchain
      *
-     * @param h PoW.Header of the new block
+     * @param h Header of the new block
      */
     public void addLightHeader(Header h) {
-        String headerHash = h.getHeaderHash();
         String previousHeaderHash = h.getPrevHash();
+        String headerHash = h.getHeaderHash();
         String trsHash = h.getBlockTransHash();
         LightBlock ln = new LightBlock(previousHeaderHash, headerHash, trsHash);
         LightBlkchain.add(ln);

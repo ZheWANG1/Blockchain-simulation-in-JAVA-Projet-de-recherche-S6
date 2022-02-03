@@ -43,6 +43,18 @@ abstract class Node {
         this.network = network;
     }
 
+    public int getNodeId() {
+        return nodeId;
+    }
+
+    public Blockchain getBlockchain() {
+        return blockchain;
+    }
+
+    public PublicKey getPublicKey() {
+        return publicKey;
+    }
+
     /**
      * All nodes should have the ability to receive blocks when a new block is broadcast.
      *
@@ -53,30 +65,4 @@ abstract class Node {
      */
     public abstract void receiptBlock(Block b, String signature, int nodeID, Blockchain blk);
 
-    /**
-     * Getter nodeId
-     *
-     * @return Node Identifier
-     */
-    public Integer getNodeId() {
-        return nodeId;
-    }
-
-    /**
-     * Getter blockchain
-     *
-     * @return blockchain
-     */
-    public Blockchain getBlockchain() {
-        return blockchain;
-    }
-
-    /**
-     * Getter publicKey
-     *
-     * @return Node's publicKey
-     */
-    public PublicKey getPublicKey() {
-        return publicKey;
-    }
 }
