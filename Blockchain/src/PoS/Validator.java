@@ -28,6 +28,7 @@ public class Validator implements Runnable {
     private Transaction transactionTempo = null;
     private boolean receiptTrans = false;
     private String name;
+    private int TIME_TO_WAIT = 1000; // 1 sec
 
     public Validator(Network network) {
         this.network = network;
@@ -73,24 +74,32 @@ public class Validator implements Runnable {
         boolean interrupt = false;
         while (!interrupt) {
             lock.lock();
+            long start = System.currentTimeMillis();
             try {
                 if (validator != null) {
                     Blockchain blkchainTempo = network.copyBlockchainFromFN();
-                    while (transactionBuffer.size() < NB_Max) { // If more than nbMax transaction has been received
+                    long end = start;
+                    while (end-start<TIME_TO_WAIT) {
                         if (!receiptTrans) {
                             condition.await();
                         }
                         transactionBuffer.add(transactionTempo);
-                        receiptTrans = false;
 
                         int index = transactionBuffer.size() - 1;
                         if (!verifySignature(transactionBuffer.get(index))) { // Verify the signature of ith transaction
                             System.out.println(transactionBuffer.get(index) + "is fraudulent"); // The transaction is fraudulent
                             transactionBuffer.remove(index); // Remove fraudulent transaction
                         }
+                        end = System.currentTimeMillis();
                     }
                     // List of transaction which can enter the next block
-                    List<Transaction> transactionsInBlock = transactionBuffer.subList(0, NB_Max - 1);
+                    int size_tr_in_block = 0;
+                    if (transactionBuffer.size() >= NB_Max){
+                        size_tr_in_block = NB_Max-1;
+                    }else{
+                        size_tr_in_block = transactionBuffer.size();
+                    }
+                    List<Transaction> transactionsInBlock = transactionBuffer.subList(0, size_tr_in_block);
                     // Creation of the new block
                     Block block = new Block(blkchainTempo.getLatestBlock(), transactionsInBlock);
                     // Guess of the hash
@@ -101,6 +110,7 @@ public class Validator implements Runnable {
                     System.out.println(this.name + " broadcast block");
                     network.broadcastBlock(block, RsaUtil.sign(block.toString(), validator.privateKey), validator.nodeId, blkchainTempo);
                     System.out.println("Broadcast finished");
+                    receiptTrans = false;
 
                     transactionBuffer.removeAll(transactionsInBlock);
                     validator.setValidator(null);
@@ -118,6 +128,7 @@ public class Validator implements Runnable {
     public void receiptTransaction(Transaction transaction) {
         lock.lock();
         try {
+            System.out.print("Transaction received : " + transaction.toString());
             transactionTempo = transaction;
             receiptTrans = true;
             condition.signalAll();
