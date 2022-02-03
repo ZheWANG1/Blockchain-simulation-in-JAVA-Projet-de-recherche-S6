@@ -15,7 +15,7 @@ import java.util.concurrent.locks.ReentrantLock;
  * validator : LightNode -> the light node which is elected as a validator
  * transactionTempo : Transaction -> Currently a received transaction
  * lock : concurrent.locks.Lock -> Technique for implement concurrent program
- * receiptTrans : boolean -> ?
+ * receiptTrans : boolean -> a transaction is received
  * condition : concurrent.locks.condition -> Technique for implement concurrent program
  */
 
