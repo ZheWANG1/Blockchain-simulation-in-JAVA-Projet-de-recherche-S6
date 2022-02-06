@@ -6,6 +6,15 @@ import java.security.PublicKey;
 
 /**
  * The node class, corresponding to each user on the network, includes mining nodes, trading nodes, server nodes, etc.
+ * o : Object
+ * cpt : int
+ * nodeId : int -> Node's identifier
+ * name : String -> Node's name
+ * network : Network -> Node's network
+ * blockchain : Blockchain -> Node's blockchain (Can be LightBlockChain if Node is a LightNode)
+ * publicKey : PublicKey -> Second Node's identifier, used to verify signatures
+ * privateKey : PrivateKey -> Node's Private Key act his password, needed to sign transaction
+ * keys : KeyPair -> Node's public and private key
  */
 abstract class Node {
     private static final Object o = new Object();
@@ -33,7 +42,7 @@ abstract class Node {
      * @param b         The new block
      * @param signature Signature of the miner who found the new block
      * @param nodeID    PoW.Miner's id
-     * @param blk       The blockchain that this miner has cached
+     * @param blk       The blockchain that this miner has caught
      */
     public abstract void receiptBlock(Block b, String signature, int nodeID, Blockchain blk);
 

@@ -12,8 +12,6 @@ import java.util.concurrent.CopyOnWriteArrayList;
  * stakeTime : double -> LightNode's time served in the validation process
  * lastBlock : Block -> LastBlock received by the lightNode
  * transactionBuffer : List<Transaction> -> List of transaction sent by the lightNode but not yet in the blockchain
- * |Potential issue with the validity of the 6th block and the transactionBuffer ?
- * validator : Validator -> Instance validator if a lightnode is elected as a validator
  */
 public class LightNode extends Node {
     private final static double TRANSACTION_FEE = 0.1;

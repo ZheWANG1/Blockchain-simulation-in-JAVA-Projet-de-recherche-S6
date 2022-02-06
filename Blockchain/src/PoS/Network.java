@@ -142,16 +142,6 @@ public class Network {
         throw new NullPointerException();
     }
 
-    /**
-     * Function which listen the network for new transaction
-     */
-    public void askAnyRequest() {
-        for (Node ln : network) {
-            if (ln instanceof LightNode lightNode) {
-                lightNode.checkIfAllTransSent(lightNode.getLastBlock());
-            }
-        }
-    }
 
     /**
      * Function which print all the wallet state

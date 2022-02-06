@@ -6,6 +6,12 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * Class network
+ * This class simulate a network (Broadcast P2P)
+ * network : List<Node> -> List of node in the network
+ * keyTable : Map<Integer, PublicKey> -> Map table of NodeID and PublicKey in order to verify signatures.
+ */
 public class Network {
     private final static int INIT_DIFFICULTY = 4;
     private final static int CHANGE_DIFFICULTY = 50;
@@ -16,18 +22,40 @@ public class Network {
     public Network() {
     }
 
+    /**
+     * Getter difficulty
+     *
+     * @return difficulty
+     */
     public int getDifficulty() {
         return difficulty;
     }
 
+    /**
+     * Getter network
+     *
+     * @return List of node in the network
+     */
     public List<Node> getNetwork() {
         return network;
     }
 
+    /**
+     * Function which return the publicKey of a node
+     *
+     * @param id -> Node's identifier
+     * @return Node's public key
+     */
     public PublicKey getPkWithID(int id) {
         return keyTable.get(id);
     }
 
+
+    /**
+     * Function which add a node to the network
+     *
+     * @param node Node to be added
+     */
     public void addNode(Node node) {
         network.add(node);
         difficulty = network.size() / CHANGE_DIFFICULTY + INIT_DIFFICULTY;
@@ -38,6 +66,11 @@ public class Network {
         }
     }
 
+    /**
+     * Broadcast a transaction in the network
+     *
+     * @param transaction Transaction to be broadcast
+     */
     public void broadcastTransaction(Transaction transaction) {
         for (Node node : network) {
             //Pow
@@ -100,6 +133,11 @@ public class Network {
             ((Miner) associatedLightNode).getLn().receiptCoin(amount);
     }
 
+    /**
+     * Function which copy the current blockchain of a node
+     *
+     * @return network blockchain
+     */
     public Blockchain copyBlockchainFromFN() {
         for (Node node : network) {
             if (node instanceof FullNode)
@@ -108,13 +146,6 @@ public class Network {
         return null;
     }
 
-    public void askAnyRequest() {
-        for (Node ln : network) {
-            if (ln instanceof LightNode lightNode) {
-                lightNode.checkIfAllTransSent(lightNode.getLastBlock());
-            }
-        }
-    }
 
     public void printWallets() {
         for (var node : network) {

@@ -3,7 +3,14 @@ package PoW;
 import java.security.PublicKey;
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
-
+/**
+ * Class LightNode
+ * TRANSACTION_FEE : double -> Transaction fee which apply when a lightNode send money to another LightNode
+ * INIT_WALLET : int -> Initialize the wallet with INIT_WALLET coins
+ * wallet : double -> LightNode's coin balance
+ * lastBlock : Block -> LastBlock received by the lightNode
+ * transactionBuffer : List<Transaction> -> List of transaction sent by the lightNode but not yet in the blockchain
+ */
 public class LightNode extends Node {
     private final static double TRANSACTION_FEE = 0.1;
     private final static int INIT_WALLET = 100;
@@ -11,6 +18,12 @@ public class LightNode extends Node {
     private Block lastBlock;
     private List<Transaction> transactionBuffer = new CopyOnWriteArrayList<>();
 
+    /**
+     * Constructor LightNode
+     *
+     * @param name    LightNode's name ( Client name )
+     * @param network Network in which the lightNode is in
+     */
     public LightNode(String name, Network network) {
         super(name, network, new LightBlockChain());
         this.wallet = INIT_WALLET;
@@ -24,6 +37,12 @@ public class LightNode extends Node {
         network.addNode(this);
     }
 
+    /**
+     * Function which send a transaction to the network in order to be added in all blockchain
+     *
+     * @param amount Amount of coin to be sent
+     * @param nodeId Identifier of the receiver
+     */
     public void sendMoneyTo(double amount, int nodeId) {
         if (wallet < amount * (1 + TRANSACTION_FEE)) {
             System.out.println(name + " Not enough bitcoin to send"); // Whatever the currency
@@ -52,7 +71,12 @@ public class LightNode extends Node {
     public double getWallet() {
         return wallet;
     }
-
+    
+    /**
+     * Function which add or reduce a client's coins amount
+     *
+     * @param amount Coin's amount
+     */
     public void receiptCoin(double amount) {
         String order = amount < 0 ? " Lost " : " received ";
 

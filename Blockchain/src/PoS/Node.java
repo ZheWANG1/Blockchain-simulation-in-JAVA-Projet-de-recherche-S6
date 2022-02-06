@@ -61,7 +61,7 @@ abstract class Node {
      * @param b         The new block
      * @param signature Signature of the miner who found the new block
      * @param nodeID    PoW.Miner's id
-     * @param blk       The blockchain that this miner has cached
+     * @param blk       The blockchain that this miner has caught
      */
     public abstract void receiptBlock(Block b, String signature, int nodeID, Blockchain blk);
 
