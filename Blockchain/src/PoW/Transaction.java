@@ -9,8 +9,8 @@ public class Transaction {
     private static final Object o = new Object();
     private static int cpt = 0;
     private final String transactionHash;
-    private final int fromID;
-    private final int toID;
+    private final String fromAdress;
+    private final String toAdress;
     private final double amount;
     private final double transactionFee;
     private final long timeStamp;
@@ -18,12 +18,12 @@ public class Transaction {
     private String signature;
     private boolean confirmedTrans = false;
 
-    public Transaction(String transaction, int fromID, int toID, double amount, long timeStamp, double transactionFee, PrivateKey pv) {
+    public Transaction(String transaction, String fromAdress, String toAdress, double amount, long timeStamp, double transactionFee, PrivateKey pv) {
         synchronized (o) {
             transactionID = cpt++;
         }
-        this.fromID = fromID;
-        this.toID = toID;
+        this.fromAdress = fromAdress;
+        this.toAdress = toAdress;
         this.amount = amount;
         this.timeStamp = timeStamp;
         this.transactionFee = transactionFee;
@@ -36,12 +36,12 @@ public class Transaction {
         }
     }
 
-    public int getFromID() {
-        return fromID;
+    public String getFromAddress() {
+        return fromAdress;
     }
 
-    public int getToID() {
-        return toID;
+    public String getToAddress() {
+        return toAdress;
     }
 
     public double getAmount() {
@@ -77,7 +77,7 @@ public class Transaction {
     }
 
     public String toString() {
-        return "" + toID + " sent " + amount + "LD to " + fromID + " timestamp : " + timeStamp + " Transaction fee : " + transactionFee + "\n";
+        return "" + toAdress + " sent " + amount + "LD to " + fromAdress + " timestamp : " + timeStamp + " Transaction fee : " + transactionFee + "\n";
     }
 
 }

@@ -61,7 +61,7 @@ public abstract class Miner extends Node implements Runnable {
      * @throws Exception Exception
      */
     public boolean verifySignature(Transaction transaction) throws Exception {
-        return RsaUtil.verify(transaction.toString(), transaction.getSignature(), network.getPkWithID(transaction.getFromID()));
+        return RsaUtil.verify(transaction.toString(), transaction.getSignature(), network.getPkWithAddress(transaction.getFromAddress()));
     }
 
     /**
@@ -138,7 +138,7 @@ public abstract class Miner extends Node implements Runnable {
         updateMiner(b);
         receiptBlock = true;
         mineWithoutTransaction = false;
-        PublicKey nodePK = network.getPkWithID(nodeID);
+        PublicKey nodePK = network.getPkWithId(nodeID);
         try {
             difficulty = network.getDifficulty();
             if (nodeID == this.nodeId) {

@@ -26,6 +26,7 @@ abstract class Node {
     protected PublicKey publicKey;
     protected PrivateKey privateKey;
     protected KeyPair keys;
+    protected String address;
 
     /**
      * Constructor Node
@@ -55,6 +56,7 @@ abstract class Node {
         return publicKey;
     }
 
+
     /**
      * All nodes should have the ability to receive blocks when a new block is broadcast.
      *
@@ -64,5 +66,7 @@ abstract class Node {
      * @param blk       The blockchain that this miner has caught
      */
     public abstract void receiptBlock(Block b, String signature, int nodeID, Blockchain blk);
+
+    public String getAddress(){ return address;}
 
 }

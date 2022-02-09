@@ -67,7 +67,7 @@ public class Validator implements Runnable {
     }
 
     public boolean verifySignature(Transaction transaction) throws Exception {
-        return RsaUtil.verify(transaction.toString(), transaction.getSignature(), network.getPkWithID(transaction.getFromID()));
+        return RsaUtil.verify(transaction.toString(), transaction.getSignature(), network.getPkWithAdress(transaction.getFromAddress()));
     }
 
     public void validate() {

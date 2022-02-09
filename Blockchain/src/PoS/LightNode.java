@@ -41,6 +41,7 @@ public class LightNode extends Node {
         } catch (Exception e) {
             e.printStackTrace();
         }
+        address = HashUtil.SHA256(String.valueOf(publicKey));
         network.addNode(this);
     }
 
@@ -77,16 +78,17 @@ public class LightNode extends Node {
      * Function which send a transaction to the network in order to be added in all blockchain
      *
      * @param amount Amount of coin to be sent
-     * @param nodeId Identifier of the receiver
+     * @param address Address of the receiver
      */
-    public void sendMoneyTo(double amount, int nodeId) {
+    public void sendMoneyTo(double amount, String address) {
         if (wallet < amount * (1 + TRANSACTION_FEE)) {
             System.out.println(name + " Not enough bitcoin to send"); // Whatever the currency
             System.out.println("Rejected transaction");
         } else {
-            Transaction toSend = new Transaction("", this.nodeId, nodeId, amount, System.currentTimeMillis(), TRANSACTION_FEE, privateKey);
+            Transaction toSend = new Transaction("", this.address, address, amount, System.currentTimeMillis(), TRANSACTION_FEE, privateKey);
             network.broadcastTransaction(toSend);
             transactionBuffer.add(toSend);
+            System.out.println(this.name + " Broadcasted a transaction");
         }
     }
 

@@ -32,7 +32,7 @@ public class test {
         ln6.stake(1);
 
         for (int i = 0; i < 100; i++) {
-            ln1.sendMoneyTo((i+1) * 0.1, ln2.getNodeId());
+            ln1.sendMoneyTo((i+1) * 0.1, ln2.getAddress());
             try {
                 Thread.sleep(5000);
             } catch (InterruptedException e) {

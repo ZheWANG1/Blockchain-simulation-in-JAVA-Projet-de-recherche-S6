@@ -9,6 +9,7 @@ import java.util.Objects;
  * blockId : int -> PoW.Block identifier.
  * transaction : List<PoW.Transaction> -> List of all the transaction encapsulated in the block.
  * nodeID : int -> Represent the miner nodeID which mined or staked the block.
+ * nodeAdress : String -> Represent the miner adress which mined or staked the block.
  */
 public class Block {
 
@@ -16,6 +17,7 @@ public class Block {
     private final int blockId;
     private final List<Transaction> transactions;
     private int nodeID;
+    private String nodeAddress;
 
 
     /**
@@ -67,6 +69,15 @@ public class Block {
      */
     public int getNodeID() {
         return nodeID;
+    }
+
+
+    /**
+     * Getter of nodeAdress
+     * @return nodeAddress
+     */
+    public String getNodeAddress() {
+        return nodeAddress;
     }
 
     /**

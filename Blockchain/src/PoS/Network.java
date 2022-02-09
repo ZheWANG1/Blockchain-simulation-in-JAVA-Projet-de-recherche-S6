@@ -14,7 +14,8 @@ import java.util.Map;
  */
 public class Network {
     private final List<Node> network = new ArrayList<>();
-    private final Map<Integer, PublicKey> keyTable = new HashMap<>();
+    private final Map<Integer, PublicKey> keyTableWithId = new HashMap<>();
+    private final Map<String, PublicKey> keyTable = new HashMap<>();
     private final int INIT_DIFFICULTY = 4;
     private int difficulty = INIT_DIFFICULTY;
 
@@ -42,6 +43,16 @@ public class Network {
     /**
      * Function which return the publicKey of a node
      *
+     * @param adress -> Node's adress
+     * @return Node's public key
+     */
+    public PublicKey getPkWithAdress(String adress) {
+        return keyTable.get(adress);
+    }
+
+    /**
+     * Function which return the publicKey of a node
+     *
      * @param id -> Node's identifier
      * @return Node's public key
      */
@@ -56,9 +67,10 @@ public class Network {
      */
     public void addNode(Node node) {
         network.add(node);
-        difficulty = network.size() / 20 + INIT_DIFFICULTY;
+        //difficulty = network.size() / 20 + INIT_DIFFICULTY;
         try {
-            keyTable.put(node.getNodeId(), node.getPublicKey());
+            keyTable.put(node.getAddress(), node.getPublicKey());
+            keyTableWithId.put(node.getNodeId(), node.getPublicKey());
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -91,12 +103,13 @@ public class Network {
             double takenFromTrans = (transaction.getTransactionFee()) * transaction.getAmount();
             totalFee += takenFromTrans;
             double amount = transaction.getAmount();
-            int toID = transaction.getToID();
-            updateWalletWithID(amount, toID);
-            updateWalletWithID(-(amount + takenFromTrans), transaction.getFromID());
+            String toAddress = transaction.getToAddress();
+            updateWalletWithAddress(amount, toAddress);
+            updateWalletWithAddress(-(amount + takenFromTrans), transaction.getFromAddress());
         }
-        updateWalletWithID(totalFee, b.getNodeID());
+        updateWalletWithAddress(totalFee, b.getNodeAddress());
     }
+
 
     public void broadcastBlock(Block b, String signature, int nodeID, Blockchain blk) {
         for (Node node : network) {
@@ -115,12 +128,12 @@ public class Network {
      * Function updating client wallet with matching ID
      *
      * @param amount   The amount of transaction
-     * @param clientId The beneficiary's node ID
+     * @param address  The beneficiary's adress
      */
-    private void updateWalletWithID(double amount, int clientId) {
+    private void updateWalletWithAddress(double amount, String address) {
         int i = 0;
         Node associatedLightNode = network.get(i);
-        while (associatedLightNode.getNodeId() != clientId) {
+        while (associatedLightNode.getAddress() != address) {
             i++;
             associatedLightNode = network.get(i);
         }

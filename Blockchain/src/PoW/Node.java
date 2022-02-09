@@ -1,5 +1,7 @@
 package PoW;
 
+import PoS.HashUtil;
+
 import java.security.KeyPair;
 import java.security.PrivateKey;
 import java.security.PublicKey;
@@ -26,6 +28,7 @@ abstract class Node {
     protected PublicKey publicKey;
     protected PrivateKey privateKey;
     protected KeyPair keys;
+    protected String address;
 
     public Node(String name, Network network, Blockchain blk) {
         synchronized (o) {
@@ -57,4 +60,6 @@ abstract class Node {
     public PublicKey getPublicKey() {
         return publicKey;
     }
+
+    public String getAddress(){ return address;}
 }

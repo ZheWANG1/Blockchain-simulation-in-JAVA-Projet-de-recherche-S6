@@ -16,6 +16,7 @@ public class Block {
     private final int blockId;
     private final List<Transaction> transactions;
     private int nodeID;
+    private String nodeAddress;
 
 
     /**
@@ -67,6 +68,15 @@ public class Block {
      */
     public int getNodeID() {
         return nodeID;
+    }
+
+
+    /**
+     * Getter of nodeAdress
+     * @return nodeAddress
+     */
+    public String getNodeAddress() {
+        return nodeAddress;
     }
 
     /**

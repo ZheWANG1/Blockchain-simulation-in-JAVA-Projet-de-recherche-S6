@@ -34,7 +34,7 @@ public class test {
         executor.execute(m4);
 
         for (int i = 0; i < 20; i++) {
-            ln1.sendMoneyTo(0.1 * i, ln2.getNodeId());
+            ln1.sendMoneyTo(0.1 * i, ln2.getAddress());
         }
         System.out.println("All transaction are sent");
 
