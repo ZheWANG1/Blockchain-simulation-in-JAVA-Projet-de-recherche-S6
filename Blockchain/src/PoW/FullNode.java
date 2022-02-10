@@ -15,7 +15,6 @@ public class FullNode extends Miner {
      */
     public FullNode(String nom, Network network, boolean isMiner) {
         super(nom, network);
-        //network.addNode(this);
         this.isMiner = isMiner;
     }
 

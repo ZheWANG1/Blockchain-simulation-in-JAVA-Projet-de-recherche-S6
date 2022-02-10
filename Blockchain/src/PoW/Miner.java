@@ -34,14 +34,6 @@ public abstract class Miner extends Node implements Runnable {
         super(name, network, new Blockchain());
         difficulty = network.getDifficulty();
         ln = new LightNode(name, network);
-        try {
-            keys = RsaUtil.generateKeyPair();
-            publicKey = keys.getPublic();
-            privateKey = keys.getPrivate();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        network.addNode(this);
     }
 
     /**

@@ -42,6 +42,15 @@ abstract class Node {
         blockchain = blk;
         this.name = name;
         this.network = network;
+        try {
+            keys = RsaUtil.generateKeyPair();
+            publicKey = keys.getPublic();
+            privateKey = keys.getPrivate();
+            address = HashUtil.SHA256(String.valueOf(publicKey));
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        network.addNode(this);
     }
 
     public int getNodeId() {

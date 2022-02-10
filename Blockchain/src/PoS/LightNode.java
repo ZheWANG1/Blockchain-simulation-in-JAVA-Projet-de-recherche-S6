@@ -34,15 +34,6 @@ public class LightNode extends Node {
         this.wallet = INIT_WALLET;
         this.stakeAmount = 0;
         this.stakeTime = 0;
-        try {
-            keys = RsaUtil.generateKeyPair();
-            publicKey = keys.getPublic();
-            privateKey = keys.getPrivate();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        address = HashUtil.SHA256(String.valueOf(publicKey));
-        network.addNode(this);
     }
 
     public double getWallet() {
@@ -78,17 +69,16 @@ public class LightNode extends Node {
      * Function which send a transaction to the network in order to be added in all blockchain
      *
      * @param amount Amount of coin to be sent
-     * @param address Address of the receiver
+     * @param nodeId Identifier of the receiver
      */
-    public void sendMoneyTo(double amount, String address) {
+    public void sendMoneyTo(double amount, int nodeId) {
         if (wallet < amount * (1 + TRANSACTION_FEE)) {
             System.out.println(name + " Not enough bitcoin to send"); // Whatever the currency
             System.out.println("Rejected transaction");
         } else {
-            Transaction toSend = new Transaction("", this.address, address, amount, System.currentTimeMillis(), TRANSACTION_FEE, privateKey);
+            Transaction toSend = new Transaction("", this.nodeId, nodeId, amount, System.currentTimeMillis(), TRANSACTION_FEE, privateKey);
             network.broadcastTransaction(toSend);
             transactionBuffer.add(toSend);
-            System.out.println(this.name + " Broadcasted a transaction");
         }
     }
 

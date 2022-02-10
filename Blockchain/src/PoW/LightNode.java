@@ -1,7 +1,5 @@
 package PoW;
 
-import PoS.HashUtil;
-
 import java.security.PublicKey;
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
@@ -29,29 +27,20 @@ public class LightNode extends Node {
     public LightNode(String name, Network network) {
         super(name, network, new LightBlockChain());
         this.wallet = INIT_WALLET;
-        try {
-            keys = RsaUtil.generateKeyPair();
-            publicKey = keys.getPublic();
-            privateKey = keys.getPrivate();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        address = HashUtil.SHA256(String.valueOf(publicKey));
-        network.addNode(this);
     }
 
     /**
      * Function which send a transaction to the network in order to be added in all blockchain
      *
      * @param amount Amount of coin to be sent
-     * @param address Address of the receiver
+     * @param nodeId Identifier of the receiver
      */
-    public void sendMoneyTo(double amount, String address) {
+    public void sendMoneyTo(double amount, int nodeId) {
         if (wallet < amount * (1 + TRANSACTION_FEE)) {
             System.out.println(name + " Not enough bitcoin to send"); // Whatever the currency
             System.out.println("Rejected transaction");
         } else {
-            Transaction toSend = new Transaction("", this.address, address, amount, System.currentTimeMillis(), TRANSACTION_FEE, privateKey);
+            Transaction toSend = new Transaction("", this.nodeId, nodeId, amount, System.currentTimeMillis(), TRANSACTION_FEE, privateKey);
             network.broadcastTransaction(toSend);
             transactionBuffer.add(toSend);
             System.out.println(this.name + " Broadcasted a transaction");

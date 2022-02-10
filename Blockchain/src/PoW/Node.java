@@ -2,6 +2,9 @@ package PoW;
 
 import PoS.HashUtil;
 
+import PoS.HashUtil;
+import PoS.RsaUtil;
+
 import java.security.KeyPair;
 import java.security.PrivateKey;
 import java.security.PublicKey;
@@ -22,6 +25,7 @@ abstract class Node {
     private static final Object o = new Object();
     private static int cpt = 0;
     protected final int nodeId;
+    protected String nodeAdress;
     protected String name;
     protected Network network;
     protected Blockchain blockchain;
@@ -37,6 +41,15 @@ abstract class Node {
         blockchain = blk;
         this.name = name;
         this.network = network;
+        try {
+            keys = RsaUtil.generateKeyPair();
+            publicKey = keys.getPublic();
+            privateKey = keys.getPrivate();
+            nodeAdress = HashUtil.SHA256(String.valueOf(publicKey));
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        network.addNode(this);
     }
 
     /**
