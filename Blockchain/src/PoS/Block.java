@@ -82,10 +82,10 @@ public class Block {
     /**
      * Setter nodeId
      *
-     * @param Id node's id
+     * @param nodeAddress node's address
      */
-    public void setNodeID(int Id) {
-        nodeID = Id;
+    public void setNodeAddress(String nodeAddress) {
+        this.nodeAddress = nodeAddress;
     }
 
     /**

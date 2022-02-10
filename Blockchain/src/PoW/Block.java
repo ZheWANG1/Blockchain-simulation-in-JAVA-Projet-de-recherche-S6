@@ -90,6 +90,19 @@ public class Block {
     }
 
     /**
+     * Getter of nodeAdress
+     *
+     * @return nodeAddress
+     */
+    public String getNodeAddress() {
+        return nodeAddress;
+    }
+
+    public void setNodeAddress(String nodeAddress) {
+        this.nodeAddress = nodeAddress;
+    }
+
+    /**
      * Getter transaction
      *
      * @return transaction

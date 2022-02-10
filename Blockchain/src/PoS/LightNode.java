@@ -68,10 +68,10 @@ public class LightNode extends Node {
     /**
      * Function which send a transaction to the network in order to be added in all blockchain
      *
-     * @param amount Amount of coin to be sent
-     * @param nodeId Identifier of the receiver
+     * @param amount      Amount of coin to be sent
+     * @param nodeAddress Address of the receiver
      */
-    public void sendMoneyTo(double amount, int nodeId) {
+    public void sendMoneyTo(double amount, String nodeAddress) {
         if (wallet < amount * (1 + TRANSACTION_FEE)) {
             System.out.println(name + " Not enough bitcoin to send"); // Whatever the currency
             System.out.println("Rejected transaction");

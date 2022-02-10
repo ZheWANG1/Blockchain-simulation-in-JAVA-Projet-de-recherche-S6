@@ -53,7 +53,8 @@ public class Validator implements Runnable {
         if (sum == 0) // if anyone didn't de posit bitcoin as stake
             return;
 
-        double numberRandom = Math.random() * sum;
+        double numberRandom = Math.random();
+
         for (Map.Entry<LightNode, Double> entry : mapProba.entrySet()) {
             numberRandom -= entry.getValue();
             if (numberRandom < 0) {
