@@ -14,7 +14,7 @@ import java.util.Map;
  */
 public class Network {
     private final List<Node> network = new ArrayList<>();
-    private final Map<Integer, PublicKey> keyTableWithId = new HashMap<>();
+    //private final Map<Integer, PublicKey> keyTableWithId = new HashMap<>();
     private final Map<String, PublicKey> keyTable = new HashMap<>();
     private final int INIT_DIFFICULTY = 4;
     private int difficulty = INIT_DIFFICULTY;
@@ -48,16 +48,6 @@ public class Network {
      */
     public PublicKey getPkWithAdress(String adress) {
         return keyTable.get(adress);
-    }
-
-    /**
-     * Function which return the publicKey of a node
-     *
-     * @param id -> Node's identifier
-     * @return Node's public key
-     */
-    public PublicKey getPkWithID(int id) {
-        return keyTable.get(id);
     }
 
     /**

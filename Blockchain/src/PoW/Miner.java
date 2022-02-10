@@ -22,8 +22,8 @@ public abstract class Miner extends Node implements Runnable {
     private final List<Transaction> transactionInSize = new CopyOnWriteArrayList<>();
     private Transaction transactionTempo;
     private int nonce = 0;
-    private int blockRecu = 0;
-    private int transactionRecu = 0;
+    private int blockReceived = 0;
+    private int transactionReceived = 0;
     private int difficulty;
     private boolean receiptTran = false;
     private boolean receiptBlock = false;
@@ -111,8 +111,8 @@ public abstract class Miner extends Node implements Runnable {
      * @param transaction A transaction
      */
     public void receiptTransaction(Transaction transaction) {
-        this.transactionRecu++;
-        System.out.println("Transaction received by " + this.name + " = " + this.transactionRecu);
+        this.transactionReceived++;
+        System.out.println("Transaction received by " + this.name + " = " + this.transactionReceived);
         lock.lock();
         try {
             transactionTempo = transaction;
@@ -123,17 +123,17 @@ public abstract class Miner extends Node implements Runnable {
         }
     }
 
-    @Override
-    public void receiptBlock(Block b, String signature, int nodeID, Blockchain blk) {
-        blockRecu++;
-        System.out.println("Block received by " + this.name + " Total blocks received : " + blockRecu);
+
+    public void receiptBlock(Block b, String signature, String nodeAddress, Blockchain blk) {
+        blockReceived++;
+        System.out.println("Block received by " + this.name + " Total blocks received : " + blockReceived);
         updateMiner(b);
         receiptBlock = true;
         mineWithoutTransaction = false;
-        PublicKey nodePK = network.getPkWithId(nodeID);
+        PublicKey nodePK = network.getPkWithAddress(nodeAddress);
         try {
             difficulty = network.getDifficulty();
-            if (nodeID == this.nodeId) {
+            if (nodeAddress.equals(this.nodeAddress)) {
                 blockchain.addBlock(b);
                 receiptVerified();
                 System.out.println("Block received by sender");

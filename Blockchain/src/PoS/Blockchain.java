@@ -6,7 +6,7 @@ import java.util.Objects;
 import java.util.concurrent.CopyOnWriteArrayList;
 
 /**
- * Class PoW.Blockchain
+ * Class Blockchain
  * o : Object -> Used for synchronization
  * cpt : int -> Used for blockid
  * blockid : int -> Identifier of a block
@@ -16,7 +16,7 @@ public class Blockchain {
 
     private static final Object o = new Object();
     private static int cpt = 0;
-    private final int blockcid;
+    private final int blockChainId;
     private final List<Block> blkchain = new CopyOnWriteArrayList<>();
 
     /**
@@ -25,7 +25,7 @@ public class Blockchain {
      */
     public Blockchain() {
         synchronized (o) {
-            blockcid = cpt++;
+            blockChainId = cpt++;
             blkchain.add(createFirstBlock());
         }
     }
@@ -63,6 +63,7 @@ public class Blockchain {
      *
      * @return True or False depending on if the blockchain is valid or not
      */
+
     public boolean chainValidation() {
         Iterator<Block> it = blkchain.iterator();
         Block blockprev = it.next();
