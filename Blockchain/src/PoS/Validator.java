@@ -1,4 +1,4 @@
- package PoS;
+package PoS;
 
 import java.util.HashMap;
 import java.util.List;
@@ -8,18 +8,19 @@ import java.util.concurrent.locks.Condition;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
 
- /**
-  * Class Validator
-  * transactionBuffer : List<Transaction> -> A list of transactions which are waiting processing
-  * nbMax : int -> Amount maximum of transactions in a block
-  * validator : LightNode -> the light node which is elected as a validator
-  * transactionTempo : Transaction -> Currently a received transaction
-  * lock : concurrent.locks.Lock -> Technique for implement concurrent program
-  * receiptTrans : boolean -> a transaction is received
-  * condition : concurrent.locks.condition -> Technique for implement concurrent program
-  */
+/**
+ * Class Validator
+ * transactionBuffer : List<Transaction> -> A list of transactions which are waiting processing
+ * nbMax : int -> Amount maximum of transactions in a block
+ * validator : LightNode -> the light node which is elected as a validator
+ * transactionTempo : Transaction -> Currently a received transaction
+ * lock : concurrent.locks.Lock -> Technique for implement concurrent program
+ * receiptTrans : boolean -> a transaction is received
+ * condition : concurrent.locks.condition -> Technique for implement concurrent program
+ */
 public class Validator implements Runnable {
     private final static int NB_Max = 10;
+    private static final int TIME_TO_WAIT = 1000; // 1 sec
     private final List<Transaction> transactionBuffer = new CopyOnWriteArrayList<>();
     private final Lock lock = new ReentrantLock();
     private final Condition condition = lock.newCondition();
@@ -28,7 +29,6 @@ public class Validator implements Runnable {
     private Transaction transactionTempo = null;
     private boolean receiptTrans = false;
     private String name;
-    private int TIME_TO_WAIT = 1000; // 1 sec
 
     public Validator(Network network) {
         this.network = network;
@@ -56,7 +56,7 @@ public class Validator implements Runnable {
         double numberRandom = Math.random();
 
         for (Map.Entry<LightNode, Double> entry : mapProba.entrySet()) {
-            numberRandom -= entry.getValue();
+            numberRandom -= entry.getValue() / sum;
             if (numberRandom < 0) {
                 validator = entry.getKey();
                 this.name = validator.name;
@@ -80,7 +80,7 @@ public class Validator implements Runnable {
                 if (validator != null) {
                     Blockchain blkchainTempo = network.copyBlockchainFromFN();
                     long end = start;
-                    while (end-start<TIME_TO_WAIT) {
+                    while (end - start < TIME_TO_WAIT) {
                         if (!receiptTrans) {
                             condition.await();
                         }
@@ -94,10 +94,10 @@ public class Validator implements Runnable {
                         end = System.currentTimeMillis();
                     }
                     // List of transaction which can enter the next block
-                    int size_tr_in_block = 0;
-                    if (transactionBuffer.size() >= NB_Max){
-                        size_tr_in_block = NB_Max-1;
-                    }else{
+                    int size_tr_in_block;
+                    if (transactionBuffer.size() >= NB_Max) {
+                        size_tr_in_block = NB_Max - 1;
+                    } else {
                         size_tr_in_block = transactionBuffer.size();
                     }
                     List<Transaction> transactionsInBlock = transactionBuffer.subList(0, size_tr_in_block);
@@ -107,9 +107,9 @@ public class Validator implements Runnable {
                     String hash = block.getHeader().calcHeaderHash(0);
                     block.getHeader().setHeaderHash(hash);
 
-                    block.setNodeID(validator.getNodeId());
+                    block.setNodeAddress(validator.getNodeAddress());
                     System.out.println(this.name + " broadcast block");
-                    network.broadcastBlock(block, RsaUtil.sign(block.toString(), validator.privateKey), validator.nodeId, blkchainTempo);
+                    network.broadcastBlock(block, RsaUtil.sign(block.toString(), validator.privateKey), validator.nodeAddress, blkchainTempo);
                     System.out.println("Broadcast finished");
                     receiptTrans = false;
 

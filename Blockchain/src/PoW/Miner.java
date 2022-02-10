@@ -96,9 +96,9 @@ public abstract class Miner extends Node implements Runnable {
             block.getHeader().setHeaderHash(hash);
             System.out.println(name + " " + nonce + " " + hash);
             try {
-                block.setNodeID(nodeId);
-                network.broadcastBlock(block, RsaUtil.sign(block.toString(), this.privateKey), nodeId, blockchain.copyBlkch());
-                System.out.println("Block found by " + this.name + " and broadcast succesfully");
+                block.setNodeAddress(nodeAddress);
+                network.broadcastBlock(block, RsaUtil.sign(block.toString(), this.privateKey), nodeAddress, blockchain.copyBlkch());
+                System.out.println("Block found by " + this.name + " and broadcast successfully");
             } catch (Exception e) {
                 e.printStackTrace();
             }

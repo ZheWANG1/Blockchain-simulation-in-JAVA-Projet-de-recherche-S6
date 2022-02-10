@@ -3,6 +3,7 @@ package PoW;
 import java.security.PublicKey;
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
+
 /**
  * Class LightNode
  * TRANSACTION_FEE : double -> Transaction fee which apply when a lightNode send money to another LightNode
@@ -63,7 +64,7 @@ public class LightNode extends Node {
     public double getWallet() {
         return wallet;
     }
-    
+
     /**
      * Function which add or reduce a client's coins amount
      *
@@ -81,7 +82,7 @@ public class LightNode extends Node {
     }
 
     @Override
-    public void receiptBlock(Block b, String signature, int nodeID, Blockchain blk) {
+    public void receiptBlock(Block b, String signature, String nodeAddress, Blockchain blk) {
         lastBlock = b;
         ((LightBlockChain) this.blockchain).addLightHeader(b.getHeader());
     }

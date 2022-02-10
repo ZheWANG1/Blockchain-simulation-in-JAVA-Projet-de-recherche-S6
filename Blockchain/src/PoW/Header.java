@@ -3,11 +3,11 @@ package PoW;
 import java.util.Objects;
 
 /**
- * Class PoW.Header timeStamp : long -> Date of creation of the block
+ * Class Header timeStamp : long -> Date of creation of the block
  * headerHashPrev : String -> Hash of the last block's header
  * blockTransHash : String -> Hash of all transaction's information
  * headerHash : String -> Hash of the header containing all block's information
- * nonce : int -> Nonce found by a PoW.Miner/PoW.Validator ?
+ * nonce : int -> Nonce found by a Miner/Validator ?
  */
 public class Header {
 
@@ -18,7 +18,7 @@ public class Header {
     private int nonce;
 
     /**
-     * Constructor PoW.Header
+     * Constructor Header
      * Used for the Genesis block's header
      */
     public Header() {
@@ -30,7 +30,7 @@ public class Header {
     }
 
     /**
-     * Constructor PoW.Header
+     * Constructor Header
      *
      * @param blockPrev      Previous blockchain's block
      * @param blockTransHash Current block's transaction hash
@@ -43,7 +43,7 @@ public class Header {
     }
 
     /**
-     * Constructor PoW.Header
+     * Constructor Header
      *
      * @param hHp     Previous header's hash
      * @param hH      Current header's hash

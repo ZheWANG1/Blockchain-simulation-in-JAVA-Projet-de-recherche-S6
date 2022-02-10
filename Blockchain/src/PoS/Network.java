@@ -59,8 +59,7 @@ public class Network {
         network.add(node);
         //difficulty = network.size() / 20 + INIT_DIFFICULTY;
         try {
-            keyTable.put(node.getAddress(), node.getPublicKey());
-            keyTableWithId.put(node.getNodeId(), node.getPublicKey());
+            keyTable.put(node.getNodeAddress(), node.getPublicKey());
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -101,11 +100,11 @@ public class Network {
     }
 
 
-    public void broadcastBlock(Block b, String signature, int nodeID, Blockchain blk) {
+    public void broadcastBlock(Block b, String signature, String nodeAddress, Blockchain blk) {
         for (Node node : network) {
-            new Thread(() -> node.receiptBlock(b, signature, nodeID, blk)).start();
+            new Thread(() -> node.receiptBlock(b, signature, nodeAddress, blk)).start();
         }
-        System.out.println("Block " + b.getBlockId() + " found by " + nodeID + b.getHeader());
+        System.out.println("Block " + b.getBlockId() + " found by " + nodeAddress + b.getHeader());
         Block block = blk.getUpdateBlock();
         if (block != null) {
             updateAllWallet(block);
@@ -117,13 +116,13 @@ public class Network {
     /**
      * Function updating client wallet with matching ID
      *
-     * @param amount   The amount of transaction
-     * @param address  The beneficiary's adress
+     * @param amount  The amount of transaction
+     * @param address The beneficiary's adress
      */
     private void updateWalletWithAddress(double amount, String address) {
         int i = 0;
         Node associatedLightNode = network.get(i);
-        while (associatedLightNode.getAddress() != address) {
+        while (!associatedLightNode.getNodeAddress().equals(address)) {
             i++;
             associatedLightNode = network.get(i);
         }

@@ -10,14 +10,14 @@ public class FullNode extends Node {
      * Constructor FullNode
      *
      * @param nom     Name of the FullNode
-     * @param network PoS.Network of the FullNode, one node is connected to the whole network (P2P)
+     * @param network Network of the FullNode, one node is connected to the whole network (P2P)
      */
     public FullNode(String nom, Network network) {
         super(nom, network, new Blockchain());
     }
 
     @Override
-    public void receiptBlock(Block block, String signature, int nodeID, Blockchain blk) {
+    public void receiptBlock(Block block, String signature, String nodeID, Blockchain blk) {
         this.blockchain.addBlock(block);
     }
 

@@ -8,10 +8,10 @@ public class FullNode extends Miner {
     private final boolean isMiner;
 
     /**
-     * Constructor PoW.FullNode
+     * Constructor FullNode
      *
-     * @param nom     Name of the PoW.FullNode
-     * @param network PoW.Network of the PoW.FullNode, one node is connected to the whole network (P2P)
+     * @param nom     Name of the FullNode
+     * @param network Network of the FullNode, one node is connected to the whole network (P2P)
      */
     public FullNode(String nom, Network network, boolean isMiner) {
         super(nom, network);
@@ -19,9 +19,9 @@ public class FullNode extends Miner {
     }
 
     @Override
-    public void receiptBlock(Block block, String signature, int nodeID, Blockchain blk) {
+    public void receiptBlock(Block block, String signature, String nodeAddress, Blockchain blk) {
         if (isMiner) {
-            super.receiptBlock(block, signature, nodeID, blk);
+            super.receiptBlock(block, signature, nodeAddress, blk);
         } else {
             this.blockchain.addBlock(block);
         }

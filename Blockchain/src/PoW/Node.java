@@ -1,10 +1,5 @@
 package PoW;
 
-import PoS.HashUtil;
-
-import PoS.HashUtil;
-import PoS.RsaUtil;
-
 import java.security.KeyPair;
 import java.security.PrivateKey;
 import java.security.PublicKey;
@@ -24,19 +19,18 @@ import java.security.PublicKey;
 abstract class Node {
     private static final Object o = new Object();
     private static int cpt = 0;
-    protected final int nodeId;
-    protected String nodeAdress;
+    protected final int nodeID;
     protected String name;
     protected Network network;
     protected Blockchain blockchain;
     protected PublicKey publicKey;
     protected PrivateKey privateKey;
     protected KeyPair keys;
-    protected String address;
+    protected String nodeAddress;
 
     public Node(String name, Network network, Blockchain blk) {
         synchronized (o) {
-            this.nodeId = cpt++;
+            this.nodeID = cpt++;
         }
         blockchain = blk;
         this.name = name;
@@ -45,7 +39,7 @@ abstract class Node {
             keys = RsaUtil.generateKeyPair();
             publicKey = keys.getPublic();
             privateKey = keys.getPrivate();
-            nodeAdress = HashUtil.SHA256(String.valueOf(publicKey));
+            nodeAddress = HashUtil.SHA256(String.valueOf(publicKey));
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -60,10 +54,10 @@ abstract class Node {
      * @param nodeAddress Miner's id
      * @param blk         The blockchain that this miner has caught
      */
-    public abstract void receiptBlock(Block b, String signature, int nodeID, Blockchain blk);
+    public abstract void receiptBlock(Block b, String signature, String nodeAddress, Blockchain blk);
 
-    public Integer getNodeId() {
-        return nodeId;
+    public String getNodeAddress() {
+        return nodeAddress;
     }
 
     public Blockchain getBlockchain() {

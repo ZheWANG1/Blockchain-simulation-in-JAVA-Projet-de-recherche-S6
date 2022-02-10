@@ -3,7 +3,7 @@ package PoS;
 import java.security.PrivateKey;
 
 /**
- * PoW.Transaction class with transaction information stored
+ * Transaction class with transaction information stored
  */
 public class Transaction {
     private static final Object o = new Object();
@@ -77,7 +77,7 @@ public class Transaction {
     }
 
     public String toString() {
-        return "" + toAddress + " sent " + amount + "LD to " + fromAddress + " timestamp : " + timeStamp + " PoW.Transaction fee : " + transactionFee + "\n";
+        return "" + toAddress + " sent " + amount + "LD to " + fromAddress + " timestamp : " + timeStamp + " Transaction fee : " + transactionFee + "\n";
     }
 
 }

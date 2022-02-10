@@ -6,7 +6,7 @@ import java.security.NoSuchAlgorithmException;
 
 public class HashUtil {
     /**
-     * Class PoW.HashUtil
+     * Class HashUtil
      *
      * @param str string
      * @return Hashed string

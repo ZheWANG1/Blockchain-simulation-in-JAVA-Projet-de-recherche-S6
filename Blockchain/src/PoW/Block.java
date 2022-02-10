@@ -5,11 +5,11 @@ import java.util.List;
 import java.util.Objects;
 
 /**
- * header : PoW.Header -> Represent the block header.
- * blockId : int -> PoW.Block identifier.
- * transaction : List<PoW.Transaction> -> List of all the transaction encapsulated in the block.
+ * header : Header -> Represent the block header.
+ * blockId : int -> Block identifier.
+ * transaction : List<Transaction> -> List of all the transaction encapsulated in the block.
  * nodeID : int -> Represent the miner nodeID which mined or staked the block.
- * nodeAdress : String -> Represent the miner adress which mined or staked the block.
+ * nodeAddress : String -> Represent the miner address which mined or staked the block.
  */
 public class Block {
 
@@ -21,9 +21,9 @@ public class Block {
 
 
     /**
-     * Constructor PoW.Block
+     * Constructor Block
      *
-     * @param blockPrev   Last PoW.Block in the blockchain needed in order to get the hash.
+     * @param blockPrev   Last Block in the blockchain needed in order to get the hash.
      * @param transaction List of transaction to be added into a new block.
      */
     public Block(Block blockPrev, List<Transaction> transaction) {
@@ -35,7 +35,7 @@ public class Block {
     }
 
     /**
-     * Constructor PoW.Block
+     * Constructor Block
      * No parameters, used in order to create the genesis block
      */
     public Block() {
@@ -69,15 +69,6 @@ public class Block {
      */
     public int getNodeID() {
         return nodeID;
-    }
-
-
-    /**
-     * Getter of nodeAdress
-     * @return nodeAddress
-     */
-    public String getNodeAddress() {
-        return nodeAddress;
     }
 
     /**

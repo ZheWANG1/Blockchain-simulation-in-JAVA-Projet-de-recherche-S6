@@ -3,7 +3,7 @@ package PoS;
 import java.util.Objects;
 
 /**
- * Class PoW.Header timeStamp : long -> Date of creation of the block
+ * Class Header timeStamp : long -> Date of creation of the block
  * headerHashPrev : String -> Hash of the last block's header
  * blockTransHash : String -> Hash of all transaction's information
  * headerHash : String -> Hash of the header containing all block's information
@@ -43,7 +43,7 @@ public class Header {
     }
 
     /**
-     * Constructor PoW.Header
+     * Constructor Header
      *
      * @param hHp     Previous header's hash
      * @param hH      Current header's hash

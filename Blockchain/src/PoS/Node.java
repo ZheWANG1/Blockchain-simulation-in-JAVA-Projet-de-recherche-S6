@@ -16,28 +16,21 @@ import java.security.PublicKey;
  * privateKey : PrivateKey -> Node's Private Key act his password, needed to sign transaction
  * keys : KeyPair -> Node's public and private key
  */
-abstract class Node {
+public abstract class Node {
     private static final Object o = new Object();
     private static int cpt = 0;
-    protected final int nodeId;
+    protected final int nodeID;
     protected String name;
     protected Network network;
     protected Blockchain blockchain;
     protected PublicKey publicKey;
     protected PrivateKey privateKey;
     protected KeyPair keys;
-    protected String address;
+    protected String nodeAddress;
 
-    /**
-     * Constructor Node
-     *
-     * @param name    Node's name
-     * @param network Node's network
-     * @param blk     Node's blockchain
-     */
     public Node(String name, Network network, Blockchain blk) {
         synchronized (o) {
-            this.nodeId = cpt++;
+            this.nodeID = cpt++;
         }
         blockchain = blk;
         this.name = name;
@@ -46,15 +39,25 @@ abstract class Node {
             keys = RsaUtil.generateKeyPair();
             publicKey = keys.getPublic();
             privateKey = keys.getPrivate();
-            address = HashUtil.SHA256(String.valueOf(publicKey));
+            nodeAddress = HashUtil.SHA256(String.valueOf(publicKey));
         } catch (Exception e) {
             e.printStackTrace();
         }
         network.addNode(this);
     }
 
-    public int getNodeId() {
-        return nodeId;
+    /**
+     * All nodes should have the ability to receive blocks when a new block is discovered.
+     *
+     * @param b           The new block
+     * @param signature   Signature of the miner who found the new block
+     * @param nodeAddress Miner's id
+     * @param blk         The blockchain that this miner has caught
+     */
+    public abstract void receiptBlock(Block b, String signature, String nodeAddress, Blockchain blk);
+
+    public String getNodeAddress() {
+        return nodeAddress;
     }
 
     public Blockchain getBlockchain() {
@@ -64,18 +67,5 @@ abstract class Node {
     public PublicKey getPublicKey() {
         return publicKey;
     }
-
-
-    /**
-     * All nodes should have the ability to receive blocks when a new block is broadcast.
-     *
-     * @param b         The new block
-     * @param signature Signature of the miner who found the new block
-     * @param nodeID    PoW.Miner's id
-     * @param blk       The blockchain that this miner has caught
-     */
-    public abstract void receiptBlock(Block b, String signature, int nodeID, Blockchain blk);
-
-    public String getAddress(){ return address;}
 
 }
