@@ -104,7 +104,7 @@ public class Validator implements Runnable {
                     // Creation of the new block
                     Block block = new Block(blkchainTempo.getLatestBlock(), transactionsInBlock);
                     // Guess of the hash
-                    String hash = block.getHeader().calcHeaderHash(0);
+                    String hash = block.getHeader().calcHeaderHash(0, block.getFooter().getPrevHash());
                     block.getHeader().setHeaderHash(hash);
 
                     block.setNodeAddress(validator.getNodeAddress());

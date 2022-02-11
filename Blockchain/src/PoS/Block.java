@@ -13,6 +13,7 @@ import java.util.Objects;
 public class Block {
 
     private final Header header;
+    private final Footer footer;
     private final int blockId;
     private final List<Transaction> transactions;
     private int nodeID;
@@ -30,6 +31,7 @@ public class Block {
         String trs = this.toStringAllTransaction();
         String blockTransHash = HashUtil.SHA256(trs);
         header = new Header(blockPrev, blockTransHash);
+        footer = new Footer(blockPrev.getHeader().getHeaderHash());
         blockId = blockPrev.blockId + 1;
     }
 
@@ -39,6 +41,7 @@ public class Block {
      */
     public Block() {
         header = new Header();
+        footer = new Footer();
         this.transactions = new ArrayList<>();
         blockId = 0;
     }
@@ -60,6 +63,14 @@ public class Block {
     public int getBlockId() {
         return blockId;
     }
+
+    /**
+     * Getter of footer
+     *
+     * @return footer
+     */
+    public Footer getFooter() { return footer; }
+
 
     /**
      * Getter of nodeId

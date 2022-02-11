@@ -14,21 +14,9 @@ import java.util.Map;
  */
 public class Network {
     private final List<Node> network = new ArrayList<>();
-    //private final Map<Integer, PublicKey> keyTableWithId = new HashMap<>();
     private final Map<String, PublicKey> keyTable = new HashMap<>();
-    private final int INIT_DIFFICULTY = 4;
-    private int difficulty = INIT_DIFFICULTY;
 
     public Network() {
-    }
-
-    /**
-     * Getter difficulty
-     *
-     * @return difficulty
-     */
-    public int getDifficulty() {
-        return difficulty;
     }
 
     /**
@@ -57,7 +45,6 @@ public class Network {
      */
     public void addNode(Node node) {
         network.add(node);
-        //difficulty = network.size() / 20 + INIT_DIFFICULTY;
         try {
             keyTable.put(node.getNodeAddress(), node.getPublicKey());
         } catch (Exception e) {

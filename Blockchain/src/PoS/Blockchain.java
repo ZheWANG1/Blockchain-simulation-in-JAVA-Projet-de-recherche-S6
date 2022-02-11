@@ -68,7 +68,7 @@ public class Blockchain {
         Block blockprev = it.next();
         while (it.hasNext()) {
             Block block = it.next();
-            if (!Objects.equals(block.getHeader().getPrevHash(), blockprev.getHeader().getHeaderHash()))
+            if (!Objects.equals(block.getFooter().getPrevHash(), blockprev.getHeader().getHeaderHash()))
                 return false;
             blockprev = block;
         }

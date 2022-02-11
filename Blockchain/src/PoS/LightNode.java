@@ -113,7 +113,7 @@ public class LightNode extends Node {
     @Override
     public void receiptBlock(Block b, String signature, String nodeAddress, Blockchain blk) {
         lastBlock = b;
-        ((LightBlockChain) this.blockchain).addLightHeader(b.getHeader());
+        ((LightBlockChain) this.blockchain).addLightHeader(b.getHeader(), b.getFooter());
     }
 
     /**

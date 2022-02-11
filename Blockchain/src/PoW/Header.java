@@ -11,7 +11,7 @@ import java.util.Objects;
  */
 public class Header {
 
-    protected final String headerHashPrev;
+    //protected final String headerHashPrev;
     protected final String blockTransHash;
     private final long timeStamp;
     protected String headerHash;
@@ -24,9 +24,10 @@ public class Header {
     public Header() {
         timeStamp = System.currentTimeMillis();
         blockTransHash = "";
-        headerHashPrev = "";
+        headerHash = "";
+        //headerHashPrev = "";
         nonce = 0;
-        headerHash = calcHeaderHash(nonce);
+
     }
 
     /**
@@ -39,7 +40,7 @@ public class Header {
         this.blockTransHash = blockTransHash;
         timeStamp = System.currentTimeMillis(); // Get the current date
         Header h = blockPrev.getHeader(); // Get previous block's header
-        headerHashPrev = h.getHeaderHash(); // Get header's hash
+        //headerHashPrev = h.getHeaderHash(); // Get header's hash
     }
 
     /**
@@ -51,24 +52,25 @@ public class Header {
      */
     public Header(String hHp, String hH, String trsHash) {
         timeStamp = 0;
-        headerHashPrev = hHp;
         headerHash = hH;
+        //headerHashPrev = hHp;
         blockTransHash = trsHash;
     }
 
+
+    // Setter
     /**
      * Function which calculate the header's hash
      *
      * @param nonce Random string tested by a miner
      * @return Block's information hash
      */
-    public String calcHeaderHash(int nonce) {
+    public String calcHeaderHash(int nonce, String headerHashPrev) {
         this.nonce = nonce;
         String concat = headerHashPrev + timeStamp + nonce + blockTransHash; // Whole block's information
         return HashUtil.SHA256(concat); // Return the hash of the whole block's information
     }
 
-    // Setter
 
     /**
      * Getter timeStamp
@@ -84,9 +86,7 @@ public class Header {
      *
      * @return previous hash
      */
-    public String getPrevHash() {
-        return headerHashPrev;
-    }
+    //public String getPrevHash() {return headerHashPrev;}
 
     /**
      * Getter blockTransHash
@@ -121,7 +121,9 @@ public class Header {
      * @return string
      */
     public String toString() {
-        return "\nTS : " + timeStamp + "\nprevHash : " + headerHashPrev + "\nhash : " + headerHash + "\nNonce : " + nonce;
+        // return "\nTS : " + timeStamp + "\nprevHash : " + headerHashPrev + "\nhash : " + headerHash + "\nNonce : " + nonce;
+        return "\nTS : " + timeStamp  + "\nhash : " + headerHash + "\nNonce : " + nonce;
+
     }
 
     @Override
