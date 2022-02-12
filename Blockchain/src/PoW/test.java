@@ -5,11 +5,11 @@ import java.util.concurrent.Executors;
 
 public class test {
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws InterruptedException {
         simulationPoW();
     }
 
-    public static void simulationPoW() {
+    public static void simulationPoW() throws InterruptedException {
         Network bitcoin = new Network();
 
         LightNode ln1 = new LightNode("Jack", bitcoin);
@@ -36,7 +36,8 @@ public class test {
         for (int i = 0; i < 20; i++) {
             ln1.sendMoneyTo(0.1 * i, ln2.getNodeAddress());
         }
-        System.out.println("All transaction are sent");
+
+
 
 
     }

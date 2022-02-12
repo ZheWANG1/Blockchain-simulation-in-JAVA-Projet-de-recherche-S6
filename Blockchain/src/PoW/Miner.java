@@ -79,8 +79,6 @@ public abstract class Miner extends Node implements Runnable {
                     transactionInSize.add(t);
             }
         }
-        // System.out.println("Transaction buffer of "+this.name);
-        // this.printTransactionBuffer();
     }
 
     /**
@@ -88,6 +86,7 @@ public abstract class Miner extends Node implements Runnable {
      */
     public void mine() {
         Block block = new Block(blockchain.getLatestBlock(), transactionInSize);
+        block.setNodeID(this.nodeID);
         String hash = block.getHeader().calcHeaderHash(++nonce, block.getFooter().getPrevHash());
         String toBeCheckedSubList = hash.substring(0, difficulty);
         if (toBeCheckedSubList.equals("0".repeat(difficulty))) {

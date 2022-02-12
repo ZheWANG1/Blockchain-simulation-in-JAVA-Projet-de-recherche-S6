@@ -31,7 +31,7 @@ public class test {
         ln5.stake(80);
         ln6.stake(1);
 
-        for (int i = 0; i < 2; i++) {
+        for (int i = 0; i < 1; i++) {
             for (int j = 0; j < 10; j++)
                 ln1.sendMoneyTo((i + 1) * 0.1, ln2.getNodeAddress());
             try {

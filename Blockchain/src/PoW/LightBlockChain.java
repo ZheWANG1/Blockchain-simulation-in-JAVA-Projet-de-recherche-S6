@@ -28,4 +28,10 @@ public class LightBlockChain extends Blockchain {
         }
     }
 
+    public void printBlk() {
+        for (LightBlock lb : LightBlkchain) {
+            System.out.print(lb.toString());
+        }
+    }
+
 }
