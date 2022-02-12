@@ -33,7 +33,7 @@ public class LightNode extends Node {
         super(name, network, new LightBlockChain());
         this.wallet = INIT_WALLET;
         this.stakeAmount = 0;
-        this.stakeTime = 0;
+        this.stakeTime = System.currentTimeMillis();
     }
 
     public double getWallet() {

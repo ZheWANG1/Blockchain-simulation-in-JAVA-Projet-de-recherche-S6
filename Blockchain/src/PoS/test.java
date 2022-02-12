@@ -25,11 +25,11 @@ public class test {
         new Thread(validator).start();
 
         ln1.stake(20);
-        ln2.stake(5);
+        ln2.stake(25);
         ln3.stake(20);
         ln4.stake(50);
-        ln5.stake(80);
-        ln6.stake(1);
+        ln5.stake(70);
+        ln6.stake(30);
 
         for (int i = 0; i < 1; i++) {
             for (int j = 0; j < 10; j++)

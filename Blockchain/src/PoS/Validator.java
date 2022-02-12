@@ -1,8 +1,5 @@
 package PoS;
-
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.concurrent.locks.Condition;
 import java.util.concurrent.locks.Lock;
@@ -21,6 +18,7 @@ import java.util.concurrent.locks.ReentrantLock;
 public class Validator implements Runnable {
     private final static int NB_Max = 10;
     private static final int TIME_TO_WAIT = 1000; // 1 sec
+    private final static int SLOTS_MAX = 10;
     private final List<Transaction> transactionBuffer = new CopyOnWriteArrayList<>();
     private final Lock lock = new ReentrantLock();
     private final Condition condition = lock.newCondition();
@@ -39,20 +37,56 @@ public class Validator implements Runnable {
      */
     public void chooseValidator() {
         List<Node> listNode = network.getNetwork(); // List of nodes in the network
-
         Map<LightNode, Double> mapProba = new HashMap<>();
         for (Node node : listNode) { // For each node in the network
             if (node instanceof LightNode) { // If found node is an LightNode
                 double stakeAmount = ((LightNode) node).getStakeAmount(); // Get LightNode's stakeAmount
                 double stakeTime = System.currentTimeMillis() - ((LightNode) node).getStakeTime(); // Get LightNode's stakeTime (How long the node have been Staking)
-                mapProba.put((LightNode) node, stakeAmount * stakeTime);
+                mapProba.put((LightNode) node, stakeAmount * (stakeTime));
             }
         }
         double sum = mapProba.values().stream().mapToDouble(v -> v).sum();
+        int number_of_slots = 0;
+        for(Node node : listNode){
+            if (node instanceof LightNode) {
+                number_of_slots += (mapProba.get(node)/sum)*10;
+            }
+        }
+        System.out.println("Slots : " + number_of_slots);
+        int node_slots = 0;
+        List<LightNode> lightNodeSlots = new ArrayList<>(number_of_slots);
+        for(int j = 0; j < number_of_slots; j++)
+            lightNodeSlots.add(null);
+        for(Node node : listNode){
+            if (node instanceof LightNode) {
+                node_slots = (int)((mapProba.get(node)/sum)*10);
+                int slot_index = 0;
+                for(int i = 0; i < node_slots; i++){
+                    do{
+                        slot_index = (int)(Math.random()*number_of_slots);
+                    }
+                    while (lightNodeSlots.get(slot_index) != null);
+                    lightNodeSlots.set(slot_index, (LightNode) node);
+                }
+            }
+        }
+        System.out.print("\n[");
+        for(LightNode ln : lightNodeSlots){
+            System.out.print(ln.name + " ");
+        }
+        System.out.print("]\n");
 
-        if (sum == 0) // if anyone didn't de posit bitcoin as stake
+
+        if (sum == 0) // if anyone didn't deposit bitcoin as stake
             return;
 
+        int choosen_node_index = (int)(Math.random()*number_of_slots);
+        validator = lightNodeSlots.get(choosen_node_index);
+        this.name = validator.name;
+        System.out.println(validator.name + " is chosen");
+        validator.setValidator(this);
+
+        /*
         double numberRandom = Math.random();
 
         for (Map.Entry<LightNode, Double> entry : mapProba.entrySet()) {
@@ -65,6 +99,7 @@ public class Validator implements Runnable {
                 break;
             }
         }
+        */
     }
 
     public boolean verifySignature(Transaction transaction) throws Exception {
