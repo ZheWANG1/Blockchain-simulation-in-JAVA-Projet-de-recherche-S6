@@ -1,5 +1,8 @@
 package PoW;
 
+import Blockchain.*;
+import MessageTypes.Transaction;
+import Network.*;
 import java.security.PublicKey;
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;

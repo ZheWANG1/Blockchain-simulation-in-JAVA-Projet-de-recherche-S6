@@ -1,4 +1,7 @@
-package PoS;
+package MessageTypes;
+
+import Utils.HashUtil;
+import Utils.RsaUtil;
 
 import java.security.PrivateKey;
 

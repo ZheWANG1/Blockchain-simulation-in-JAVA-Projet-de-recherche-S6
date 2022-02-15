@@ -1,5 +1,9 @@
 package PoS;
 
+import Blockchain.*;
+import MessageTypes.Transaction;
+import Network.*;
+
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
 

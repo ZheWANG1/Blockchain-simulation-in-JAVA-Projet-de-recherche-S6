@@ -1,4 +1,7 @@
-package PoW;
+package Blockchain;
+
+import Utils.HashUtil;
+import MessageTypes.Transaction;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -57,13 +60,6 @@ public class Block {
     }
 
     /**
-     * Getter of footer
-     *
-     * @return footer
-     */
-    public Footer getFooter() { return footer; }
-
-    /**
      * Getter of blockId
      *
      * @return blockId
@@ -71,6 +67,14 @@ public class Block {
     public int getBlockId() {
         return blockId;
     }
+
+    /**
+     * Getter of footer
+     *
+     * @return footer
+     */
+    public Footer getFooter() { return footer; }
+
 
     /**
      * Getter of nodeId
@@ -81,14 +85,6 @@ public class Block {
         return nodeID;
     }
 
-    /**
-     * Setter nodeId
-     *
-     * @param Id node's id
-     */
-    public void setNodeID(int Id) {
-        nodeID = Id;
-    }
 
     /**
      * Getter of nodeAdress
@@ -99,6 +95,11 @@ public class Block {
         return nodeAddress;
     }
 
+    /**
+     * Setter nodeId
+     *
+     * @param nodeAddress node's address
+     */
     public void setNodeAddress(String nodeAddress) {
         this.nodeAddress = nodeAddress;
     }
@@ -152,4 +153,7 @@ public class Block {
         }
     }
 
+    public void setNodeID(int nodeID) {
+        this.nodeID = nodeID;
+    }
 }

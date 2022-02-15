@@ -1,4 +1,4 @@
-package PoW;
+package Blockchain;
 
 import java.util.Iterator;
 import java.util.List;
@@ -16,7 +16,7 @@ public class Blockchain {
 
     private static final Object o = new Object();
     private static int cpt = 0;
-    private final int blockcid;
+    private final int blockChainId;
     private final List<Block> blkchain = new CopyOnWriteArrayList<>();
 
     /**
@@ -25,7 +25,7 @@ public class Blockchain {
      */
     public Blockchain() {
         synchronized (o) {
-            blockcid = cpt++;
+            blockChainId = cpt++;
             blkchain.add(createFirstBlock());
         }
     }
@@ -33,7 +33,7 @@ public class Blockchain {
     /**
      * Function which create the first blockchain's block
      *
-     * @return genesisBlock First block of the blockchain
+     * @return genesisBlock -> First block of the blockchain
      */
     public Block createFirstBlock() {
         return new Block();
@@ -51,7 +51,7 @@ public class Blockchain {
     /**
      * Function which add a block into the blockchain
      *
-     * @param block new block
+     * @param block block
      */
     public synchronized void addBlock(Block block) {
         blkchain.add(block);
@@ -62,6 +62,7 @@ public class Blockchain {
      *
      * @return True or False depending on if the blockchain is valid or not
      */
+
     public boolean chainValidation() {
         Iterator<Block> it = blkchain.iterator();
         Block blockprev = it.next();
@@ -109,9 +110,13 @@ public class Blockchain {
      * @return blockchain's copy
      */
     public Blockchain copyBlkch() {
+        /*
+            Function which return the blockchain's copy
+         */
         Blockchain blk = new Blockchain();
         blk.blkchain.clear();
         blk.blkchain.addAll(this.blkchain);
         return blk;
     }
+
 }

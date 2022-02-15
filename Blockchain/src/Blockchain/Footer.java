@@ -1,4 +1,4 @@
-package PoS;
+package Blockchain;
 
 public class Footer {
 

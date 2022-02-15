@@ -1,5 +1,7 @@
 package PoS;
 
+import Network.Network;
+import Network.Validator;
 public class test {
 
     public static void main(String[] args) {

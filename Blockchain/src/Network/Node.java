@@ -1,4 +1,8 @@
-package PoS;
+package Network;
+import Blockchain.*;
+import Blockchain.Blockchain;
+import Utils.HashUtil;
+import Utils.RsaUtil;
 
 import java.security.KeyPair;
 import java.security.PrivateKey;
@@ -20,7 +24,7 @@ public abstract class Node {
     private static final Object o = new Object();
     private static int cpt = 0;
     protected final int nodeID;
-    protected String name;
+    public String name;
     protected Network network;
     protected Blockchain blockchain;
     protected PublicKey publicKey;
@@ -68,4 +72,7 @@ public abstract class Node {
         return publicKey;
     }
 
+    public int getNodeID() {
+        return nodeID;
+    }
 }

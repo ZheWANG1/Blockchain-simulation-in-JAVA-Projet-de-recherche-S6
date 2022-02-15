@@ -1,5 +1,8 @@
 package PoS;
 
+import Blockchain.*;
+import Network.*;
+
 /**
  * Class FullNode extending Node
  * This class simulate a node which download the whole blockchain acting as one of the network's server.
@@ -20,5 +23,4 @@ public class FullNode extends Node {
     public void receiptBlock(Block block, String signature, String nodeID, Blockchain blk) {
         this.blockchain.addBlock(block);
     }
-
 }

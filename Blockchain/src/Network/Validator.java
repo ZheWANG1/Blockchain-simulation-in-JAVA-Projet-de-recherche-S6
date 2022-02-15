@@ -1,4 +1,9 @@
-package PoS;
+package Network;
+import Blockchain.Blockchain;
+import MessageTypes.Transaction;
+import PoS.LightNode;
+import Utils.RsaUtil;
+import Blockchain.*;
 import java.util.*;
 import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.concurrent.locks.Condition;
@@ -103,7 +108,7 @@ public class Validator implements Runnable {
     }
 
     public boolean verifySignature(Transaction transaction) throws Exception {
-        return RsaUtil.verify(transaction.toString(), transaction.getSignature(), network.getPkWithAdress(transaction.getFromAddress()));
+        return RsaUtil.verify(transaction.toString(), transaction.getSignature(), network.getPkWithAddress(transaction.getFromAddress()));
     }
 
     public void validate() {

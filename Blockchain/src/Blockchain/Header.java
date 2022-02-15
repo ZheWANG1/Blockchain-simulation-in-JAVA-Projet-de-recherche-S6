@@ -1,4 +1,6 @@
-package PoW;
+package Blockchain;
+
+import Utils.HashUtil;
 
 import java.util.Objects;
 

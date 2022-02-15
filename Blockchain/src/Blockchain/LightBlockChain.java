@@ -1,7 +1,4 @@
-package PoS;
-
-
-import PoW.LightBlock;
+package Blockchain;
 
 import java.util.ArrayList;
 
@@ -25,7 +22,7 @@ public class LightBlockChain extends Blockchain {
         String headerHash = h.getHeaderHash();
         String previousHash = f.getPrevHash();
         String trsHash = h.getBlockTransHash();
-        PoW.LightBlock ln = new PoW.LightBlock(previousHash, headerHash, trsHash);
+        LightBlock ln = new LightBlock(previousHash, headerHash, trsHash);
         LightBlkchain.add(ln);
         while (LightBlkchain.size() >= 11) {
             LightBlkchain.remove(0);

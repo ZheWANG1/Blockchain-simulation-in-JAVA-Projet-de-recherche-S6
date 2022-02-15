@@ -1,6 +1,11 @@
 package PoW;
 
+import Blockchain.*;
+import Network.Network;
+import Network.Node;
+import Utils.RsaUtil;
 import java.security.PublicKey;
+import MessageTypes.Transaction;
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.concurrent.locks.Condition;
