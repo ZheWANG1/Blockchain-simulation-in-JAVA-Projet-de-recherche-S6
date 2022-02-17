@@ -8,23 +8,17 @@ import java.security.PrivateKey;
 /**
  * Transaction class with transaction information stored
  */
-public class Transaction {
-    private static final Object o = new Object();
-    private static int cpt = 0;
+public class Transaction{
     private final String transactionHash;
     private final String fromAddress;
     private final String toAddress;
     private final double amount;
     private final double transactionFee;
     private final long timeStamp;
-    private final int transactionID;
     private String signature;
     private boolean confirmedTrans = false;
 
     public Transaction(String transaction, String fromAddress, String toAddress, double amount, long timeStamp, double transactionFee, PrivateKey pv) {
-        synchronized (o) {
-            transactionID = cpt++;
-        }
         this.fromAddress = fromAddress;
         this.toAddress = toAddress;
         this.amount = amount;

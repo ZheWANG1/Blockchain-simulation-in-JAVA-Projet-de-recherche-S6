@@ -3,13 +3,11 @@ package PoS;
 import Blockchain.Block;
 import Blockchain.Blockchain;
 import Blockchain.LightBlockChain;
+import MessageTypes.Message;
 import MessageTypes.Transaction;
 import Network.Network;
 import Network.Node;
 import Network.Validator;
-
-import java.util.List;
-import java.util.concurrent.CopyOnWriteArrayList;
 
 /**
  * Class LightNode
@@ -28,7 +26,6 @@ public class LightNode extends Node {
     private double stakeAmount;
     private double stakeTime;
     private Block lastBlock;
-    private List<Transaction> transactionBuffer = new CopyOnWriteArrayList<>();
     private Validator validator = null;
 
     /**
@@ -84,29 +81,13 @@ public class LightNode extends Node {
             System.out.println(name + " Not enough bitcoin to send"); // Whatever the currency
             System.out.println("Rejected transaction");
         } else {
-            Transaction toSend = new Transaction("", this.nodeAddress, nodeAddress, amount, System.currentTimeMillis(), TRANSACTION_FEE, privateKey);
-            network.broadcastTransaction(toSend);
-            transactionBuffer.add(toSend);
+            Transaction toSend = new Transaction("", this.getNodeAddress(), nodeAddress, amount, System.currentTimeMillis(), TRANSACTION_FEE, privateKey);
+            Message m = new Message(this.nodeAddress, nodeAddress, System.currentTimeMillis(), 0, toSend);
+            network.broadcastMessage(m);
+            System.out.println(this.name + " Broadcasted a transaction");
         }
     }
-
-    /**
-     * Function which check that all the transaction sent are validated
-     *
-     * @param b Block to analyze (Most likely the last verified block)
-     */
-    public void checkIfAllTransSent(Block b) {
-        List<Transaction> transNotSent = new CopyOnWriteArrayList<>();
-        for (Transaction t : transactionBuffer) {
-            List<Transaction> trans = b.getTransaction();
-            if (!trans.contains(t) && !t.isConfirmedTrans()) {
-                network.broadcastTransaction(t);
-                transNotSent.add(t);
-            }
-        }
-        transactionBuffer = transNotSent;
-    }
-
+    
     /**
      * Function which add or reduce a client's coins amount
      *

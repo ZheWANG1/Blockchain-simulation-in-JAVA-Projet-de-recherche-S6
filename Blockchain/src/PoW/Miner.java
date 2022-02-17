@@ -1,5 +1,5 @@
 package PoW;
-
+import MessageTypes.Message;
 import Blockchain.Block;
 import Blockchain.Blockchain;
 import MessageTypes.Transaction;
@@ -8,6 +8,7 @@ import Network.Node;
 import Utils.RsaUtil;
 
 import java.security.PublicKey;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.concurrent.locks.Condition;
@@ -103,7 +104,11 @@ public abstract class Miner extends Node implements Runnable {
             System.out.println(name + " " + nonce + " " + hash);
             try {
                 block.setNodeAddress(nodeAddress);
-                network.broadcastBlock(block, RsaUtil.sign(block.toString(), this.privateKey), nodeAddress, blockchain.copyBlkch());
+                List<Object> messageContent = new ArrayList<>();
+                messageContent.add(block);
+                messageContent.add(this.blockchain.copyBlkch());
+                Message m = new Message(this.nodeAddress,"ALL",RsaUtil.sign(block.toString(), this.privateKey),System.currentTimeMillis(), 1, messageContent);
+                network.broadcastMessage(m);
                 System.out.println("Block found by " + this.name + " and broadcast successfully");
             } catch (Exception e) {
                 e.printStackTrace();

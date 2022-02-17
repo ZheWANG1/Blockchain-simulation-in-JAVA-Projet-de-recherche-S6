@@ -1,5 +1,5 @@
 package Network;
-
+import MessageTypes.Message;
 import Blockchain.Block;
 import Blockchain.Blockchain;
 import MessageTypes.Transaction;
@@ -71,7 +71,12 @@ public class Network {
             e.printStackTrace();
         }
     }
-
+    
+    public void broadcastMessage(Message m){
+        for (Node n: network){
+            n.receiptMessage(m);
+        }
+    }
     /**
      * Broadcast a transaction in the network
      *

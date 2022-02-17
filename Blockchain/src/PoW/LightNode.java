@@ -6,8 +6,10 @@ import Blockchain.LightBlockChain;
 import MessageTypes.Transaction;
 import Network.Network;
 import Network.Node;
+import Utils.RsaUtil;
 
 import java.security.PublicKey;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
 
@@ -24,7 +26,6 @@ public class LightNode extends Node {
     private final static int INIT_WALLET = 100;
     private double wallet;
     private Block lastBlock;
-    private List<Transaction> transactionBuffer = new CopyOnWriteArrayList<>();
 
     /**
      * Constructor LightNode
@@ -49,25 +50,19 @@ public class LightNode extends Node {
             System.out.println("Rejected transaction");
         } else {
             Transaction toSend = new Transaction("", this.getNodeAddress(), address, amount, System.currentTimeMillis(), TRANSACTION_FEE, privateKey);
-            network.broadcastTransaction(toSend);
-            transactionBuffer.add(toSend);
+            Message m = null;
+            try {
+                List<Object> listOfContent = new ArrayList<>();
+                listOfContent.add(toSend);
+                m = new Message(nodeAddress, address, RsaUtil.sign(toSend.toString(), this.privateKey),System.currentTimeMillis(),0, listOfContent);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            network.broadcastMessage(m);
             System.out.println(this.name + " Broadcasted a transaction");
         }
     }
-
-    public void checkIfAllTransSent(Block b) {
-        List<Transaction> transNotSent = new CopyOnWriteArrayList<>();
-        for (Transaction t : transactionBuffer) {
-            List<Transaction> trans = b.getTransaction();
-            if (trans.contains(t) || t.isConfirmedTrans()) {
-                continue;
-            }
-            network.broadcastTransaction(t);
-            transNotSent.add(t);
-        }
-        transactionBuffer = transNotSent;
-    }
-
+    
     public double getWallet() {
         return wallet;
     }
