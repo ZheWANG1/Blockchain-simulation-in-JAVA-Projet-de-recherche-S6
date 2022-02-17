@@ -21,10 +21,12 @@ import java.util.List;
  */
 public class ValidatorNode extends FullNode {
     public static int MAX_TRANSACTION = 10;
+    public static double INVEST_RATE = 0.30;
     private final ArrayList<Transaction> pendingTransaction = new ArrayList<>();
     private final ArrayList<Transaction> fraudulentTransaction = new ArrayList<>();
     private final LightNode fullNodeAccount;
     private final ArrayList<String> investorList = new ArrayList<>();
+
 
     /**
      * Constructor FullNode
@@ -72,6 +74,39 @@ public class ValidatorNode extends FullNode {
     public void addInvestor(String investorAdress) {
     }
 
-    public void delInvestor(String investorAdress) {
+    public void forgeBlock() {
+        List<Transaction> inBlockTransaction = new ArrayList<>();
+        for (int i = 0; (i < MAX_TRANSACTION) && (i < pendingTransaction.size()); i++) {
+            inBlockTransaction.add(pendingTransaction.get(i));
+        }
+        Block forgedBlock = new Block(this.blockchain.getLatestBlock(), inBlockTransaction);
+        forgedBlock.setNodeID(this.nodeID);
+        System.out.println("Block has been forged by " + this.name);
+        System.out.print("Broadcasting");
+        System.out.println(".");
+        System.out.println("..");
+        System.out.println("...");
+        try {
+            network.broadcastBlock(forgedBlock, RsaUtil.sign(forgedBlock.toString(), this.privateKey), this.nodeAddress, this.blockchain);
+            System.out.println("Block forged and broadcast successfully by " + this.name);
+        } catch (Exception e) {
+            e.printStackTrace();
+            System.out.println("Error signing");
+        }
     }
-}
+
+    public void getAndBroadcastReward(double amount) {
+        double otherNodeReward = amount * INVEST_RATE;
+        double thisNodeReward = amount - otherNodeReward;
+        this.fullNodeAccount.receiptCoin(thisNodeReward);
+        // Ajouter une méthode générique pour tout types de message...
+
+        public void delInvestor (String investorAdress){
+        }
+        public void addInvestor (String investorAdress){
+            this.investorList.add(investorAdress);
+        }
+        public void delInvestor (String investorAdress){
+            this.investorList.remove(investorAdress);
+        }
+    }
