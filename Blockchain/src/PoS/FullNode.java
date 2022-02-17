@@ -1,7 +1,9 @@
 package PoS;
 
-import Blockchain.*;
-import Network.*;
+import Blockchain.Block;
+import Blockchain.Blockchain;
+import Network.Network;
+import Network.Node;
 
 /**
  * Class FullNode extending Node

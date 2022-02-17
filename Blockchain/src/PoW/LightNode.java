@@ -1,8 +1,12 @@
 package PoW;
 
-import Blockchain.*;
+import Blockchain.Block;
+import Blockchain.Blockchain;
+import Blockchain.LightBlockChain;
 import MessageTypes.Transaction;
-import Network.*;
+import Network.Network;
+import Network.Node;
+
 import java.security.PublicKey;
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
@@ -93,8 +97,6 @@ public class LightNode extends Node {
     public Block getLastBlock() {
         return lastBlock;
     }
-
-
 
 
 }

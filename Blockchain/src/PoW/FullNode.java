@@ -1,7 +1,9 @@
 package PoW;
-import Blockchain.*;
-import Network.*;
-import MessageTypes.Transaction;
+
+import Blockchain.Block;
+import Blockchain.Blockchain;
+import Network.Network;
+
 /**
  * Class FullNode extending Miner
  * This class simulate a node which download the whole blockchain acting as one of the network's server.

@@ -1,5 +1,6 @@
 package Network;
-import Blockchain.*;
+
+import Blockchain.Block;
 import Blockchain.Blockchain;
 import Utils.HashUtil;
 import Utils.RsaUtil;

@@ -1,10 +1,15 @@
 package Network;
+
+import Blockchain.Block;
 import Blockchain.Blockchain;
 import MessageTypes.Transaction;
 import PoS.LightNode;
 import Utils.RsaUtil;
-import Blockchain.*;
-import java.util.*;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.concurrent.locks.Condition;
 import java.util.concurrent.locks.Lock;
@@ -52,23 +57,23 @@ public class Validator implements Runnable {
         }
         double sum = mapProba.values().stream().mapToDouble(v -> v).sum();
         int number_of_slots = 0;
-        for(Node node : listNode){
+        for (Node node : listNode) {
             if (node instanceof LightNode) {
-                number_of_slots += (mapProba.get(node)/sum)*10;
+                number_of_slots += (mapProba.get(node) / sum) * 10;
             }
         }
         System.out.println("Slots : " + number_of_slots);
-        int node_slots = 0;
+        int node_slots;
         List<LightNode> lightNodeSlots = new ArrayList<>(number_of_slots);
-        for(int j = 0; j < number_of_slots; j++)
+        for (int j = 0; j < number_of_slots; j++)
             lightNodeSlots.add(null);
-        for(Node node : listNode){
+        for (Node node : listNode) {
             if (node instanceof LightNode) {
-                node_slots = (int)((mapProba.get(node)/sum)*10);
-                int slot_index = 0;
-                for(int i = 0; i < node_slots; i++){
-                    do{
-                        slot_index = (int)(Math.random()*number_of_slots);
+                node_slots = (int) ((mapProba.get(node) / sum) * 10);
+                int slot_index;
+                for (int i = 0; i < node_slots; i++) {
+                    do {
+                        slot_index = (int) (Math.random() * number_of_slots);
                     }
                     while (lightNodeSlots.get(slot_index) != null);
                     lightNodeSlots.set(slot_index, (LightNode) node);
@@ -76,7 +81,7 @@ public class Validator implements Runnable {
             }
         }
         System.out.print("\n[");
-        for(LightNode ln : lightNodeSlots){
+        for (LightNode ln : lightNodeSlots) {
             System.out.print(ln.name + " ");
         }
         System.out.print("]\n");
@@ -85,8 +90,8 @@ public class Validator implements Runnable {
         if (sum == 0) // if anyone didn't deposit bitcoin as stake
             return;
 
-        int choosen_node_index = (int)(Math.random()*number_of_slots);
-        validator = lightNodeSlots.get(choosen_node_index);
+        int chosen_node_index = (int) (Math.random() * number_of_slots);
+        validator = lightNodeSlots.get(chosen_node_index);
         this.name = validator.name;
         System.out.println(validator.name + " is chosen");
         validator.setValidator(this);

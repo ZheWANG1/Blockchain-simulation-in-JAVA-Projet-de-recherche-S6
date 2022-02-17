@@ -1,8 +1,12 @@
 package PoS;
 
-import Blockchain.*;
+import Blockchain.Block;
+import Blockchain.Blockchain;
+import Blockchain.LightBlockChain;
 import MessageTypes.Transaction;
-import Network.*;
+import Network.Network;
+import Network.Node;
+import Network.Validator;
 
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;

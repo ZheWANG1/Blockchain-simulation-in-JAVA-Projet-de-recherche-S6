@@ -2,7 +2,7 @@ package Blockchain;
 
 public class Footer {
 
-    private String prevHash;
+    private final String prevHash;
 
     public Footer(String prevHash) {
         this.prevHash = prevHash;

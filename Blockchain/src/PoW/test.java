@@ -1,16 +1,17 @@
 package PoW;
-import Blockchain.*;
+
 import Network.Network;
+
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 public class test {
 
-    public static void main(String[] args) throws InterruptedException {
+    public static void main(String[] args) {
         simulationPoW();
     }
 
-    public static void simulationPoW() throws InterruptedException {
+    public static void simulationPoW() {
         Network bitcoin = new Network();
 
         LightNode ln1 = new LightNode("Jack", bitcoin);
@@ -37,9 +38,5 @@ public class test {
         for (int i = 0; i < 20; i++) {
             ln1.sendMoneyTo(0.1 * i, ln2.getNodeAddress());
         }
-
-
-
-
     }
 }

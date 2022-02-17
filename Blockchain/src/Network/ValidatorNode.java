@@ -1,11 +1,11 @@
 package Network;
 
-import Blockchain.*;
+import Blockchain.Block;
 import MessageTypes.Transaction;
-import Network.*;
 import PoS.FullNode;
 import PoS.LightNode;
 import Utils.RsaUtil;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -20,11 +20,12 @@ import java.util.List;
    la FullNode sera alors recompensée et les LightNode receveront une part du gain
  */
 public class ValidatorNode extends FullNode {
-    private ArrayList<Transaction> pendingTransaction = new ArrayList<>();
-    private ArrayList<Transaction> fraudulentTransaction = new ArrayList<>();
-    private LightNode fullNodeAccount;
-    private ArrayList<String> investorList = new ArrayList<>();
     public static int MAX_TRANSACTION = 10;
+    private final ArrayList<Transaction> pendingTransaction = new ArrayList<>();
+    private final ArrayList<Transaction> fraudulentTransaction = new ArrayList<>();
+    private final LightNode fullNodeAccount;
+    private final ArrayList<String> investorList = new ArrayList<>();
+
     /**
      * Constructor FullNode
      *
@@ -38,11 +39,11 @@ public class ValidatorNode extends FullNode {
 
     public void receiptTransaction(Transaction t) throws Exception {
         boolean transactionStatus = verifyTransaction(t);
-        if (transactionStatus){
-            System.out.println("Transaction" + t.getTransactionID() +" receipt by "+this.name+" and accepted");
+        if (transactionStatus) {
+            System.out.println("Transaction" + t.getTransactionID() + " receipt by " + this.name + " and accepted");
             pendingTransaction.add(t);
-        }else{
-            System.out.println("Transaction" + t.getTransactionID() +" receipt by "+this.name+" but refused (Probably fraudulent)");
+        } else {
+            System.out.println("Transaction" + t.getTransactionID() + " receipt by " + this.name + " but refused (Probably fraudulent)");
             fraudulentTransaction.add(t);
         }
     }
@@ -51,19 +52,26 @@ public class ValidatorNode extends FullNode {
         return RsaUtil.verify(t.toString(), t.getSignature(), network.getPkWithAddress(t.getFromAddress()));
     }
 
-    public void updateTransactionList(Block b){
+    public void updateTransactionList(Block b) {
         List<Transaction> lt = b.getTransaction();
-        for (Transaction t: lt){
+        for (Transaction t : lt) {
             pendingTransaction.remove(t);
         }
-        System.out.println("Transaction list of "+this.name+ " succesfully updated");
+        System.out.println("Transaction list of " + this.name + " succesfully updated");
 
     }
-    public void forgeBlock(){
-        for(int i = 0; i < MAX_TRANSACTION; i++);
+
+    public void forgeBlock() {
+        for (int i = 0; i < MAX_TRANSACTION; i++) ;
 
     }
-    public void getAndBroadcastReward(double amount){}
-    public void addInvestor(String investorAdress){}
-    public void delInvestor(String investorAdress){}
+
+    public void getAndBroadcastReward(double amount) {
+    }
+
+    public void addInvestor(String investorAdress) {
+    }
+
+    public void delInvestor(String investorAdress) {
+    }
 }

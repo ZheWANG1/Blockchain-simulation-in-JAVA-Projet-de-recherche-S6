@@ -1,7 +1,7 @@
 package Blockchain;
 
-import Utils.HashUtil;
 import MessageTypes.Transaction;
+import Utils.HashUtil;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -73,7 +73,9 @@ public class Block {
      *
      * @return footer
      */
-    public Footer getFooter() { return footer; }
+    public Footer getFooter() {
+        return footer;
+    }
 
 
     /**
@@ -85,6 +87,9 @@ public class Block {
         return nodeID;
     }
 
+    public void setNodeID(int nodeID) {
+        this.nodeID = nodeID;
+    }
 
     /**
      * Getter of nodeAdress
@@ -128,7 +133,7 @@ public class Block {
 
     @Override
     public String toString() {
-        return blockId+header.toString();
+        return blockId + header.toString();
     }
 
     /**
@@ -151,9 +156,5 @@ public class Block {
         for (Transaction transaction : transactions) {
             System.out.print(transaction.toString());
         }
-    }
-
-    public void setNodeID(int nodeID) {
-        this.nodeID = nodeID;
     }
 }

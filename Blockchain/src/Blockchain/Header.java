@@ -61,6 +61,7 @@ public class Header {
 
 
     // Setter
+
     /**
      * Function which calculate the header's hash
      *
@@ -124,7 +125,7 @@ public class Header {
      */
     public String toString() {
         // return "\nTS : " + timeStamp + "\nprevHash : " + headerHashPrev + "\nhash : " + headerHash + "\nNonce : " + nonce;
-        return "\nTS : " + timeStamp  + "\nhash : " + headerHash + "\nNonce : " + nonce;
+        return "\nTS : " + timeStamp + "\nhash : " + headerHash + "\nNonce : " + nonce;
 
     }
 

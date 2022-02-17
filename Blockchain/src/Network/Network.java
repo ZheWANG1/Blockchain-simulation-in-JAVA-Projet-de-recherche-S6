@@ -1,10 +1,11 @@
 package Network;
 
-import PoW.Miner;
-import Blockchain.*;
+import Blockchain.Block;
+import Blockchain.Blockchain;
+import MessageTypes.Transaction;
 import PoS.FullNode;
 import PoS.LightNode;
-import MessageTypes.Transaction;
+import PoW.Miner;
 
 import java.security.PublicKey;
 import java.util.ArrayList;
@@ -136,8 +137,8 @@ public class Network {
         }
         if (associatedLightNode instanceof LightNode)
             ((LightNode) associatedLightNode).receiptCoin(amount);
-        if (associatedLightNode instanceof FullNode)
-            ((Miner) associatedLightNode).getLn().receiptCoin(amount);
+        if (associatedLightNode instanceof PoW.FullNode)
+            ((PoW.FullNode) associatedLightNode).getLn().receiptCoin(amount);
     }
 
     /**
