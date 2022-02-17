@@ -10,6 +10,7 @@ import Network.Node;
  * This class simulate a node which download the whole blockchain acting as one of the network's server.
  */
 public class FullNode extends Node {
+    
 
     /**
      * Constructor FullNode

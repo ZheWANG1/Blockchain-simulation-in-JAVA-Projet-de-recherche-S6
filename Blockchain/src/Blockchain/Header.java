@@ -52,7 +52,7 @@ public class Header {
      * @param hH      Current header's hash
      * @param trsHash Current transaction's hash
      */
-    public Header(String hHp, String hH, String trsHash) {
+    public Header(String hHp, String trsHash) {
         timeStamp = 0;
         headerHash = hH;
         //headerHashPrev = hHp;
@@ -68,7 +68,7 @@ public class Header {
      * @param nonce Random string tested by a miner
      * @return Block's information hash
      */
-    public String calcHeaderHash(int nonce, String headerHashPrev) {
+    public String calcBlockHash(int nonce, String headerHashPrev) {
         this.nonce = nonce;
         String concat = headerHashPrev + timeStamp + nonce + blockTransHash; // Whole block's information
         return HashUtil.SHA256(concat); // Return the hash of the whole block's information

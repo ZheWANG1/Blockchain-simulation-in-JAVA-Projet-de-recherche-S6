@@ -94,7 +94,7 @@ public abstract class Miner extends Node implements Runnable {
     public void mine() {
         Block block = new Block(blockchain.getLatestBlock(), transactionInSize);
         block.setNodeID(this.nodeID);
-        String hash = block.getHeader().calcHeaderHash(++nonce, block.getFooter().getPrevHash());
+        String hash = block.getHeader().calcBlockHash(++nonce, block.getHeader().getPrevHash());
         String toBeCheckedSubList = hash.substring(0, difficulty);
         if (toBeCheckedSubList.equals("0".repeat(difficulty))) {
             receiptBlock = true;

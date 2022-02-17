@@ -25,8 +25,7 @@ public class ValidatorNode extends FullNode {
     private final ArrayList<Transaction> pendingTransaction = new ArrayList<>();
     private final ArrayList<Transaction> fraudulentTransaction = new ArrayList<>();
     private final LightNode fullNodeAccount;
-    private final ArrayList<String> investorList = new ArrayList<>();
-
+    private final Map<String, Double> investorList = new HashMap<>();
 
     /**
      * Constructor FullNode
