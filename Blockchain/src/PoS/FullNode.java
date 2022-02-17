@@ -2,6 +2,7 @@ package PoS;
 
 import Blockchain.Block;
 import Blockchain.Blockchain;
+import MessageTypes.Transaction;
 import Network.Network;
 import Network.Node;
 

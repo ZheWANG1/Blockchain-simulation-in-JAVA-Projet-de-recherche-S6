@@ -57,10 +57,6 @@ public class Transaction{
         return transactionHash;
     }
 
-    public int getTransactionID() {
-        return transactionID;
-    }
-
     public double getTransactionFee() {
         return transactionFee;
     }

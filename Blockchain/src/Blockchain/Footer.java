@@ -2,19 +2,19 @@ package Blockchain;
 
 public class Footer {
 
-    private final String prevHash;
+    private String hash;
 
-    public Footer(String prevHash) {
-        this.prevHash = prevHash;
+    public Footer(){this.hash = "";}
+
+    public Footer(String hash) {
+        this.hash = hash;
     }
 
-    public Footer() {
-        this.prevHash = "";
+    public String getHash() {
+        return hash;
     }
 
-    public String getPrevHash() {
-        return prevHash;
+    public void setHash(String hash) {
+        this.hash = hash;
     }
-
-
 }

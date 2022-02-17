@@ -58,24 +58,6 @@ public class Blockchain {
     }
 
     /**
-     * Function which verify the blockchain's validity
-     *
-     * @return True or False depending on if the blockchain is valid or not
-     */
-
-    public boolean chainValidation() {
-        Iterator<Block> it = blkchain.iterator();
-        Block blockprev = it.next();
-        while (it.hasNext()) {
-            Block block = it.next();
-            if (!Objects.equals(block.getFooter().getPrevHash(), blockprev.getHeader().getHeaderHash()))
-                return false;
-            blockprev = block;
-        }
-        return true;
-    }
-
-    /**
      * Function which print all blockchain's information
      */
     public void printBlk() {

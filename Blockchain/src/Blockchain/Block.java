@@ -35,7 +35,7 @@ public class Block {
         String trs = this.toStringAllTransaction();
         String blockTransHash = HashUtil.SHA256(trs);
         header = new Header(blockPrev, blockTransHash);
-        footer = new Footer(blockPrev.getHeader().getHeaderHash());
+        footer = new Footer();
         blockId = blockPrev.blockId + 1;
     }
 

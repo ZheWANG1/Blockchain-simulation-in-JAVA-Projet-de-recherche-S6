@@ -30,5 +30,4 @@ public class FullNode extends Miner {
             this.blockchain.addBlock(block);
         }
     }
-
 }

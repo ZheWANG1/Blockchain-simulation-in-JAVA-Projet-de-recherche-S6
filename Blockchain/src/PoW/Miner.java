@@ -76,7 +76,6 @@ public abstract class Miner extends Node implements Runnable {
 
     public void updateMiner(Block b) {
         List<Transaction> lt = b.getTransaction();
-        //printTransactionBuffer()
         for (Transaction t : lt) {
             transactionBuffer.remove(t);
         }
@@ -100,7 +99,7 @@ public abstract class Miner extends Node implements Runnable {
         if (toBeCheckedSubList.equals("0".repeat(difficulty))) {
             receiptBlock = true;
             mineWithoutTransaction = false;
-            block.getHeader().setHeaderHash(hash);
+            block.getFooter().setHash(hash);
             System.out.println(name + " " + nonce + " " + hash);
             try {
                 block.setNodeAddress(nodeAddress);
@@ -116,13 +115,10 @@ public abstract class Miner extends Node implements Runnable {
         }
     }
 
-    /**
-     * Mining nodes receive transactions from other trading nodes
-     *
-     * @param transaction A transaction
-     */
+    @Override
     public void receiptTransaction(Transaction transaction) {
         this.transactionReceived++;
+
         System.out.println("Transaction received by " + this.name + " = " + this.transactionReceived);
         lock.lock();
         try {
@@ -134,7 +130,7 @@ public abstract class Miner extends Node implements Runnable {
         }
     }
 
-
+    @Override
     public void receiptBlock(Block b, String signature, String nodeAddress, Blockchain blk) {
         blockReceived++;
         System.out.println("Block received by " + this.name + " Total blocks received : " + blockReceived);

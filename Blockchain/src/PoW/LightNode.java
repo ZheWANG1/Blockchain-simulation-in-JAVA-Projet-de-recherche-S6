@@ -3,6 +3,7 @@ package PoW;
 import Blockchain.Block;
 import Blockchain.Blockchain;
 import Blockchain.LightBlockChain;
+import MessageTypes.Message;
 import MessageTypes.Transaction;
 import Network.Network;
 import Network.Node;
@@ -85,6 +86,7 @@ public class LightNode extends Node {
 
     @Override
     public void receiptBlock(Block b, String signature, String nodeAddress, Blockchain blk) {
+        
         lastBlock = b;
         ((LightBlockChain) this.blockchain).addLightHeader(b.getHeader(), b.getFooter());
     }

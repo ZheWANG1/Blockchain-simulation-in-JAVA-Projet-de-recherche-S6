@@ -2,8 +2,6 @@ package Blockchain;
 
 import Utils.HashUtil;
 
-import java.util.Objects;
-
 /**
  * Class Header timeStamp : long -> Date of creation of the block
  * headerHashPrev : String -> Hash of the last block's header
@@ -13,10 +11,9 @@ import java.util.Objects;
  */
 public class Header {
 
-    //protected final String headerHashPrev;
+    protected final String headerHashPrev;
     protected final String blockTransHash;
     private final long timeStamp;
-    protected String headerHash;
     private int nonce;
 
     /**
@@ -26,10 +23,8 @@ public class Header {
     public Header() {
         timeStamp = System.currentTimeMillis();
         blockTransHash = "";
-        headerHash = "";
-        //headerHashPrev = "";
+        headerHashPrev = "";
         nonce = 0;
-
     }
 
     /**
@@ -41,21 +36,19 @@ public class Header {
     public Header(Block blockPrev, String blockTransHash) {
         this.blockTransHash = blockTransHash;
         timeStamp = System.currentTimeMillis(); // Get the current date
-        Header h = blockPrev.getHeader(); // Get previous block's header
-        //headerHashPrev = h.getHeaderHash(); // Get header's hash
+        Footer f = blockPrev.getFooter(); // Get previous block's header
+        headerHashPrev = f.getHash(); // Get header's hash
     }
 
     /**
      * Constructor Header
      *
      * @param hHp     Previous header's hash
-     * @param hH      Current header's hash
      * @param trsHash Current transaction's hash
      */
     public Header(String hHp, String trsHash) {
         timeStamp = 0;
-        headerHash = hH;
-        //headerHashPrev = hHp;
+        headerHashPrev = hHp;
         blockTransHash = trsHash;
     }
 
@@ -89,7 +82,9 @@ public class Header {
      *
      * @return previous hash
      */
-    //public String getPrevHash() {return headerHashPrev;}
+    public String getPrevHash() {
+        return headerHashPrev;
+    }
 
     /**
      * Getter blockTransHash
@@ -101,44 +96,13 @@ public class Header {
     }
 
     /**
-     * Getter headerHash
-     *
-     * @return headerHash
-     */
-    public String getHeaderHash() {
-        return headerHash;
-    }
-
-    /**
-     * Setter headerHash
-     *
-     * @param headerHash hash of header
-     */
-    public void setHeaderHash(String headerHash) {
-        this.headerHash = headerHash;
-    }
-
-    /**
      * toString function
      *
      * @return string
      */
     public String toString() {
         // return "\nTS : " + timeStamp + "\nprevHash : " + headerHashPrev + "\nhash : " + headerHash + "\nNonce : " + nonce;
-        return "\nTS : " + timeStamp + "\nhash : " + headerHash + "\nNonce : " + nonce;
+        return "\nTS : " + timeStamp + "\nNonce : " + nonce;
 
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        Header header = (Header) o;
-        return headerHash.equals(header.headerHash);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(headerHash);
     }
 }

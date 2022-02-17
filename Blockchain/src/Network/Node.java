@@ -2,12 +2,15 @@ package Network;
 
 import Blockchain.Block;
 import Blockchain.Blockchain;
+import MessageTypes.Message;
+import MessageTypes.Transaction;
 import Utils.HashUtil;
 import Utils.RsaUtil;
 
 import java.security.KeyPair;
 import java.security.PrivateKey;
 import java.security.PublicKey;
+import java.util.List;
 
 /**
  * The node class, corresponding to each user on the network, includes mining nodes, trading nodes, server nodes, etc.
@@ -60,6 +63,34 @@ public abstract class Node {
      * @param blk         The blockchain that this miner has caught
      */
     public abstract void receiptBlock(Block b, String signature, String nodeAddress, Blockchain blk);
+
+    //public abstract void receiptMessage(Message m);
+
+    public void receiptMessage(Message m) {
+        // If message is a transaction
+        int messageType = m.getType();
+        List<Object> listOfContent = m.getMessageContent();
+        if (messageType == 0) {
+            Transaction tr = (Transaction) listOfContent.get(0);
+            receiptTransaction(tr);
+        }
+        // If message is a block
+        if (messageType == 1) {
+            Block content = (Block) listOfContent.get(0);
+            Blockchain blk = (Blockchain) listOfContent.get(1);
+            String nodeAddress = m.getFromAddress();
+            String signature = m.getSignature();
+            receiptBlock(content, signature, nodeAddress, blk);
+        }
+    }
+
+    /**
+     * Nodes receive transactions from other trading nodes
+     *
+     * @param transaction A transaction
+     */
+    public void receiptTransaction(Transaction tr) {
+    }
 
     public String getNodeAddress() {
         return nodeAddress;

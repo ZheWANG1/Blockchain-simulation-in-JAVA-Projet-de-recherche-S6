@@ -7,7 +7,9 @@ import PoS.LightNode;
 import Utils.RsaUtil;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /*
    Une node validator est comme une fullNode
@@ -38,13 +40,18 @@ public class ValidatorNode extends FullNode {
         this.fullNodeAccount = fullNodeAccount;
     }
 
-    public void receiptTransaction(Transaction t) throws Exception {
-        boolean transactionStatus = verifyTransaction(t);
+    public void receiptTransaction(Transaction t) {
+        boolean transactionStatus = false;
+        try {
+            transactionStatus = verifyTransaction(t);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         if (transactionStatus) {
-            System.out.println("Transaction" + t.getTransactionID() + " receipt by " + this.name + " and accepted");
+            System.out.println("Transaction" + t.getTransactionHash() + " receipt by " + this.name + " and accepted");
             pendingTransaction.add(t);
         } else {
-            System.out.println("Transaction" + t.getTransactionID() + " receipt by " + this.name + " but refused (Probably fraudulent)");
+            System.out.println("Transaction" + t.getTransactionHash() + " receipt by " + this.name + " but refused (Probably fraudulent)");
             fraudulentTransaction.add(t);
         }
     }
@@ -58,19 +65,8 @@ public class ValidatorNode extends FullNode {
         for (Transaction t : lt) {
             pendingTransaction.remove(t);
         }
-        System.out.println("Transaction list of " + this.name + " succesfully updated");
+        System.out.println("Transaction list of " + this.name + " successfully updated");
 
-    }
-
-    public void forgeBlock() {
-        for (int i = 0; i < MAX_TRANSACTION; i++) ;
-
-    }
-
-    public void getAndBroadcastReward(double amount) {
-    }
-
-    public void addInvestor(String investorAdress) {
     }
 
     public void forgeBlock() {
@@ -98,14 +94,16 @@ public class ValidatorNode extends FullNode {
         double otherNodeReward = amount * INVEST_RATE;
         double thisNodeReward = amount - otherNodeReward;
         this.fullNodeAccount.receiptCoin(thisNodeReward);
-        // Ajouter une méthode générique pour tout types de message...
+        
 
-        public void delInvestor (String investorAdress){
-        }
-        public void addInvestor (String investorAdress){
-            this.investorList.add(investorAdress);
-        }
-        public void delInvestor (String investorAdress){
-            this.investorList.remove(investorAdress);
-        }
     }
+
+    public void addInvestor(String investorAddress, double stakeAmount) {
+        this.investorList.put(investorAddress, stakeAmount);
+    }
+
+    public void delInvestor(String investorAddress, double stakeAmount) {
+        this.investorList.remove(investorAddress, stakeAmount);
+    }
+
+}
