@@ -77,19 +77,7 @@ public class Network {
             n.receiptMessage(m);
         }
     }
-    /**
-     * Broadcast a transaction in the network
-     *
-     * @param transaction Transaction to be broadcast
-     */
-    public void broadcastTransaction(Transaction transaction) {
-        for (Node node : network) {
-            // Need update
-            if (node instanceof Miner) {
-                ((Miner) node).receiptTransaction(transaction);
-            }
-        }
-    }
+
 
     /**
      * Function updating client wallet with matching ID in the Block
@@ -113,7 +101,7 @@ public class Network {
 
 
     public void broadcastBlock(Block b, String signature, String nodeAddress, Blockchain blk) {
-        b.printTransactions();
+        //b.printTransactions();
         for (Node node : network) {
             node.receiptBlock(b, signature, nodeAddress, blk);
         }

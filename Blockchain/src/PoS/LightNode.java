@@ -7,7 +7,7 @@ import MessageTypes.Message;
 import MessageTypes.Transaction;
 import Network.Network;
 import Network.Node;
-import Network.Validator;
+import Network.ValidatorNode;
 import Utils.RsaUtil;
 
 /**
@@ -27,7 +27,7 @@ public class LightNode extends Node {
     private double stakeAmount;
     private double stakeTime;
     private Block lastBlock;
-    private Validator validator = null;
+    private ValidatorNode validator = null;
 
     /**
      * Constructor LightNode
@@ -58,7 +58,7 @@ public class LightNode extends Node {
         return lastBlock;
     }
 
-    public Validator getValidator() {
+    public ValidatorNode getValidator() {
         return validator;
     }
 
@@ -67,7 +67,7 @@ public class LightNode extends Node {
      *
      * @param validator instance of the validator
      */
-    public void setValidator(Validator validator) {
+    public void setValidator(ValidatorNode validator) {
         this.validator = validator;
     }
 

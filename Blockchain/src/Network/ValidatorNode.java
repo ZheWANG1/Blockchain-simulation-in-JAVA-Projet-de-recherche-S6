@@ -1,6 +1,7 @@
 package Network;
 
 import Blockchain.Block;
+import Blockchain.Blockchain;
 import MessageTypes.Transaction;
 import PoS.FullNode;
 import PoS.LightNode;
@@ -28,6 +29,8 @@ public class ValidatorNode extends FullNode {
     private final ArrayList<Transaction> fraudulentTransaction = new ArrayList<>();
     private final LightNode fullNodeAccount;
     private final Map<String, Double> investorList = new HashMap<>();
+    private double stakeAmount = 0;
+    private long stakeTime = System.currentTimeMillis();
 
     /**
      * Constructor FullNode
@@ -78,9 +81,9 @@ public class ValidatorNode extends FullNode {
         forgedBlock.setNodeID(this.nodeID);
         System.out.println("Block has been forged by " + this.name);
         System.out.print("Broadcasting");
+        System.out.print(".");
+        System.out.print(".");
         System.out.println(".");
-        System.out.println("..");
-        System.out.println("...");
         try {
             network.broadcastBlock(forgedBlock, RsaUtil.sign(forgedBlock.toString(), this.privateKey), this.nodeAddress, this.blockchain);
             System.out.println("Block forged and broadcast successfully by " + this.name);
@@ -98,12 +101,28 @@ public class ValidatorNode extends FullNode {
 
     }
 
+    public void receiptBlock(Block b, String signature, String nodeAddress, Blockchain blk){
+        updateTransactionList(b);
+    }
+    public void addStake(double stake){
+        this.stakeAmount = stake;
+    }
+
     public void addInvestor(String investorAddress, double stakeAmount) {
         this.investorList.put(investorAddress, stakeAmount);
+        this.stakeAmount += stakeAmount;
     }
 
     public void delInvestor(String investorAddress, double stakeAmount) {
         this.investorList.remove(investorAddress, stakeAmount);
+        this.stakeAmount -= stakeAmount;
     }
 
+    public double getStakeAmount() {
+        return this.stakeAmount;
+    }
+
+    public long getStakeTime() {
+        return this.stakeTime;
+    }
 }
