@@ -107,8 +107,14 @@ public abstract class Miner extends Node implements Runnable {
                 messageContent.add(block);
                 messageContent.add(this.blockchain.copyBlkch());
                 Message m = new Message(this.nodeAddress,"ALL",RsaUtil.sign(block.toString(), this.privateKey),System.currentTimeMillis(), 1, messageContent);
-                network.broadcastMessage(m);
                 System.out.println("Block found by " + this.name + " and broadcast successfully");
+                System.out.println("\t\t-------------Block information-------------");
+                System.out.println(block);
+                block.printTransactions();
+                System.out.println("");
+                network.broadcastMessage(m);
+
+
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -145,6 +151,7 @@ public abstract class Miner extends Node implements Runnable {
                 receiptVerified();
                 System.out.println("Block received by sender");
             } else if (RsaUtil.verify(b.toString(), signature, nodePK)) {
+                System.out.println("Block verified by "+this.name);
                 if (!blockchain.getLatestBlock().equals(b)) {
                     if (this.blockchain.getSize() <= blk.getSize()) {
                         this.blockchain = blk.copyBlkch();

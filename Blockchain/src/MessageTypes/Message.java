@@ -18,7 +18,12 @@ public class Message {
         this.signature = signature;
         this.timeStamp = timeStamp;
         this.type = messageType;
-        this.messageContent.add(obj);
+        if( messageType == 1){
+            this.messageContent.add( ((List<Object>)obj).get(0));
+            this.messageContent.add( ((List<Object>)obj).get(1));
+        }else {
+            this.messageContent.add(obj);
+        }
     }
 
     public String getFromAddress() {

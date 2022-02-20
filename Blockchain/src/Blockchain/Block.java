@@ -133,7 +133,7 @@ public class Block {
 
     @Override
     public String toString() {
-        return blockId + header.toString();
+        return "ID : " + blockId + header.toString() + footer.toString();
     }
 
     /**

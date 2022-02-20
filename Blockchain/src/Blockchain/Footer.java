@@ -17,4 +17,8 @@ public class Footer {
     public void setHash(String hash) {
         this.hash = hash;
     }
+
+    public String toString(){
+        return "\nFooter hash : " + hash;
+    }
 }

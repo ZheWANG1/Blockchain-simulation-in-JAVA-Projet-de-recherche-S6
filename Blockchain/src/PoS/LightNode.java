@@ -8,6 +8,7 @@ import MessageTypes.Transaction;
 import Network.Network;
 import Network.Node;
 import Network.Validator;
+import Utils.RsaUtil;
 
 /**
  * Class LightNode
@@ -82,7 +83,12 @@ public class LightNode extends Node {
             System.out.println("Rejected transaction");
         } else {
             Transaction toSend = new Transaction("", this.getNodeAddress(), nodeAddress, amount, System.currentTimeMillis(), TRANSACTION_FEE, privateKey);
-            Message m = new Message(this.nodeAddress, nodeAddress, System.currentTimeMillis(), 0, toSend);
+            Message m = null;
+            try {
+                m = new Message(this.nodeAddress, nodeAddress, RsaUtil.sign(toSend.toString(), privateKey),  System.currentTimeMillis(), 0, toSend);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
             network.broadcastMessage(m);
             System.out.println(this.name + " Broadcasted a transaction");
         }

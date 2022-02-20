@@ -53,9 +53,7 @@ public class LightNode extends Node {
             Transaction toSend = new Transaction("", this.getNodeAddress(), address, amount, System.currentTimeMillis(), TRANSACTION_FEE, privateKey);
             Message m = null;
             try {
-                List<Object> listOfContent = new ArrayList<>();
-                listOfContent.add(toSend);
-                m = new Message(nodeAddress, address, RsaUtil.sign(toSend.toString(), this.privateKey),System.currentTimeMillis(),0, listOfContent);
+                m = new Message(nodeAddress, address, RsaUtil.sign(toSend.toString(), this.privateKey),System.currentTimeMillis(),0, toSend);
             } catch (Exception e) {
                 e.printStackTrace();
             }

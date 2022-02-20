@@ -71,7 +71,8 @@ public abstract class Node {
         int messageType = m.getType();
         List<Object> listOfContent = m.getMessageContent();
         if (messageType == 0) {
-            Transaction tr = (Transaction) listOfContent.get(0);
+            System.out.println(listOfContent.get(0));
+            Transaction tr = (Transaction) (listOfContent.get(0));
             receiptTransaction(tr);
         }
         // If message is a block
