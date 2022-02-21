@@ -71,7 +71,7 @@ public abstract class Node {
         int messageType = m.getType();
         List<Object> listOfContent = m.getMessageContent();
         if (messageType == 0) {
-            System.out.println(listOfContent.get(0));
+            //System.out.println(listOfContent.get(0));
             Transaction tr = (Transaction) (listOfContent.get(0));
             receiptTransaction(tr);
         }
@@ -88,7 +88,7 @@ public abstract class Node {
     /**
      * Nodes receive transactions from other trading nodes
      *
-     * @param transaction A transaction
+     * @param tr A transaction
      */
     public void receiptTransaction(Transaction tr) {
     }

@@ -25,6 +25,7 @@ public class Network {
     private final List<Node> network = new ArrayList<>();
     private final Map<String, PublicKey> keyTable = new HashMap<>();
     private int difficulty = INIT_DIFFICULTY;
+    public String mode;
 
     public Network() {
     }
@@ -76,6 +77,12 @@ public class Network {
         for (Node n: network){
             n.receiptMessage(m);
         }
+        Block block = this.copyBlockchainFromFN().getUpdateBlock();
+        if (block != null) {
+            updateAllWallet(block);
+            System.out.println("--Wallet--");
+            printWallets();
+        }
     }
 
 
@@ -105,7 +112,7 @@ public class Network {
         for (Node node : network) {
             node.receiptBlock(b, signature, nodeAddress, blk);
         }
-        System.out.println("Block " + b.getBlockId() + " found by " + b.getNodeID() + b.getHeader());
+        //System.out.println("Block " + b.getBlockId() + " found by " + b.getNodeID() + b.getHeader());
         Block block = blk.getUpdateBlock();
         if (block != null) {
             updateAllWallet(block);
@@ -122,7 +129,19 @@ public class Network {
      * @param clientAddress The beneficiary's address
      */
     // Modify
-    private void updateWalletWithAddress(double amount, String clientAddress) {
+    public void updateWalletWithAddress(double amount, String clientAddress) {
+        if (this.mode.equals("POS")){
+            for(Node n: this.network){
+                if (n.nodeAddress.equals(clientAddress)){
+                    if(n instanceof ValidatorNode){
+                        ((ValidatorNode)n).getAndBroadcastReward(amount);
+                        System.out.println(n.name);
+                        return;
+                    }
+                }
+            }
+
+        }
         int i = 0;
         Node associatedLightNode = network.get(i);
         while (!associatedLightNode.getNodeAddress().equals(clientAddress)) {

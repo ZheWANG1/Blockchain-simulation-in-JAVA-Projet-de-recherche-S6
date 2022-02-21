@@ -2,6 +2,7 @@ package Network;
 
 import Blockchain.Block;
 import Blockchain.Blockchain;
+import MessageTypes.Message;
 import MessageTypes.Transaction;
 import PoS.FullNode;
 import PoS.LightNode;
@@ -79,13 +80,21 @@ public class ValidatorNode extends FullNode {
         }
         Block forgedBlock = new Block(this.blockchain.getLatestBlock(), inBlockTransaction);
         forgedBlock.setNodeID(this.nodeID);
+        forgedBlock.setNodeAddress(this.nodeAddress);
         System.out.println("Block has been forged by " + this.name);
-        System.out.print("Broadcasting");
-        System.out.print(".");
-        System.out.print(".");
-        System.out.println(".");
+        System.out.println("\t\t-----Block information-----");
+        forgedBlock.printTransactions();
+        System.out.println("---------------------------------------------------");
+        System.out.println("Broadcasting");
+        System.out.println("Broadcasting.");
+        System.out.println("Broadcasting..");
+        System.out.println("Broadcasting...");
         try {
-            network.broadcastBlock(forgedBlock, RsaUtil.sign(forgedBlock.toString(), this.privateKey), this.nodeAddress, this.blockchain);
+            List<Object> messageContent = new ArrayList<>();
+            messageContent.add(forgedBlock);
+            messageContent.add(this.blockchain);
+            Message m = new Message(this.nodeAddress, "ALL",RsaUtil.sign(forgedBlock.toString(), this.privateKey), System.currentTimeMillis(), 1, messageContent);
+            network.broadcastMessage(m);
             System.out.println("Block forged and broadcast successfully by " + this.name);
         } catch (Exception e) {
             e.printStackTrace();
@@ -97,8 +106,9 @@ public class ValidatorNode extends FullNode {
         double otherNodeReward = amount * INVEST_RATE;
         double thisNodeReward = amount - otherNodeReward;
         this.fullNodeAccount.receiptCoin(thisNodeReward);
-        
-
+        for(String s: this.investorList.keySet()){
+            network.updateWalletWithAddress(otherNodeReward,s);
+        }
     }
 
     public void receiptBlock(Block b, String signature, String nodeAddress, Blockchain blk){

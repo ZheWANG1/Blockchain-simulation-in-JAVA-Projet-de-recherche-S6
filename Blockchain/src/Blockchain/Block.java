@@ -154,7 +154,7 @@ public class Block {
      */
     public void printTransactions() {
         for (Transaction transaction : transactions) {
-            System.out.print(transaction.toString());
+            System.out.println(transaction.getTransactionHash());
         }
     }
 }

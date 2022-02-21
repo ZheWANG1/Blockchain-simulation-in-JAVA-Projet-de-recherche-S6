@@ -13,6 +13,7 @@ public class test {
 
     public static void simulationPoS() {
         Network bitcoin = new Network();
+        bitcoin.mode = "POS";
 
         FullNode s1 = new FullNode("Spain Server", bitcoin);
         FullNode s2 = new FullNode("Alex Server", bitcoin);
@@ -50,15 +51,24 @@ public class test {
         ln6.stake(30);
 
         vn1.addInvestor(ln1.getNodeAddress(), ln1.getStakeAmount());
+        vn2.addInvestor(ln2.getNodeAddress(), ln2.getStakeAmount());
+        vn3.addInvestor(ln3.getNodeAddress(), ln3.getStakeAmount());
+        vn4.addInvestor(ln4.getNodeAddress(), ln4.getStakeAmount());
+        vn5.addInvestor(ln5.getNodeAddress(), ln5.getStakeAmount());
+        vn6.addInvestor(ln6.getNodeAddress(), ln6.getStakeAmount());
 
 
         Validator validatorExec = new Validator(bitcoin);
         new Thread(validatorExec).start();
 
-
-
-        for (int i = 0; i < 1; i++) {
-            ln1.sendMoneyTo(1,ln3.getNodeAddress());
+        for (int i = 0; i < 20; i++) {
+            for(int j=0; j < 5; j++)
+                ln1.sendMoneyTo(2,ln3.getNodeAddress());
+            try {
+                Thread.sleep(30000);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
         }
     }
 }
