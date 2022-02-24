@@ -62,7 +62,6 @@ public abstract class Miner extends Node implements Runnable {
      * @throws Exception Exception
      */
     public boolean verifySignature(Transaction transaction) throws Exception {
-        System.out.println(RsaUtil.verify(transaction.toString(), transaction.getSignature(), network.getPkWithAddress(transaction.getFromAddress())));
         return RsaUtil.verify(transaction.toString(), transaction.getSignature(), network.getPkWithAddress(transaction.getFromAddress()));
     }
 
@@ -113,7 +112,6 @@ public abstract class Miner extends Node implements Runnable {
                 System.out.println("\t\t-------------Block information-------------");
                 System.out.println(block);
                 block.printTransactions();
-                System.out.println("");
                 network.broadcastMessage(m);
 
 
@@ -126,8 +124,7 @@ public abstract class Miner extends Node implements Runnable {
     @Override
     public void receiptTransaction(Transaction transaction) {
         this.transactionReceived++;
-
-        System.out.println("Transaction received by " + this.name + " = " + this.transactionReceived);
+        //System.out.println("Transaction received by " + this.name + " = " + this.transactionReceived);
         lock.lock();
         try {
             transactionTempo = transaction;
@@ -157,6 +154,7 @@ public abstract class Miner extends Node implements Runnable {
                 if (!blockchain.getLatestBlock().equals(b)) {
                     if (this.blockchain.getSize() <= blk.getSize()) {
                         this.blockchain = blk.copyBlkch();
+                        System.out.println("Longest blockchain saved");
                         blockchain.addBlock(b);
                         receiptVerified();
                         //this.printTransactionBuffer();
@@ -169,12 +167,6 @@ public abstract class Miner extends Node implements Runnable {
             }
         } catch (Exception e) {
             e.printStackTrace();
-        }
-    }
-
-    public void printTransactionBuffer() {
-        for (Transaction transaction : transactionBuffer) {
-            System.out.println(transaction.toString());
         }
     }
 

@@ -9,10 +9,7 @@ import PoW.FullNode;
 import Utils.HashUtil;
 import Utils.RsaUtil;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /*
    Une node validator est comme une fullNode
@@ -29,7 +26,7 @@ public class ValidatorNode extends PoS.FullNode {
     public static double INVEST_RATE = 0.30;
     private final ArrayList<Transaction> pendingTransaction = new ArrayList<>();
     private final ArrayList<Transaction> fraudulentTransaction = new ArrayList<>();
-    private final LightNode fullNodeAccount;
+    public final LightNode fullNodeAccount;
     private final Map<String, Double> investorList = new HashMap<>();
     private double stakeAmount = 0;
     private long stakeTime = System.currentTimeMillis();
@@ -143,5 +140,9 @@ public class ValidatorNode extends PoS.FullNode {
 
     public long getStakeTime() {
         return this.stakeTime;
+    }
+
+    public Set<String> getInvestorList(){
+        return this.investorList.keySet();
     }
 }

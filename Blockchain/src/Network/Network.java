@@ -5,13 +5,11 @@ import Blockchain.Blockchain;
 import MessageTypes.Transaction;
 import PoS.FullNode;
 import PoS.LightNode;
+
 import PoW.Miner;
 
 import java.security.PublicKey;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * Class network
@@ -25,7 +23,7 @@ public class Network {
     private final List<Node> network = new ArrayList<>();
     private final Map<String, PublicKey> keyTable = new HashMap<>();
     private int difficulty = INIT_DIFFICULTY;
-    public String mode;
+    public String mode = "POW";
 
     public Network() {
     }
@@ -77,15 +75,16 @@ public class Network {
         for (Node n: network){
             n.receiptMessage(m);
         }
-        Block block;
-        try {
-            block = this.copyBlockchainFromFN().getUpdateBlock();
-            System.out.println(block);
-            updateAllWallet(block);
-            System.out.println("--Wallet--");
-            printWallets();
-        }catch (NullPointerException e){
-            System.out.println(":/");
+        if (m.getType() == 1){
+            Block block;
+            try {
+                block = this.copyBlockchainFromFN().getUpdateBlock();
+                updateAllWallet(block);
+                System.out.println("--Wallet--");
+                printWallets();
+            }catch (NullPointerException ignored){
+                ;
+            }
         }
     }
 
@@ -99,6 +98,12 @@ public class Network {
     private void updateAllWallet(Block b) {
         double totalFee = 0;
         List<Transaction> t = b.getTransaction();
+        ValidatorNode vn = null;
+        for(Node n: network){
+            if( n.nodeAddress.equals(b.getNodeAddress())){
+                vn = ((ValidatorNode) n);
+            }
+        }
         for (Transaction transaction : t) {
             transaction.confirmed();
             double takenFromTrans = (transaction.getTransactionFee()) * transaction.getAmount();
@@ -107,25 +112,21 @@ public class Network {
             String toAddress = transaction.getToAddress();
             updateWalletWithAddress(amount, toAddress);
             updateWalletWithAddress(-(amount + takenFromTrans), transaction.getFromAddress());
+            if (this.mode.equals("POS")){
+                Set<String> investorList = vn.getInvestorList();
+                double otherNodeReward = takenFromTrans * ValidatorNode.INVEST_RATE;
+                double thisNodeReward = takenFromTrans - otherNodeReward;
+                vn.fullNodeAccount.receiptCoin(thisNodeReward);
+                for(String s: investorList) {
+                    updateWalletWithAddress(otherNodeReward, s);
+                }
+            }
         }
+
         updateWalletWithAddress(totalFee, b.getNodeAddress());
     }
 
 
-    public void broadcastBlock(Block b, String signature, String nodeAddress, Blockchain blk) {
-        //b.printTransactions();
-        for (Node node : network) {
-            node.receiptBlock(b, signature, nodeAddress, blk);
-        }
-        //System.out.println("Block " + b.getBlockId() + " found by " + b.getNodeID() + b.getHeader());
-        Block block = blk.getUpdateBlock();
-        if (block != null) {
-            updateAllWallet(block);
-            System.out.println("--Wallet--");
-            printWallets();
-        }
-        System.out.println("Finished");
-    }
 
     /**
      * Function updating client wallet with matching ID
@@ -133,29 +134,18 @@ public class Network {
      * @param amount        The amount of transaction
      * @param clientAddress The beneficiary's address
      */
-    // Modify
     public void updateWalletWithAddress(double amount, String clientAddress) {
-        if (this.mode.equals("POS")){
-            for(Node n: this.network){
-                if (n.nodeAddress.equals(clientAddress)){
-                    if(n instanceof ValidatorNode){
-                        ((ValidatorNode)n).getAndBroadcastReward(amount);
-                        System.out.println(n.name);
-                        return;
-                    }
-                }
-            }
-
-        }
         int i = 0;
         Node associatedLightNode = network.get(i);
         while (!associatedLightNode.getNodeAddress().equals(clientAddress)) {
             associatedLightNode = network.get(++i);
         }
-        if (associatedLightNode instanceof LightNode)
-            ((LightNode) associatedLightNode).receiptCoin(amount);
+        if (associatedLightNode instanceof PoW.LightNode)
+            ((PoW.LightNode) associatedLightNode).receiptCoin(amount);
         if (associatedLightNode instanceof PoW.FullNode)
             ((PoW.FullNode) associatedLightNode).getLn().receiptCoin(amount);
+        if (associatedLightNode instanceof PoS.LightNode)
+            ((PoS.LightNode) associatedLightNode).receiptCoin(amount);
     }
 
     /**
@@ -168,6 +158,9 @@ public class Network {
             if (node instanceof PoW.FullNode) {
                 return node.getBlockchain();
             }
+            if(node instanceof PoS.FullNode){
+                return node.getBlockchain();
+            }
         }
         throw new NullPointerException();
     }
@@ -178,8 +171,11 @@ public class Network {
      */
     public void printWallets() {
         for (var node : network) {
-            if (node instanceof LightNode) {
-                System.out.println("Nom client : " + node.name + " Wallet : " + ((LightNode) node).getWallet());
+            if (node instanceof PoS.LightNode) {
+                System.out.println("Nom client : " + node.name + " Wallet : " + ((PoS.LightNode) node).getWallet());
+            }
+            if (node instanceof PoW.LightNode){
+                System.out.println("Nom client : " + node.name + " Wallet : " + ((PoW.LightNode) node).getWallet());
             }
         }
     }
