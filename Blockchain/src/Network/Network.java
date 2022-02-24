@@ -77,13 +77,18 @@ public class Network {
         for (Node n: network){
             n.receiptMessage(m);
         }
-        Block block = this.copyBlockchainFromFN().getUpdateBlock();
-        if (block != null) {
+        Block block;
+        try {
+            block = this.copyBlockchainFromFN().getUpdateBlock();
+            System.out.println(block);
             updateAllWallet(block);
             System.out.println("--Wallet--");
             printWallets();
+        }catch (NullPointerException e){
+            System.out.println(":/");
         }
     }
+
 
 
     /**
@@ -160,8 +165,9 @@ public class Network {
      */
     public Blockchain copyBlockchainFromFN() {
         for (Node node : network) {
-            if (node instanceof FullNode)
+            if (node instanceof PoW.FullNode) {
                 return node.getBlockchain();
+            }
         }
         throw new NullPointerException();
     }

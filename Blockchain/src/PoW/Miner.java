@@ -5,6 +5,7 @@ import Blockchain.Blockchain;
 import MessageTypes.Transaction;
 import Network.Network;
 import Network.Node;
+import Utils.HashUtil;
 import Utils.RsaUtil;
 
 import java.security.PublicKey;
@@ -39,7 +40,7 @@ public abstract class Miner extends Node implements Runnable {
     private long start, end;
 
     public Miner(String name, Network network) {
-        super(name, network, new Blockchain());
+        super(name, network);
         difficulty = network.getDifficulty();
         ln = new LightNode(name, network);
     }
@@ -61,6 +62,7 @@ public abstract class Miner extends Node implements Runnable {
      * @throws Exception Exception
      */
     public boolean verifySignature(Transaction transaction) throws Exception {
+        System.out.println(RsaUtil.verify(transaction.toString(), transaction.getSignature(), network.getPkWithAddress(transaction.getFromAddress())));
         return RsaUtil.verify(transaction.toString(), transaction.getSignature(), network.getPkWithAddress(transaction.getFromAddress()));
     }
 
@@ -199,6 +201,7 @@ public abstract class Miner extends Node implements Runnable {
                     }
                     if (transactionTempo != null) {
                         if (!transactionBuffer.contains(transactionTempo) && verifySignature(transactionTempo)) {
+                            System.out.println("Transaction : "+transactionTempo.getTransactionHash()+" has been accepted by "+ this.name);
                             transactionBuffer.add(transactionTempo);
                             if (transactionBuffer.size() < NB_MAX_TRANSACTIONS) {
                                 transactionInSize.add(transactionTempo);
@@ -224,7 +227,6 @@ public abstract class Miner extends Node implements Runnable {
                 try {
                     if (!mineWithoutTransaction)
                         while (transactionInSize.isEmpty() && !mineWithoutTransaction) {
-                            //System.out.println("Waiting 2");
                             conditionBlock.await();
                         }
                 } catch (InterruptedException e) {

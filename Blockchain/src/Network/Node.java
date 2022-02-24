@@ -36,11 +36,11 @@ public abstract class Node {
     protected KeyPair keys;
     protected String nodeAddress;
 
-    public Node(String name, Network network, Blockchain blk) {
+    public Node(String name, Network network) {
         synchronized (o) {
             this.nodeID = cpt++;
         }
-        blockchain = blk;
+        blockchain = new Blockchain();
         this.name = name;
         this.network = network;
         try {

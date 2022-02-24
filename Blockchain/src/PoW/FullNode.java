@@ -29,5 +29,6 @@ public class FullNode extends Miner {
         } else {
             this.blockchain.addBlock(block);
         }
+        System.out.println(this.name + " Stored one block");
     }
 }

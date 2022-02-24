@@ -20,7 +20,7 @@ public class FullNode extends Node {
      * @param network Network of the FullNode, one node is connected to the whole network (P2P)
      */
     public FullNode(String nom, Network network) {
-        super(nom, network, new Blockchain());
+        super(nom, network);
     }
 
     @Override

@@ -7,6 +7,7 @@ import MessageTypes.Message;
 import MessageTypes.Transaction;
 import Network.Network;
 import Network.Node;
+import Utils.HashUtil;
 import Utils.RsaUtil;
 
 import java.security.PublicKey;
@@ -35,7 +36,8 @@ public class LightNode extends Node {
      * @param network Network in which the lightNode is in
      */
     public LightNode(String name, Network network) {
-        super(name, network, new LightBlockChain());
+        super(name, network);
+        this.blockchain = new LightBlockChain();
         this.wallet = INIT_WALLET;
     }
 

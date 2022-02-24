@@ -4,8 +4,9 @@ import Blockchain.Block;
 import Blockchain.Blockchain;
 import MessageTypes.Message;
 import MessageTypes.Transaction;
-import PoS.FullNode;
 import PoS.LightNode;
+import PoW.FullNode;
+import Utils.HashUtil;
 import Utils.RsaUtil;
 
 import java.util.ArrayList;
@@ -23,7 +24,7 @@ import java.util.Map;
    Plus le stake misé est grand plus la validator node aura de probabilité d'être choisie
    la FullNode sera alors recompensée et les LightNode receveront une part du gain
  */
-public class ValidatorNode extends FullNode {
+public class ValidatorNode extends PoS.FullNode {
     public static int MAX_TRANSACTION = 10;
     public static double INVEST_RATE = 0.30;
     private final ArrayList<Transaction> pendingTransaction = new ArrayList<>();
@@ -93,7 +94,7 @@ public class ValidatorNode extends FullNode {
             List<Object> messageContent = new ArrayList<>();
             messageContent.add(forgedBlock);
             messageContent.add(this.blockchain);
-            Message m = new Message(this.nodeAddress, "ALL",RsaUtil.sign(forgedBlock.toString(), this.privateKey), System.currentTimeMillis(), 1, messageContent);
+            Message m = new Message(this.nodeAddress, "ALL",RsaUtil.sign(HashUtil.SHA256(forgedBlock.toString()), this.privateKey), System.currentTimeMillis(), 1, messageContent);
             network.broadcastMessage(m);
             System.out.println("Block forged and broadcast successfully by " + this.name);
         } catch (Exception e) {
@@ -113,6 +114,14 @@ public class ValidatorNode extends FullNode {
 
     public void receiptBlock(Block b, String signature, String nodeAddress, Blockchain blk){
         updateTransactionList(b);
+        try {
+            if(RsaUtil.verify(b.toString(),signature, network.getPkWithAddress(nodeAddress))){
+                System.out.println("Block accepted by "+ this.name);
+                this.blockchain.addBlock(b);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
     public void addStake(double stake){
         this.stakeAmount = stake;

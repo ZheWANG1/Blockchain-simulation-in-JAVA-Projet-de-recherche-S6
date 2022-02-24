@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Diagram>
+  <ID>JAVA</ID>
+  <OriginalElement>Utils.HashUtil</OriginalElement>
+  <nodes>
+    <node x="695.0" y="0.0">Blockchain.Block</node>
+    <node x="645.0" y="689.0">MessageTypes.Transaction</node>
+    <node x="974.0" y="260.0">Blockchain.LightBlockChain</node>
+    <node x="851.0" y="1048.0">PoW.test</node>
+    <node x="346.0" y="1048.0">Blockchain.Footer</node>
+    <node x="334.99999999999994" y="306.0">PoW.LightNode</node>
+    <node x="0.0" y="1048.0">MessageTypes.Message</node>
+    <node x="0.0" y="949.0">Blockchain.LightBlock</node>
+    <node x="269.0" y="689.0">Network.Network</node>
+    <node x="1060.0" y="1048.0">Utils.HashUtil</node>
+    <node x="0.0" y="284.0">PoW.Miner</node>
+    <node x="1011.5" y="0.0">Blockchain.Blockchain</node>
+    <node x="0.0" y="566.0">PoW.FullNode</node>
+    <node x="2.5" y="689.0">Blockchain.Header</node>
+    <node x="167.49999999999997" y="0.0">Network.Node</node>
+    <node x="548.0" y="1048.0">Utils.RsaUtil</node>
+  </nodes>
+  <notes />
+  <edges>
+    <edge source="Blockchain.LightBlockChain" target="Blockchain.Blockchain" relationship="GENERALIZATION">
+      <point x="0.0" y="-50.0" />
+      <point x="0.0" y="105.0" />
+    </edge>
+    <edge source="Blockchain.LightBlock" target="Blockchain.Header" relationship="GENERALIZATION">
+      <point x="0.0" y="-27.0" />
+      <point x="0.0" y="105.0" />
+    </edge>
+    <edge source="PoW.FullNode" target="PoW.Miner" relationship="GENERALIZATION">
+      <point x="0.0" y="-39.0" />
+      <point x="0.0" y="116.0" />
+    </edge>
+    <edge source="PoW.Miner" target="Network.Node" relationship="GENERALIZATION">
+      <point x="0.0" y="-116.0" />
+      <point x="157.5" y="259.0" />
+      <point x="325.0" y="259.0" />
+      <point x="0.0" y="117.0" />
+    </edge>
+    <edge source="PoW.LightNode" target="Network.Node" relationship="GENERALIZATION">
+      <point x="0.0" y="-94.0" />
+      <point x="492.49999999999994" y="259.0" />
+      <point x="325.0" y="259.0" />
+      <point x="0.0" y="117.0" />
+    </edge>
+  </edges>
+  <settings layout="Hierarchic" zoom="0.49522292993630573" showDependencies="false" x="613.0" y="618.0" />
+  <SelectedNodes />
+  <Categories>
+    <Category>Constructors</Category>
+    <Category>Fields</Category>
+    <Category>Inner Classes</Category>
+    <Category>Methods</Category>
+  </Categories>
+  <SCOPE>All</SCOPE>
+  <VISIBILITY>packageLocal</VISIBILITY>
+</Diagram>
+
