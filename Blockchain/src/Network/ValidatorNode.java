@@ -5,7 +5,6 @@ import Blockchain.Blockchain;
 import MessageTypes.Message;
 import MessageTypes.Transaction;
 import PoS.LightNode;
-import PoW.FullNode;
 import Utils.HashUtil;
 import Utils.RsaUtil;
 
@@ -77,7 +76,8 @@ public class ValidatorNode extends PoS.FullNode {
             if (pendingTransaction.get(i).getTransactionID().equals(blockID))
                 inBlockTransaction.add(pendingTransaction.get(i));
         }
-        Block forgedBlock = new Block(this.blockchain.getLatestBlock(), inBlockTransaction);
+        Block prevBlock = this.blockchain.searchPrevBlockByID(blockID, this.blockchain.getSize()-1);
+        Block forgedBlock = new Block(this.blockchain.getLatestBlock(), prevBlock, inBlockTransaction, blockID);
         forgedBlock.setNodeID(this.nodeID);
         forgedBlock.setNodeAddress(this.nodeAddress);
         System.out.println("Block has been forged by " + this.name);

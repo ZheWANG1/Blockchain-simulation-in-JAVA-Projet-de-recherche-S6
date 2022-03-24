@@ -1,6 +1,7 @@
 package Blockchain;
 
-import java.util.Iterator;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
 import java.util.concurrent.CopyOnWriteArrayList;
@@ -26,7 +27,7 @@ public class Blockchain {
     public Blockchain() {
         synchronized (o) {
             blockChainId = cpt++;
-            blkchain.add(createFirstBlock());
+            blkchain.addAll(createFirstBlock());
         }
     }
 
@@ -35,8 +36,10 @@ public class Blockchain {
      *
      * @return genesisBlock -> First block of the blockchain
      */
-    public Block createFirstBlock() {
-        return new Block();
+    public List<Block> createFirstBlock() {
+        Block firstBlock = new Block("1");
+        Block secondBlock = new Block(firstBlock, null, new ArrayList<>(), "2");
+        return Arrays.asList(firstBlock, secondBlock);
     }
 
     /**
@@ -47,6 +50,19 @@ public class Blockchain {
     public Block getLatestBlock() {
         return blkchain.get(blkchain.size() - 1);
     }
+
+    public Block searchPrevBlockByID(String blockID, int i){
+        if (i < 0){
+            return null;
+        }
+        Block b = this.blkchain.get(i);
+        if (blockID.equals(b.getBlockID()))
+            return b;
+        else{
+            return searchPrevBlockByID(blockID, --i);
+        }
+    }
+
 
     /**
      * Function which add a block into the blockchain

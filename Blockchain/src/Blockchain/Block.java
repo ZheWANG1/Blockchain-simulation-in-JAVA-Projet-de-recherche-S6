@@ -23,7 +23,6 @@ public class Block {
     private int nodeID;
     private String nodeAddress;
 
-
     /**
      * Constructor Block
      *
@@ -43,11 +42,11 @@ public class Block {
      * Constructor Block
      * No parameters, used in order to create the genesis block
      */
-    public Block() {
+    public Block(String blockID) {
         header = new Header();
         footer = new Footer();
         this.transactions = new ArrayList<>();
-        blockId = 0;
+        this.blockID = blockID;
     }
 
     /**
@@ -64,8 +63,8 @@ public class Block {
      *
      * @return blockId
      */
-    public int getBlockId() {
-        return blockId;
+    public String getBlockID() {
+        return blockID;
     }
 
     /**

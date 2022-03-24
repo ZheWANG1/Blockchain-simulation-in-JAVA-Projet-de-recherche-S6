@@ -86,13 +86,13 @@ public class Validator implements Runnable {
         System.out.println(validator.name + " is chosen");
     }
 
-    public void validate() {
+    public void validate(String blockID) {
         boolean interrupt = false;
         while (!interrupt) {
             lock.lock();
             try {
                 if (validator != null) {
-                   validator.forgeBlock();
+                   validator.forgeBlock(blockID);
                    validator = null;
 
                 }
@@ -115,6 +115,6 @@ public class Validator implements Runnable {
 
     @Override
     public void run() {
-        validate();
+        validate("1");
     }
 }
