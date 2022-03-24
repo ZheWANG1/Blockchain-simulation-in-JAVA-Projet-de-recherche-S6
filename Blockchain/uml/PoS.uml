@@ -3,60 +3,67 @@
   <ID>JAVA</ID>
   <OriginalElement>Utils.HashUtil</OriginalElement>
   <nodes>
-    <node x="695.0" y="0.0">Blockchain.Block</node>
-    <node x="334.99999999999994" y="284.0">PoS.LightNode</node>
-    <node x="505.0" y="1358.0">Network.Validator</node>
-    <node x="645.0" y="999.0">MessageTypes.Transaction</node>
-    <node x="974.0" y="260.0">Blockchain.LightBlockChain</node>
-    <node x="0.0" y="1358.0">Blockchain.Footer</node>
-    <node x="1093.0" y="999.0">MessageTypes.Message</node>
-    <node x="0.0" y="1259.0">Blockchain.LightBlock</node>
-    <node x="269.0" y="999.0">Network.Network</node>
-    <node x="926.0" y="1358.0">Utils.HashUtil</node>
-    <node x="1011.5" y="0.0">Blockchain.Blockchain</node>
-    <node x="0.0" y="383.0">PoW.FullNode</node>
-    <node x="2.5" y="999.0">Blockchain.Header</node>
-    <node x="167.49999999999997" y="0.0">Network.Node</node>
-    <node x="0.0" y="610.0">Network.ValidatorNode</node>
-    <node x="202.0" y="1358.0">Utils.RsaUtil</node>
-    <node x="721.0" y="1358.0">PoS.test</node>
+    <node x="0.0" y="781.0">Blockchain.Block</node>
+    <node x="1096.878422782037" y="466.4293537787514">PoS.LightNode</node>
+    <node x="483.0" y="1257.0">Network.Validator</node>
+    <node x="1030.0" y="0.0">MessageTypes.Transaction</node>
+    <node x="263.0" y="1041.0">Blockchain.LightBlockChain</node>
+    <node x="0.0" y="1257.0">Blockchain.Footer</node>
+    <node x="827.0" y="781.0">MessageTypes.Message</node>
+    <node x="558.0" y="1086.0">Blockchain.LightBlock</node>
+    <node x="699.0" y="1257.0">Utils.HashUtil</node>
+    <node x="1173.0" y="781.0">Network.Network</node>
+    <node x="301.5" y="781.0">Blockchain.Blockchain</node>
+    <node x="686.4461634521992" y="419.81517968641595">PoW.FullNode</node>
+    <node x="335.0" y="0.0">Network.Node</node>
+    <node x="560.5" y="781.0">Blockchain.Header</node>
+    <node x="-308.1276997257361" y="380.77273217369486">Network.ValidatorNode</node>
+    <node x="180.0" y="1257.0">Utils.RsaUtil</node>
+    <node x="918.0" y="1257.0">PoS.test</node>
   </nodes>
   <notes />
   <edges>
     <edge source="Blockchain.LightBlockChain" target="Blockchain.Blockchain" relationship="GENERALIZATION">
-      <point x="0.0" y="-50.0" />
+      <point x="0.0" y="-49.5" />
       <point x="0.0" y="105.0" />
-    </edge>
-    <edge source="Network.ValidatorNode" target="PoW.FullNode" relationship="GENERALIZATION">
-      <point x="0.0" y="-172.0" />
-      <point x="0.0" y="39.0" />
     </edge>
     <edge source="Blockchain.LightBlock" target="Blockchain.Header" relationship="GENERALIZATION">
       <point x="0.0" y="-27.0" />
-      <point x="0.0" y="105.0" />
+      <point x="0.0" y="127.5" />
+    </edge>
+    <edge source="Network.ValidatorNode" target="Network.Node" relationship="GENERALIZATION">
+      <point x="0.0" y="-193.5" />
+      <point x="-150.62769972573608" y="520.6269976198571" />
+      <point x="313.7648159165466" y="520.6269976198571" />
+      <point x="313.7648159165466" y="534.3005780346822" />
+      <point x="1037.2534852091126" y="534.3005780346822" />
+      <point x="1037.2534852091126" y="568.1462087725264" />
+      <point x="492.5" y="568.1462087725264" />
+      <point x="0.0" y="149.5" />
     </edge>
     <edge source="PoS.LightNode" target="Network.Node" relationship="GENERALIZATION">
-      <point x="5.6843418860808015E-14" y="-138.0" />
-      <point x="492.5" y="259.0" />
-      <point x="325.0" y="259.0" />
-      <point x="0.0" y="117.0" />
+      <point x="0.0" y="-182.5" />
+      <point x="1254.378422782037" y="279.5" />
+      <point x="492.5" y="279.5" />
+      <point x="0.0" y="149.5" />
     </edge>
     <edge source="PoW.FullNode" target="Network.Node" relationship="GENERALIZATION">
-      <point x="0.0" y="-39.0" />
-      <point x="157.5" y="259.0" />
-      <point x="325.0" y="259.0" />
-      <point x="0.0" y="117.0" />
+      <point x="0.0" y="-38.5" />
+      <point x="843.9461634521992" y="324.0" />
+      <point x="492.5" y="324.0" />
+      <point x="0.0" y="149.5" />
     </edge>
   </edges>
-  <settings layout="Hierarchic" zoom="0.40867279894875164" showDependencies="false" x="697.0" y="751.0" />
+  <settings layout="Hierarchic" zoom="0.470464135021097" showDependencies="false" x="898.0089686098656" y="691.0" />
   <SelectedNodes>
-    <node>Utils.HashUtil</node>
+    <node>Network.ValidatorNode</node>
   </SelectedNodes>
   <Categories>
     <Category>Constructors</Category>
     <Category>Fields</Category>
     <Category>Inner Classes</Category>
     <Category>Methods</Category>
+    <Category>Properties</Category>
   </Categories>
   <SCOPE>All</SCOPE>
   <VISIBILITY>packageLocal</VISIBILITY>

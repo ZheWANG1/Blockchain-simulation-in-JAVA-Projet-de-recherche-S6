@@ -12,6 +12,7 @@ import Utils.HashUtil;
 public class Header {
 
     protected final String headerHashPrev;
+    protected final String headerHashMyType;
     protected final String blockTransHash;
     private final long timeStamp;
     private int nonce;

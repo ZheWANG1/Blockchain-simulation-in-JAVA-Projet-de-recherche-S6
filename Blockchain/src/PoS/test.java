@@ -62,7 +62,7 @@ public class test {
         new Thread(validatorExec).start();
 
         for (int i = 0; i < 20; i++) {
-            for(int j=0; j < 5; j++)
+            for(int j=0; j < 10; j++)
                 ln1.sendMoneyTo(2,ln3.getNodeAddress());
             try {
                 Thread.sleep(30000);

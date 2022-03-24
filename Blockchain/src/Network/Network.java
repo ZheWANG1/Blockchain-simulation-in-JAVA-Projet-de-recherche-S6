@@ -99,9 +99,11 @@ public class Network {
         double totalFee = 0;
         List<Transaction> t = b.getTransaction();
         ValidatorNode vn = null;
-        for(Node n: network){
-            if( n.nodeAddress.equals(b.getNodeAddress())){
-                vn = ((ValidatorNode) n);
+        if (mode.equals("POS")){
+            for(Node n: network){
+                if( n.nodeAddress.equals(b.getNodeAddress())){
+                    vn = ((ValidatorNode) n);
+                }
             }
         }
         for (Transaction transaction : t) {
