@@ -79,12 +79,12 @@ public class LightNode extends Node {
      * @param amount      Amount of coin to be sent
      * @param nodeAddress Address of the receiver
      */
-    public void sendMoneyTo(double amount, String nodeAddress) {
+    public void sendMoneyTo(double amount, String nodeAddress, String transactionType) {
         if (wallet < amount * (1 + TRANSACTION_FEE)) {
             System.out.println(name + " Not enough bitcoin to send"); // Whatever the currency
             System.out.println("Rejected transaction");
         } else {
-            Transaction toSend = new Transaction("", this.getNodeAddress(), nodeAddress, amount, System.currentTimeMillis(), TRANSACTION_FEE, privateKey);
+            Transaction toSend = new Transaction(transactionType, this.getNodeAddress(), nodeAddress, amount, System.currentTimeMillis(), TRANSACTION_FEE, privateKey);
             Message m = null;
             try {
                 m = new Message(this.nodeAddress, nodeAddress, RsaUtil.sign(toSend.toString(), privateKey),  System.currentTimeMillis(), 0, toSend);

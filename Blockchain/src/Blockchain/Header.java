@@ -12,7 +12,7 @@ import Utils.HashUtil;
 public class Header {
 
     protected final String headerHashPrev;
-    protected final String headerHashMyType;
+    protected final String PrevIDHash;
     protected final String blockTransHash;
     private final long timeStamp;
     private int nonce;
@@ -101,6 +101,8 @@ public class Header {
      *
      * @return string
      */
+
+    public String getPrevIDHash(){return PrevIDHash;}
     public String toString() {
         // return "\nTS : " + timeStamp + "\nprevHash : " + headerHashPrev + "\nhash : " + headerHash + "\nNonce : " + nonce;
         return "\nTS : " + timeStamp + "\nNonce : " + nonce;

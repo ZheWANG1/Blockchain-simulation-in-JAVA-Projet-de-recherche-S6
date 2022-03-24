@@ -71,10 +71,11 @@ public class ValidatorNode extends PoS.FullNode {
 
     }
 
-    public void forgeBlock() {
+    public void forgeBlock(String blockID) {
         List<Transaction> inBlockTransaction = new ArrayList<>();
         for (int i = 0; (i < MAX_TRANSACTION) && (i < pendingTransaction.size()); i++) {
-            inBlockTransaction.add(pendingTransaction.get(i));
+            if (pendingTransaction.get(i).getTransactionID().equals(blockID))
+                inBlockTransaction.add(pendingTransaction.get(i));
         }
         Block forgedBlock = new Block(this.blockchain.getLatestBlock(), inBlockTransaction);
         forgedBlock.setNodeID(this.nodeID);

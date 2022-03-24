@@ -63,7 +63,7 @@ public class test {
 
         for (int i = 0; i < 20; i++) {
             for(int j=0; j < 10; j++)
-                ln1.sendMoneyTo(2,ln3.getNodeAddress());
+                ln1.sendMoneyTo(2,ln3.getNodeAddress(), "ethernum");
             try {
                 Thread.sleep(30000);
             } catch (InterruptedException e) {

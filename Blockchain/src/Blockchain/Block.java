@@ -18,7 +18,7 @@ public class Block {
 
     private final Header header;
     private final Footer footer;
-    private final int blockId;
+    private final String blockID;
     private final List<Transaction> transactions;
     private int nodeID;
     private String nodeAddress;
@@ -30,13 +30,13 @@ public class Block {
      * @param blockPrev   Last Block in the blockchain needed in order to get the hash.
      * @param transaction List of transaction to be added into a new block.
      */
-    public Block(Block blockPrev, List<Transaction> transaction) {
+    public Block(Block blockPrev, Block blockIDPrev, List<Transaction> transaction, String blockID) {
         this.transactions = new ArrayList<>(transaction);
         String trs = this.toStringAllTransaction();
         String blockTransHash = HashUtil.SHA256(trs);
         header = new Header(blockPrev, blockTransHash);
         footer = new Footer();
-        blockId = blockPrev.blockId + 1;
+        this.blockID = blockID;
     }
 
     /**

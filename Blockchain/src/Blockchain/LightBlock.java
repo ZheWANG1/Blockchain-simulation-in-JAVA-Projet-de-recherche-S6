@@ -14,8 +14,8 @@ public class LightBlock extends Header {
      * @param hH      Current header's hash
      * @param trsHash Current transaction's hash
      */
-    public LightBlock(String hHp, Footer footer, String trsHash) {
-        super(hHp, trsHash);
+    public LightBlock(String hHp,String prevIDHash, Footer footer, String trsHash) {
+        super(hHp, prevIDHash,trsHash);
         this.footer = footer;
     }
 }
