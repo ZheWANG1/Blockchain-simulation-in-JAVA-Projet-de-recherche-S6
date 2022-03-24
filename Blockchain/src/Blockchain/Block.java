@@ -34,7 +34,7 @@ public class Block {
         this.transactions = new ArrayList<>(transaction);
         String trs = this.toStringAllTransaction();
         String blockTransHash = HashUtil.SHA256(trs);
-        header = new Header(blockPrev, blockTransHash);
+        header = new Header(blockPrev,blockIDPrev,blockTransHash);
         footer = new Footer();
         this.blockID = blockID;
     }
