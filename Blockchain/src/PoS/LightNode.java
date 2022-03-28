@@ -24,7 +24,8 @@ import Utils.RsaUtil;
 public class LightNode extends Node {
     private final static double TRANSACTION_FEE = 0.1;
     private final static int INIT_WALLET = 100;
-    private double wallet;
+    private double wallet1;
+    private double wallet2;
     private double stakeAmount;
     private double stakeTime;
     private Block lastBlock;
@@ -39,13 +40,18 @@ public class LightNode extends Node {
     public LightNode(String name, Network network) {
         super(name, network);
         this.blockchain = new LightBlockChain();
-        this.wallet = INIT_WALLET;
+        this.wallet1 = INIT_WALLET;
+        this.wallet2 = INIT_WALLET;
         this.stakeAmount = 0;
         this.stakeTime = System.currentTimeMillis();
     }
 
-    public double getWallet() {
-        return wallet;
+    public double getWallet(String type) {
+        if (type.equals("1")){
+            return wallet1;
+        }else{
+            return wallet2;
+        }
     }
 
     public double getStakeAmount() {
@@ -80,30 +86,43 @@ public class LightNode extends Node {
      * @param nodeAddress Address of the receiver
      */
     public void sendMoneyTo(double amount, String nodeAddress, String transactionType) {
-        if (wallet < amount * (1 + TRANSACTION_FEE)) {
-            System.out.println(name + " Not enough bitcoin to send"); // Whatever the currency
-            System.out.println("Rejected transaction");
-        } else {
-            Transaction toSend = new Transaction(transactionType, this.getNodeAddress(), nodeAddress, amount, System.currentTimeMillis(), TRANSACTION_FEE, privateKey);
-            Message m = null;
-            try {
-                m = new Message(this.nodeAddress, nodeAddress, RsaUtil.sign(toSend.toString(), privateKey),  System.currentTimeMillis(), 0, toSend);
-            } catch (Exception e) {
-                e.printStackTrace();
+        if (transactionType.equals("1")){
+            if (wallet1 < amount * (1 + TRANSACTION_FEE)) {
+                System.out.println(name + " Not enough currency of type " + transactionType + " to send"); // Whatever the currency
+                System.out.println("Rejected transaction");
+                return;
             }
-            network.broadcastMessage(m);
-            System.out.println(this.name + " Broadcasted a transaction");
+        }else{
+            if (wallet2 < amount * (1 + TRANSACTION_FEE)) {
+                System.out.println(name + " Not enough currency of type " + transactionType + " to send"); // Whatever the currency
+                System.out.println("Rejected transaction");
+                return;
+            }
         }
+        Transaction toSend = new Transaction(transactionType, this.getNodeAddress(), nodeAddress, amount, System.currentTimeMillis(), TRANSACTION_FEE, privateKey);
+        Message m = null;
+        try {
+            m = new Message(this.nodeAddress, nodeAddress, RsaUtil.sign(toSend.toString(), privateKey),  System.currentTimeMillis(), 0, toSend);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        network.broadcastMessage(m);
+        System.out.println(this.name + " Broadcasted a transaction");
     }
+
     
     /**
      * Function which add or reduce a client's coins amount
      *
      * @param amount Coin's amount
      */
-    public void receiptCoin(double amount) {
+    public void receiptCoin(double amount, String type) {
         String order = amount < 0 ? " Lost " : " received "; // if amount < 0 than order = Lost else Received
-        wallet += amount;
+        if (type.equals("1")) {
+            wallet1 += amount;
+        }else{
+            wallet2 += amount;
+        }
         System.out.println(this.name + order + amount + " bitcoins");
     }
 
@@ -118,9 +137,15 @@ public class LightNode extends Node {
      *
      * @param amount the stake amount of a user
      */
-    public void stake(int amount) {
-        if (wallet < amount) {
-            System.out.println(name + " don't have enough money for stake");
+    public void stake(int amount, String type) {
+        if (type.equals("1")) {
+            if (wallet1 < amount) {
+                System.out.println(name + " don't have enough money for stake in wallet1");
+            }
+        }else{
+            if (wallet1 < amount) {
+                System.out.println(name + " don't have enough money for stake in wallet1");
+            }
         }
         stakeAmount = amount;
         this.wallet -= amount;

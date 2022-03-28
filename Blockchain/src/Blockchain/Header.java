@@ -31,7 +31,7 @@ public class Header {
 
     /**
      * Constructor Header
-     *
+     * @param blockIdPrev    Last Block with same blockID
      * @param blockPrev      Previous blockchain's block
      * @param blockTransHash Current block's transaction hash
      */
@@ -40,23 +40,12 @@ public class Header {
         timeStamp = System.currentTimeMillis(); // Get the current date
         Footer f = blockPrev.getFooter(); // Get previous block's header
         headerHashPrev = f.getHash(); // Get header's hash
-        PrevIDHash = blockIdPrev.getFooter().getHash();
+        if (blockIdPrev != null){
+            PrevIDHash = blockIdPrev.getFooter().getHash();
+        }else{
+            PrevIDHash = "";
+        }
     }
-
-    /**
-     * Constructor Header
-     *
-     * @param hHp     Previous header's hash
-     * @param trsHash Current transaction's hash
-     */
-    public Header(String hHp, String trsHash) {
-        timeStamp = 0;
-        headerHashPrev = hHp;
-        blockTransHash = trsHash;
-    }
-
-
-    // Setter
 
     /**
      * Function which calculate the header's hash
