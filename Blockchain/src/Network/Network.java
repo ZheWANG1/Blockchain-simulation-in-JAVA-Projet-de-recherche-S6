@@ -112,15 +112,20 @@ public class Network {
             String toAddress = transaction.getToAddress();
             updateWalletWithAddress(amount, toAddress, transaction.getTransactionID());
             updateWalletWithAddress(-(amount + takenFromTrans), transaction.getFromAddress(), transaction.getTransactionID());
-            if (this.mode.equals("POS")){
-                Set<String> investorList = vn.getInvestorList();
-                double otherNodeReward = takenFromTrans * ValidatorNode.INVEST_RATE;
-                double thisNodeReward = takenFromTrans - otherNodeReward;
-                vn.fullNodeAccount.receiptCoin(thisNodeReward, transaction.getTransactionID());
-                for(String s: investorList) {
-                    updateWalletWithAddress(otherNodeReward, s, transaction.getTransactionID());
-                }
+            Set<String> investorList;
+            if(b.getBlockID().equals("1")) {
+                investorList = vn.getInvestorList1();
             }
+            else {
+                investorList = vn.getInvestorList2();
+            }
+
+            double otherNodeReward = takenFromTrans * ValidatorNode.INVEST_RATE;
+            double thisNodeReward = takenFromTrans - otherNodeReward;
+            vn.fullNodeAccount.receiptCoin(thisNodeReward, transaction.getTransactionID());
+            for(String s: investorList) {
+                updateWalletWithAddress(otherNodeReward, s, transaction.getTransactionID());
+                }
         }
 
         updateWalletWithAddress(totalFee, b.getNodeAddress(),b.getBlockID());

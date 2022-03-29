@@ -21,11 +21,8 @@ import java.util.concurrent.locks.ReentrantLock;
  * condition : concurrent.locks.condition -> Technique for implement concurrent program
  */
 public class Validator implements Runnable {
-    private final static int NB_Max = 10;
-    private static final int TIME_TO_WAIT = 1000; // 1 sec
     private final static int SLOTS_MAX = 10;
     private final Lock lock = new ReentrantLock();
-    private final Condition condition = lock.newCondition();
     private final Network network;
     private ValidatorNode validator = null;
 

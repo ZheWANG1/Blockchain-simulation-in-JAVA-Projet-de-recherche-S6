@@ -30,7 +30,7 @@ public class ValidatorNode extends PoS.FullNode {
     private final Map<String, Double> investorList2 = new HashMap<>();
     private double stakeAmount1 = 0;
     private double stakeAmount2 = 0;
-    private long stakeTime = System.currentTimeMillis();
+    private final long stakeTime = System.currentTimeMillis();
 
     /**
      * Constructor FullNode
@@ -108,8 +108,14 @@ public class ValidatorNode extends PoS.FullNode {
         double otherNodeReward = amount * INVEST_RATE;
         double thisNodeReward = amount - otherNodeReward;
         this.fullNodeAccount.receiptCoin(thisNodeReward, id);
-        for(String s: this.investorList.keySet()){
-            network.updateWalletWithAddress(otherNodeReward,s, id);
+        if (id.equals("1")) {
+            for (String s : this.investorList1.keySet()) {
+                network.updateWalletWithAddress(otherNodeReward, s, id);
+            }
+        } else {
+            for (String s : this.investorList2.keySet()) {
+                network.updateWalletWithAddress(otherNodeReward, s, id);
+            }
         }
     }
 
@@ -125,29 +131,48 @@ public class ValidatorNode extends PoS.FullNode {
         }
     }
     public void addStake1(double stake){
-        this.stakeAmount1 += stake
+        this.stakeAmount1 += stake;
     }
     public void addStake2(double stake) { this.stakeAmount2 += stake;}
 
     public void addInvestorType(String investorAddress, double stakeAmount, String type) {
-        this.investorList.put(investorAddress, stakeAmount);
-        this.stakeAmount += stakeAmount;
+        if (type.equals("1")) {
+            this.investorList1.put(investorAddress, stakeAmount);
+            this.stakeAmount1 += stakeAmount;
+        } else{
+            this.investorList2.remove(investorAddress, stakeAmount);
+            this.stakeAmount2 += stakeAmount;
+        }
     }
 
-    public void delInvestor(String investorAddress, double stakeAmount, String type) {
-        this.investorList.remove(investorAddress, stakeAmount);
-        this.stakeAmount -= stakeAmount;
+    public void delInvestor(String investorAddress, String type) {
+        if (type.equals("1")) {
+            this.stakeAmount1 -= investorList1.get(investorAddress);
+            this.investorList1.remove(investorAddress);
+
+        } else{
+            this.stakeAmount2 -= investorList2.get(investorAddress);
+            this.investorList2.remove(investorAddress);
+        }
     }
 
-    public double getStakeAmount() {
-        return this.stakeAmount;
+    public double getStakeAmount1() {
+        return this.stakeAmount1;
+    }
+
+    public double getStakeAmount2() {
+        return this.stakeAmount2;
     }
 
     public long getStakeTime() {
         return this.stakeTime;
     }
 
-    public Set<String> getInvestorList(){
-        return this.investorList.keySet();
+    public Set<String> getInvestorList1(){
+        return this.investorList1.keySet();
+    }
+
+    public Set<String> getInvestorList2(){
+        return this.investorList2.keySet();
     }
 }

@@ -43,19 +43,33 @@ public class test {
         LightNode ln5 = new LightNode("Jennifer", bitcoin);
         LightNode ln6 = new LightNode("Lise", bitcoin);
 
-        ln1.stake(20);
-        ln2.stake(25);
-        ln3.stake(20);
-        ln4.stake(50);
-        ln5.stake(70);
-        ln6.stake(30);
+        ln1.stake(20,"1");
+        ln2.stake(25,"1");
+        ln3.stake(20,"1");
+        ln4.stake(50,"1");
+        ln5.stake(70,"1");
+        ln6.stake(30,"1");
 
-        vn1.addInvestor(ln1.getNodeAddress(), ln1.getStakeAmount());
-        vn2.addInvestor(ln2.getNodeAddress(), ln2.getStakeAmount());
-        vn3.addInvestor(ln3.getNodeAddress(), ln3.getStakeAmount());
-        vn4.addInvestor(ln4.getNodeAddress(), ln4.getStakeAmount());
-        vn5.addInvestor(ln5.getNodeAddress(), ln5.getStakeAmount());
-        vn6.addInvestor(ln6.getNodeAddress(), ln6.getStakeAmount());
+        ln1.stake(10,"2");
+        ln2.stake(25,"2");
+        ln3.stake(40,"2");
+        ln4.stake(5,"2");
+        ln5.stake(30,"2");
+        ln6.stake(60,"2");
+
+        vn1.addInvestorType(ln1.getNodeAddress(), ln1.getStakeAmount1(), "1");
+        vn2.addInvestorType(ln2.getNodeAddress(), ln2.getStakeAmount1(), "1");
+        vn3.addInvestorType(ln3.getNodeAddress(), ln3.getStakeAmount1(), "1");
+        vn4.addInvestorType(ln4.getNodeAddress(), ln4.getStakeAmount1(), "1");
+        vn5.addInvestorType(ln5.getNodeAddress(), ln5.getStakeAmount1(), "1");
+        vn6.addInvestorType(ln6.getNodeAddress(), ln6.getStakeAmount1(), "1");
+
+        vn1.addInvestorType(ln1.getNodeAddress(), ln1.getStakeAmount1(), "2");
+        vn2.addInvestorType(ln2.getNodeAddress(), ln2.getStakeAmount1(), "2");
+        vn3.addInvestorType(ln3.getNodeAddress(), ln3.getStakeAmount1(), "2");
+        vn4.addInvestorType(ln4.getNodeAddress(), ln4.getStakeAmount1(), "2");
+        vn5.addInvestorType(ln5.getNodeAddress(), ln5.getStakeAmount1(), "2");
+        vn6.addInvestorType(ln6.getNodeAddress(), ln6.getStakeAmount1(), "2");
 
 
         Validator validatorExec = new Validator(bitcoin);
@@ -63,7 +77,7 @@ public class test {
 
         for (int i = 0; i < 20; i++) {
             for(int j=0; j < 10; j++)
-                ln1.sendMoneyTo(2,ln3.getNodeAddress(), "ethernum");
+                ln1.sendMoneyTo(2,ln3.getNodeAddress(), "1");
             try {
                 Thread.sleep(30000);
             } catch (InterruptedException e) {

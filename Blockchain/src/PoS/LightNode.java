@@ -148,13 +148,15 @@ public class LightNode extends Node {
             if (wallet1 < amount) {
                 System.out.println(name + " don't have enough money for stake in wallet1");
             }
+            stakeAmount1 = amount;
+            this.wallet1 -= amount;
         }else{
             if (wallet1 < amount) {
                 System.out.println(name + " don't have enough money for stake in wallet1");
             }
+            stakeAmount2 = amount;
+            this.wallet2 -= amount;
         }
-        stakeAmount = amount;
-        this.wallet -= amount;
         stakeTime = System.currentTimeMillis();
         System.out.println(name + " deposit " + amount + " as stake");
     }
