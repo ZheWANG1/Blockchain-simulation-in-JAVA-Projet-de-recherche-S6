@@ -26,7 +26,8 @@ public class LightNode extends Node {
     private final static int INIT_WALLET = 100;
     private double wallet1;
     private double wallet2;
-    private double stakeAmount;
+    private double stakeAmount1;
+    private double stakeAmount2;
     private double stakeTime;
     private Block lastBlock;
     private ValidatorNode validator = null;
@@ -42,7 +43,8 @@ public class LightNode extends Node {
         this.blockchain = new LightBlockChain();
         this.wallet1 = INIT_WALLET;
         this.wallet2 = INIT_WALLET;
-        this.stakeAmount = 0;
+        this.stakeAmount1 = 0;
+        this.stakeAmount2 = 0;
         this.stakeTime = System.currentTimeMillis();
     }
 
@@ -54,8 +56,12 @@ public class LightNode extends Node {
         }
     }
 
-    public double getStakeAmount() {
-        return stakeAmount;
+    public double getStakeAmount1() {
+        return stakeAmount1;
+    }
+
+    public double getStakeAmount2(){
+        return stakeAmount2;
     }
 
     public double getStakeTime() {

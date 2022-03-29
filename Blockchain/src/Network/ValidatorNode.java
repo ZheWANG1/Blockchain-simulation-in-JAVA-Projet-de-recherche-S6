@@ -26,8 +26,10 @@ public class ValidatorNode extends PoS.FullNode {
     private final ArrayList<Transaction> pendingTransaction = new ArrayList<>();
     private final ArrayList<Transaction> fraudulentTransaction = new ArrayList<>();
     public final LightNode fullNodeAccount;
-    private final Map<String, Double> investorList = new HashMap<>();
-    private double stakeAmount = 0;
+    private final Map<String, Double> investorList1 = new HashMap<>();
+    private final Map<String, Double> investorList2 = new HashMap<>();
+    private double stakeAmount1 = 0;
+    private double stakeAmount2 = 0;
     private long stakeTime = System.currentTimeMillis();
 
     /**
@@ -122,16 +124,17 @@ public class ValidatorNode extends PoS.FullNode {
             e.printStackTrace();
         }
     }
-    public void addStake(double stake){
-        this.stakeAmount = stake;
+    public void addStake1(double stake){
+        this.stakeAmount1 += stake
     }
+    public void addStake2(double stake) { this.stakeAmount2 += stake;}
 
-    public void addInvestor(String investorAddress, double stakeAmount) {
+    public void addInvestorType(String investorAddress, double stakeAmount, String type) {
         this.investorList.put(investorAddress, stakeAmount);
         this.stakeAmount += stakeAmount;
     }
 
-    public void delInvestor(String investorAddress, double stakeAmount) {
+    public void delInvestor(String investorAddress, double stakeAmount, String type) {
         this.investorList.remove(investorAddress, stakeAmount);
         this.stakeAmount -= stakeAmount;
     }
