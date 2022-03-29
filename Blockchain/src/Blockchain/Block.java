@@ -32,9 +32,9 @@ public class Block {
     public Block(Block blockPrev, Block blockIDPrev, List<Transaction> transaction, String blockID) {
         this.transactions = new ArrayList<>(transaction);
         String trs = this.toStringAllTransaction();
-        String blockTransHash = HashUtil.SHA256(trs);
-        header = new Header(blockPrev,blockIDPrev,blockTransHash);
+        header = new Header(blockPrev.getFooter().getHash(),blockIDPrev.getFooter().getHash());
         footer = new Footer();
+        footer.setHash((trs + header.PrevIDHash + header.headerHashPrev));
         this.blockID = blockID;
     }
 

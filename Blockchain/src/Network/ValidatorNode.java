@@ -76,8 +76,8 @@ public class ValidatorNode extends PoS.FullNode {
             if (pendingTransaction.get(i).getTransactionID().equals(blockID))
                 inBlockTransaction.add(pendingTransaction.get(i));
         }
-        Block prevBlock = this.blockchain.searchPrevBlockByID(blockID, this.blockchain.getSize()-1);
-        Block forgedBlock = new Block(this.blockchain.getLatestBlock(), prevBlock, inBlockTransaction, blockID);
+        Block prevBlockID = this.blockchain.searchPrevBlockByID(blockID, this.blockchain.getSize()-1);
+        Block forgedBlock = new Block(this.blockchain.getLatestBlock(), prevBlockID, inBlockTransaction, blockID);
         forgedBlock.setNodeID(this.nodeID);
         forgedBlock.setNodeAddress(this.nodeAddress);
         System.out.println("Block has been forged by " + this.name);
@@ -91,6 +91,7 @@ public class ValidatorNode extends PoS.FullNode {
         try {
             List<Object> messageContent = new ArrayList<>();
             messageContent.add(forgedBlock);
+            messageContent.add(prevBlockID);
             messageContent.add(this.blockchain);
             Message m = new Message(this.nodeAddress, "ALL",RsaUtil.sign(HashUtil.SHA256(forgedBlock.toString()), this.privateKey), System.currentTimeMillis(), 1, messageContent);
             network.broadcastMessage(m);
@@ -101,12 +102,12 @@ public class ValidatorNode extends PoS.FullNode {
         }
     }
 
-    public void getAndBroadcastReward(double amount) {
+    public void getAndBroadcastReward(double amount, String id) {
         double otherNodeReward = amount * INVEST_RATE;
         double thisNodeReward = amount - otherNodeReward;
-        this.fullNodeAccount.receiptCoin(thisNodeReward);
+        this.fullNodeAccount.receiptCoin(thisNodeReward, id);
         for(String s: this.investorList.keySet()){
-            network.updateWalletWithAddress(otherNodeReward,s);
+            network.updateWalletWithAddress(otherNodeReward,s, id);
         }
     }
 

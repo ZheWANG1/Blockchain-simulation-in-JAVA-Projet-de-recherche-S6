@@ -77,11 +77,11 @@ public abstract class Node {
         }
         // If message is a block
         if (messageType == 1) {
-            Block content = (Block) listOfContent.get(0);
+            Block b = (Block) listOfContent.get(0);
             Blockchain blk = (Blockchain) listOfContent.get(1);
             String nodeAddress = m.getFromAddress();
             String signature = m.getSignature();
-            receiptBlock(content, signature, nodeAddress, blk);
+            receiptBlock(b, signature, nodeAddress, blk);
         }
     }
 

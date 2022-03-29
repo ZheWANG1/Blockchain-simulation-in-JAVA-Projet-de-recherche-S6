@@ -19,10 +19,7 @@ public class LightBlockChain extends Blockchain {
      * @param h Header of the new block
      */
     public void addLightHeader(Header h, Footer f) {
-        String prevIDHash = h.getPrevIDHash();
-        String previousHash = h.getPrevHash();
-        String trsHash = h.getBlockTransHash();
-        LightBlock ln = new LightBlock(previousHash, prevIDHash, f, trsHash);
+        LightBlock ln = new LightBlock(h, f);
         LightBlkchain.add(ln);
         while (LightBlkchain.size() >= 11) {
             LightBlkchain.remove(0);
