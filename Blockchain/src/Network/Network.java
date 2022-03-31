@@ -3,9 +3,6 @@ import MessageTypes.Message;
 import Blockchain.Block;
 import Blockchain.Blockchain;
 import MessageTypes.Transaction;
-import PoS.FullNode;
-import PoS.LightNode;
-
 import java.security.PublicKey;
 import java.util.*;
 
@@ -15,13 +12,15 @@ import java.util.*;
  * network : List<Node> -> List of node in the network
  * keyTable : Map<Integer, PublicKey> -> Map table of NodeID and PublicKey in order to verify signatures.
  */
-public class Network {
+public class Network{
     private final static int INIT_DIFFICULTY = 4;
     private final static int CHANGE_DIFFICULTY = 50;
     private final List<Node> network = new ArrayList<>();
     private final Map<String, PublicKey> keyTable = new HashMap<>();
     private int difficulty = INIT_DIFFICULTY;
     public String mode = "POS";
+    public final String TYPE1;
+    public final String TYPE2;
 
     public Network(String type1, String type2) {
         TYPE1 = type1;

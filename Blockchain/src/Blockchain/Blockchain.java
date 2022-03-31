@@ -1,5 +1,7 @@
 package Blockchain;
 
+import Network.Network;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -19,16 +21,18 @@ public class Blockchain {
     private static int cpt = 0;
     private final int blockChainId;
     private final List<Block> blkchain = new CopyOnWriteArrayList<>();
+    private final Network network;
 
     /**
      * Constructor Blockchain
      * Create an empty Blockchain
      */
-    public Blockchain() {
+    public Blockchain(Network network) {
         synchronized (o) {
             blockChainId = cpt++;
             blkchain.addAll(createFirstBlock());
         }
+        this.network = network;
     }
 
     /**
@@ -37,9 +41,9 @@ public class Blockchain {
      * @return genesisBlock -> First block of the blockchain
      */
     public List<Block> createFirstBlock() {
-        Block firstBlock = new Block("1");
+        Block firstBlock = new Block(network.TYPE1);
         firstBlock.setNodeAddress("Master");
-        Block secondBlock = new Block(firstBlock, "2");
+        Block secondBlock = new Block(firstBlock, network.TYPE2);
         firstBlock.setNodeAddress("Master");
         return Arrays.asList(firstBlock, secondBlock);
     }

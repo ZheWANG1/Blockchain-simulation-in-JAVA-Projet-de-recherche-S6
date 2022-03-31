@@ -12,7 +12,7 @@ public class test {
     }
 
     public static void simulationPoS() {
-        Network bitcoin = new Network();
+        Network bitcoin = new Network("1", "2");
         bitcoin.mode = "POS";
 
         FullNode s1 = new FullNode("Spain Server", bitcoin);
