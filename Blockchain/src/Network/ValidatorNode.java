@@ -93,7 +93,6 @@ public class ValidatorNode extends PoS.FullNode {
         try {
             List<Object> messageContent = new ArrayList<>();
             messageContent.add(forgedBlock);
-            messageContent.add(prevBlockID);
             messageContent.add(this.blockchain);
             Message m = new Message(this.nodeAddress, "ALL",RsaUtil.sign(HashUtil.SHA256(forgedBlock.toString()), this.privateKey), System.currentTimeMillis(), 1, messageContent);
             network.broadcastMessage(m);

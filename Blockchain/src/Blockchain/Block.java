@@ -32,7 +32,7 @@ public class Block {
     public Block(Block blockPrev, Block blockIDPrev, List<Transaction> transaction, String blockID) {
         this.transactions = new ArrayList<>(transaction);
         String trs = this.toStringAllTransaction();
-        header = new Header(blockPrev.getFooter().getHash(),blockIDPrev.getFooter().getHash());
+        header = new Header(blockPrev.getFooter().getHash(), blockIDPrev.getFooter().getHash());
         footer = new Footer();
         footer.setHash((trs + header.PrevIDHash + header.headerHashPrev));
         this.blockID = blockID;
@@ -47,6 +47,15 @@ public class Block {
         footer = new Footer();
         this.transactions = new ArrayList<>();
         this.blockID = blockID;
+    }
+
+    public Block(Block firstBlock, String ID) {
+        this.transactions = new ArrayList<>();
+        String trs = this.toStringAllTransaction();
+        header = new Header(firstBlock.getFooter().getHash(),"");
+        footer = new Footer();
+        footer.setHash((trs + header.PrevIDHash + header.headerHashPrev));
+        this.blockID = ID;
     }
 
     /**

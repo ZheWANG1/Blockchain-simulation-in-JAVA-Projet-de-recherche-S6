@@ -9,6 +9,7 @@ import java.util.Map;
 import java.util.concurrent.locks.Condition;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
+import java.util.random.*;
 
 /**
  * Class Validator
@@ -33,12 +34,18 @@ public class Validator implements Runnable {
     /**
      * Function which choose a validator in order to guess a new block
      */
-    public void chooseValidator() {
+    public void chooseValidator(String ID) {
+        System.out.println("Choosing a validator for a block of type " + ID);
         List<Node> listNode = network.getNetwork(); // List of nodes in the network
         Map<ValidatorNode, Double> mapProba = new HashMap<>();
         for (Node node : listNode) { // For each node in the network
             if (node instanceof ValidatorNode) { // If found node is an LightNode
-                double stakeAmount = ((ValidatorNode) node).getStakeAmount(); // Get LightNode's stakeAmount
+                double stakeAmount;
+                if (ID.equals("1")) {
+                    stakeAmount = ((ValidatorNode) node).getStakeAmount1(); // Get LightNode's stakeAmount
+                }else{
+                    stakeAmount = ((ValidatorNode) node).getStakeAmount2(); // Get LightNode's stakeAmount
+                }
                 double stakeTime = System.currentTimeMillis() - ((ValidatorNode) node).getStakeTime(); // Get LightNode's stakeTime (How long the node have been Staking)
                 mapProba.put((ValidatorNode) node, stakeAmount * (stakeTime));
             }
@@ -83,13 +90,14 @@ public class Validator implements Runnable {
         System.out.println(validator.name + " is chosen");
     }
 
-    public void validate(String blockID) {
+    public void validate() {
+        int currentIDChoosen = 0;
         boolean interrupt = false;
         while (!interrupt) {
             lock.lock();
             try {
                 if (validator != null) {
-                   validator.forgeBlock(blockID);
+                   validator.forgeBlock(Integer.toString(currentIDChoosen));
                    validator = null;
 
                 }
@@ -100,7 +108,8 @@ public class Validator implements Runnable {
                         break;
                     }
                 }
-                chooseValidator();
+                currentIDChoosen = (int) (Math.random() * 2) + 1;
+                chooseValidator(Integer.toString(currentIDChoosen));
             } catch (Exception e) {
                 e.printStackTrace();
                 interrupt = true;
@@ -112,6 +121,6 @@ public class Validator implements Runnable {
 
     @Override
     public void run() {
-        validate("1");
+        validate();
     }
 }

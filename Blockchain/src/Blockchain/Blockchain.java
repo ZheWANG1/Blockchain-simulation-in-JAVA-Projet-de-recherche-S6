@@ -38,7 +38,9 @@ public class Blockchain {
      */
     public List<Block> createFirstBlock() {
         Block firstBlock = new Block("1");
-        Block secondBlock = new Block(firstBlock, null, new ArrayList<>(), "2");
+        firstBlock.setNodeAddress("Master");
+        Block secondBlock = new Block(firstBlock, "2");
+        firstBlock.setNodeAddress("Master");
         return Arrays.asList(firstBlock, secondBlock);
     }
 

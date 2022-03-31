@@ -68,7 +68,7 @@ public class test {
         vn2.addInvestorType(ln2.getNodeAddress(), ln2.getStakeAmount1(), "2");
         vn3.addInvestorType(ln3.getNodeAddress(), ln3.getStakeAmount1(), "2");
         vn4.addInvestorType(ln4.getNodeAddress(), ln4.getStakeAmount1(), "2");
-        vn5.addInvestorType(ln5.getNodeAddress(), ln5.getStakeAmount1(), "2");
+        //vn5.addInvestorType(ln5.getNodeAddress(), ln5.getStakeAmount1(), "2");
         vn6.addInvestorType(ln6.getNodeAddress(), ln6.getStakeAmount1(), "2");
 
 
@@ -78,6 +78,7 @@ public class test {
         for (int i = 0; i < 20; i++) {
             for(int j=0; j < 10; j++)
                 ln1.sendMoneyTo(2,ln3.getNodeAddress(), "1");
+            ln1.sendMoneyTo(2,ln3.getNodeAddress(), "2");
             try {
                 Thread.sleep(30000);
             } catch (InterruptedException e) {

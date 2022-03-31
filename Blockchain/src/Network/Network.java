@@ -77,9 +77,10 @@ public class Network {
             Block block;
             try {
                 block = this.copyBlockchainFromFN().getUpdateBlock();
-                updateAllWallet(block);
+                if(!block.getNodeAddress().equals("Master"))
+                    updateAllWallet(block);
                 System.out.println("--Wallet--");
-                printWallets(block.getBlockID());
+                printWallets();
             }catch (NullPointerException ignored){
                 ;
             }
@@ -128,6 +129,7 @@ public class Network {
                 }
         }
 
+        System.out.println("Validator address : "+ b.getNodeAddress());
         updateWalletWithAddress(totalFee, b.getNodeAddress(),b.getBlockID());
     }
 
@@ -168,10 +170,10 @@ public class Network {
     /**
      * Function which print all the wallet state
      */
-    public void printWallets(String ID) {
+    public void printWallets() {
         for (var node : network) {
             if (node instanceof PoS.LightNode) {
-                System.out.println("Nom client : " + node.name + " Wallet : " + ((PoS.LightNode) node).getWallet(ID));
+                System.out.println("Nom client : " + node.name + " Wallet 1 : " + ((PoS.LightNode) node).getWallet("1") + "\n" + "Wallet 2 : " + ((PoS.LightNode) node).getWallet("2")  );
             }
         }
     }
