@@ -40,7 +40,7 @@ public abstract class Node {
         synchronized (o) {
             this.nodeID = cpt++;
         }
-        blockchain = new Blockchain();
+        blockchain = new Blockchain(network);
         this.name = name;
         this.network = network;
         try {
