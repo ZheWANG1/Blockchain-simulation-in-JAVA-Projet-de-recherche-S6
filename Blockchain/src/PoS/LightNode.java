@@ -113,7 +113,7 @@ public class LightNode extends Node {
             e.printStackTrace();
         }
         network.broadcastMessage(m);
-        System.out.println(this.name + " Broadcasted a transaction");
+        //System.out.println(this.name + " Broadcasted a transaction");
     }
 
     
@@ -129,7 +129,7 @@ public class LightNode extends Node {
         }else{
             wallet2 += amount;
         }
-        System.out.println(this.name + order + amount + " bitcoins");
+        System.out.println(this.name + order + amount + " currency of type : "+ type);
     }
 
     @Override

@@ -110,7 +110,7 @@ public class Blockchain {
      * @return blockchain's copy
      */
     public Blockchain copyBlkch() {
-        Blockchain blk = new Blockchain();
+        Blockchain blk = new Blockchain(network);
         blk.blkchain.clear();
         blk.blkchain.addAll(this.blkchain);
         return blk;

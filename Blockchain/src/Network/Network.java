@@ -23,7 +23,9 @@ public class Network {
     private int difficulty = INIT_DIFFICULTY;
     public String mode = "POS";
 
-    public Network() {
+    public Network(String type1, String type2) {
+        TYPE1 = type1;
+        TYPE2 = type2;
     }
 
     /**
@@ -114,7 +116,7 @@ public class Network {
             updateWalletWithAddress(amount, toAddress, transaction.getTransactionID());
             updateWalletWithAddress(-(amount + takenFromTrans), transaction.getFromAddress(), transaction.getTransactionID());
             Set<String> investorList;
-            if(b.getBlockID().equals("1")) {
+            if(b.getBlockID().equals(TYPE1)) {
                 investorList = vn.getInvestorList1();
             }
             else {
