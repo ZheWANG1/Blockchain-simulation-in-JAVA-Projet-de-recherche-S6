@@ -9,8 +9,8 @@ import java.util.ArrayList;
 public class LightBlockChain extends Blockchain {
     private final ArrayList<LightBlock> LightBlkchain = new ArrayList<>();
 
-    public LightBlockChain() {
-        super();
+    public LightBlockChain(Network network) {
+        super(network);
     }
 
     /**

@@ -51,7 +51,7 @@ public class ValidatorNode extends PoS.FullNode {
             e.printStackTrace();
         }
         if (transactionStatus) {
-            System.out.println("Transaction" + t.getTransactionHash() + " receipt by " + this.name + " and accepted");
+            //System.out.println("Transaction" + t.getTransactionHash() + " receipt by " + this.name + " and accepted");
             pendingTransaction.add(t);
         } else {
             System.out.println("Transaction" + t.getTransactionHash() + " receipt by " + this.name + " but refused (Probably fraudulent)");
@@ -68,7 +68,7 @@ public class ValidatorNode extends PoS.FullNode {
         for (Transaction t : lt) {
             pendingTransaction.remove(t);
         }
-        System.out.println("Transaction list of " + this.name + " successfully updated");
+        //System.out.println("Transaction list of " + this.name + " successfully updated");
 
     }
 
@@ -83,13 +83,13 @@ public class ValidatorNode extends PoS.FullNode {
         forgedBlock.setNodeID(this.nodeID);
         forgedBlock.setNodeAddress(this.nodeAddress);
         System.out.println("Block has been forged by " + this.name);
-        System.out.println("\t\t-----Block information-----");
-        forgedBlock.printTransactions();
+        //System.out.println("\t\t-----Block information-----");
+        //forgedBlock.printTransactions();
         System.out.println("---------------------------------------------------");
         System.out.println("Broadcasting");
-        System.out.println("Broadcasting.");
-        System.out.println("Broadcasting..");
-        System.out.println("Broadcasting...");
+        //System.out.println("Broadcasting.");
+        //System.out.println("Broadcasting..");
+        //System.out.println("Broadcasting...");
         try {
             List<Object> messageContent = new ArrayList<>();
             messageContent.add(forgedBlock);
@@ -124,6 +124,7 @@ public class ValidatorNode extends PoS.FullNode {
             if(RsaUtil.verify(b.toString(),signature, network.getPkWithAddress(nodeAddress))){
                 System.out.println("Block accepted by "+ this.name);
                 this.blockchain.addBlock(b);
+                this.blockchain.printBlk();
             }
         } catch (Exception e) {
             e.printStackTrace();

@@ -80,7 +80,7 @@ public class test {
                 ln1.sendMoneyTo(2,ln3.getNodeAddress(), "1");
             ln1.sendMoneyTo(2,ln3.getNodeAddress(), "2");
             try {
-                Thread.sleep(30000);
+                Thread.sleep(10000);
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }

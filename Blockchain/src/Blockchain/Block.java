@@ -34,8 +34,9 @@ public class Block {
         String trs = this.toStringAllTransaction();
         header = new Header(blockPrev.getFooter().getHash(), blockIDPrev.getFooter().getHash());
         footer = new Footer();
-        footer.setHash((trs + header.PrevIDHash + header.headerHashPrev));
+        footer.setHash(HashUtil.SHA256(trs + header.PrevIDHash + header.headerHashPrev));
         this.blockID = blockID;
+        System.out.println(this);
     }
 
     /**
@@ -48,6 +49,7 @@ public class Block {
         footer.setHash(HashUtil.SHA256(this.nodeAddress)); // First block has Hash(Master)
         this.transactions = new ArrayList<>();
         this.blockID = blockID;
+        System.out.println(this);
     }
 
     public Block(Block firstBlock, String ID) {
@@ -55,8 +57,9 @@ public class Block {
         String trs = this.toStringAllTransaction();
         header = new Header(firstBlock.getFooter().getHash(),"");
         footer = new Footer();
-        footer.setHash(HashUtil.SHA256(trs + header.PrevIDHash + header.headerHashPrev));
+        footer.setHash(HashUtil.SHA256("Master" + header.headerHashPrev));
         this.blockID = ID;
+        System.out.println(this);
     }
 
     /**
@@ -166,4 +169,5 @@ public class Block {
             System.out.println(transaction.getTransactionHash());
         }
     }
+
 }
