@@ -8,7 +8,7 @@ import java.security.PrivateKey;
 /**
  * Transaction class with transaction information stored
  */
-public class Transaction{
+public class Transaction {
     private final String transactionID;
     private final String transactionHash;
     private final String fromAddress;
@@ -63,7 +63,9 @@ public class Transaction{
         return transactionFee;
     }
 
-    public String getTransactionID(){ return transactionID; }
+    public String getTransactionID() {
+        return transactionID;
+    }
 
     public synchronized boolean isConfirmedTrans() {
         return confirmedTrans;

@@ -2,7 +2,6 @@ package PoS;
 
 import Blockchain.Block;
 import Blockchain.Blockchain;
-import MessageTypes.Transaction;
 import Network.Network;
 import Network.Node;
 
@@ -11,7 +10,7 @@ import Network.Node;
  * This class simulate a node which download the whole blockchain acting as one of the network's server.
  */
 public class FullNode extends Node {
-    
+
 
     /**
      * Constructor FullNode

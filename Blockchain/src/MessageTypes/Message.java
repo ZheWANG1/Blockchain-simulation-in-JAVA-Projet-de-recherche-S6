@@ -12,16 +12,20 @@ public class Message {
     private final int type;
     // Type 0-> Transaction, 1 -> Block
 
-    public Message(String fromAddress, String toAddress, String signature, long timeStamp, int messageType, Object obj){
+    @SuppressWarnings("unchecked")
+    public Message(String fromAddress, String toAddress, String signature, long timeStamp, int messageType, Object obj) {
         this.fromAddress = fromAddress;
         this.toAddress = toAddress;
         this.signature = signature;
         this.timeStamp = timeStamp;
         this.type = messageType;
-        if( messageType == 1){
-            this.messageContent.add( ((List<Object>)obj).get(0));
-            this.messageContent.add( ((List<Object>)obj).get(1));
-        }else {
+        if (messageType == 1) {
+            if(obj instanceof List){
+                this.messageContent.add(((List<Object>) obj).get(0));
+                this.messageContent.add(((List<Object>) obj).get(1));
+            }
+
+        } else {
             this.messageContent.add(obj);
         }
     }
@@ -38,7 +42,7 @@ public class Message {
         return timeStamp;
     }
 
-    public int getType(){
+    public int getType() {
         return type;
     }
 
@@ -46,7 +50,7 @@ public class Message {
         return signature;
     }
 
-    public List<Object> getMessageContent(){
+    public List<Object> getMessageContent() {
         return messageContent;
     }
 }

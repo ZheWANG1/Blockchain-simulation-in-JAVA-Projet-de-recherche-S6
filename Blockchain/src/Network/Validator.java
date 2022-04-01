@@ -1,15 +1,11 @@
 package Network;
 
-import MessageTypes.Transaction;
-
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.concurrent.locks.Condition;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
-import java.util.random.*;
 
 /**
  * Class Validator
@@ -41,9 +37,9 @@ public class Validator implements Runnable {
         for (Node node : listNode) { // For each node in the network
             if (node instanceof ValidatorNode) { // If found node is an LightNode
                 double stakeAmount;
-                if (ID.equals("1")) {
+                if (ID.equals(network.TYPE1)) {
                     stakeAmount = ((ValidatorNode) node).getStakeAmount1(); // Get LightNode's stakeAmount
-                }else{
+                } else {
                     stakeAmount = ((ValidatorNode) node).getStakeAmount2(); // Get LightNode's stakeAmount
                 }
                 double stakeTime = System.currentTimeMillis() - ((ValidatorNode) node).getStakeTime(); // Get LightNode's stakeTime (How long the node have been Staking)
@@ -81,7 +77,6 @@ public class Validator implements Runnable {
         }
         System.out.print("]\n");
 
-
         if (sum == 0) // if anyone didn't deposit bitcoin as stake
             return;
 
@@ -91,25 +86,31 @@ public class Validator implements Runnable {
     }
 
     public void validate() {
-        int currentIDChoosen = 0;
+        String currentBlockType = "";
         boolean interrupt = false;
         while (!interrupt) {
             lock.lock();
             try {
                 if (validator != null) {
-                   validator.forgeBlock(Integer.toString(currentIDChoosen));
-                   validator = null;
+                    validator.forgeBlock(currentBlockType);
+                    validator = null;
 
                 }
                 long start = System.currentTimeMillis();
-                while(true){
+                while (true) {
                     long end = System.currentTimeMillis();
-                    if (end-start > 10000){
+                    if (end - start > 10000) {
                         break;
                     }
                 }
-                currentIDChoosen = (int) (Math.random() * 2) + 1;
-                chooseValidator(Integer.toString(currentIDChoosen));
+                int currentIDChosen = (int) (Math.random() * 2) + 1;
+                if (currentIDChosen == 1){
+                    currentBlockType = network.TYPE1;
+                    chooseValidator(network.TYPE1);
+                }else{
+                    currentBlockType = network.TYPE2;
+                    chooseValidator(network.TYPE2);
+                }
             } catch (Exception e) {
                 e.printStackTrace();
                 interrupt = true;

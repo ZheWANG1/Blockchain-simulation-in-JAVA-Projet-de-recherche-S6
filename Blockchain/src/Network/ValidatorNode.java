@@ -23,14 +23,14 @@ import java.util.*;
 public class ValidatorNode extends PoS.FullNode {
     public static int MAX_TRANSACTION = 10;
     public static double INVEST_RATE = 0.30;
+    public final LightNode fullNodeAccount;
     private final ArrayList<Transaction> pendingTransaction = new ArrayList<>();
     private final ArrayList<Transaction> fraudulentTransaction = new ArrayList<>();
-    public final LightNode fullNodeAccount;
     private final Map<String, Double> investorList1 = new HashMap<>();
     private final Map<String, Double> investorList2 = new HashMap<>();
+    private final long stakeTime = System.currentTimeMillis();
     private double stakeAmount1 = 0;
     private double stakeAmount2 = 0;
-    private final long stakeTime = System.currentTimeMillis();
 
     /**
      * Constructor FullNode
@@ -78,7 +78,7 @@ public class ValidatorNode extends PoS.FullNode {
             if (pendingTransaction.get(i).getTransactionID().equals(blockID))
                 inBlockTransaction.add(pendingTransaction.get(i));
         }
-        Block prevBlockID = this.blockchain.searchPrevBlockByID(blockID, this.blockchain.getSize()-1);
+        Block prevBlockID = this.blockchain.searchPrevBlockByID(blockID, this.blockchain.getSize() - 1);
         Block forgedBlock = new Block(this.blockchain.getLatestBlock(), prevBlockID, inBlockTransaction, blockID);
         forgedBlock.setNodeID(this.nodeID);
         forgedBlock.setNodeAddress(this.nodeAddress);
@@ -94,7 +94,7 @@ public class ValidatorNode extends PoS.FullNode {
             List<Object> messageContent = new ArrayList<>();
             messageContent.add(forgedBlock);
             messageContent.add(this.blockchain);
-            Message m = new Message(this.nodeAddress, "ALL",RsaUtil.sign(HashUtil.SHA256(forgedBlock.toString()), this.privateKey), System.currentTimeMillis(), 1, messageContent);
+            Message m = new Message(this.nodeAddress, "ALL", RsaUtil.sign(HashUtil.SHA256(forgedBlock.toString()), this.privateKey), System.currentTimeMillis(), 1, messageContent);
             network.broadcastMessage(m);
             System.out.println("Block forged and broadcast successfully by " + this.name);
         } catch (Exception e) {
@@ -107,7 +107,7 @@ public class ValidatorNode extends PoS.FullNode {
         double otherNodeReward = amount * INVEST_RATE;
         double thisNodeReward = amount - otherNodeReward;
         this.fullNodeAccount.receiptCoin(thisNodeReward, id);
-        if (id.equals("1")) {
+        if (id.equals(network.TYPE1)) {
             for (String s : this.investorList1.keySet()) {
                 network.updateWalletWithAddress(otherNodeReward, s, id);
             }
@@ -118,11 +118,11 @@ public class ValidatorNode extends PoS.FullNode {
         }
     }
 
-    public void receiptBlock(Block b, String signature, String nodeAddress, Blockchain blk){
+    public void receiptBlock(Block b, String signature, String nodeAddress, Blockchain blk) {
         updateTransactionList(b);
         try {
-            if(RsaUtil.verify(b.toString(),signature, network.getPkWithAddress(nodeAddress))){
-                System.out.println("Block accepted by "+ this.name);
+            if (RsaUtil.verify(b.toString(), signature, network.getPkWithAddress(nodeAddress))) {
+                //System.out.println("Block accepted by " + this.name);
                 this.blockchain.addBlock(b);
                 this.blockchain.printBlk();
             }
@@ -130,27 +130,31 @@ public class ValidatorNode extends PoS.FullNode {
             e.printStackTrace();
         }
     }
-    public void addStake1(double stake){
+
+    public void addStake1(double stake) {
         this.stakeAmount1 += stake;
     }
-    public void addStake2(double stake) { this.stakeAmount2 += stake;}
+
+    public void addStake2(double stake) {
+        this.stakeAmount2 += stake;
+    }
 
     public void addInvestorType(String investorAddress, double stakeAmount, String type) {
-        if (type.equals("1")) {
+        if (type.equals(network.TYPE1)) {
             this.investorList1.put(investorAddress, stakeAmount);
             this.stakeAmount1 += stakeAmount;
-        } else{
+        } else {
             this.investorList2.remove(investorAddress, stakeAmount);
             this.stakeAmount2 += stakeAmount;
         }
     }
 
     public void delInvestor(String investorAddress, String type) {
-        if (type.equals("1")) {
+        if (type.equals(network.TYPE1)) {
             this.stakeAmount1 -= investorList1.get(investorAddress);
             this.investorList1.remove(investorAddress);
 
-        } else{
+        } else {
             this.stakeAmount2 -= investorList2.get(investorAddress);
             this.investorList2.remove(investorAddress);
         }
@@ -168,11 +172,11 @@ public class ValidatorNode extends PoS.FullNode {
         return this.stakeTime;
     }
 
-    public Set<String> getInvestorList1(){
+    public Set<String> getInvestorList1() {
         return this.investorList1.keySet();
     }
 
-    public Set<String> getInvestorList2(){
+    public Set<String> getInvestorList2() {
         return this.investorList2.keySet();
     }
 }

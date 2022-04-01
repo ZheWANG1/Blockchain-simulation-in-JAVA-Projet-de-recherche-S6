@@ -46,7 +46,7 @@ public class Block {
     public Block(String blockID) {
         header = new Header();
         footer = new Footer();
-        footer.setHash(HashUtil.SHA256(this.nodeAddress)); // First block has Hash(Master)
+        footer.setHash(HashUtil.SHA256("Master")); // First block has Hash(Master)
         this.transactions = new ArrayList<>();
         this.blockID = blockID;
         System.out.println(this);
@@ -54,8 +54,7 @@ public class Block {
 
     public Block(Block firstBlock, String ID) {
         this.transactions = new ArrayList<>();
-        String trs = this.toStringAllTransaction();
-        header = new Header(firstBlock.getFooter().getHash(),"");
+        header = new Header(firstBlock.getFooter().getHash(), "");
         footer = new Footer();
         footer.setHash(HashUtil.SHA256("Master" + header.headerHashPrev));
         this.blockID = ID;

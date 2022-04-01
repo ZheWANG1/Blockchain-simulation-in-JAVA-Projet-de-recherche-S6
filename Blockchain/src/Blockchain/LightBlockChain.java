@@ -1,5 +1,7 @@
 package Blockchain;
 
+import Network.Network;
+
 import java.util.ArrayList;
 
 /**

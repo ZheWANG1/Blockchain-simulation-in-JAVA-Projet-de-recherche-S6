@@ -40,9 +40,9 @@ public abstract class Node {
         synchronized (o) {
             this.nodeID = cpt++;
         }
-        blockchain = new Blockchain(network);
-        this.name = name;
         this.network = network;
+        blockchain = new Blockchain(this.network);
+        this.name = name;
         try {
             keys = RsaUtil.generateKeyPair();
             publicKey = keys.getPublic();

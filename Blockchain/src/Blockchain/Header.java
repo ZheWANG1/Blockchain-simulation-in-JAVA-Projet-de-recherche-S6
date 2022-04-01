@@ -1,7 +1,5 @@
 package Blockchain;
 
-import Utils.HashUtil;
-
 import java.util.Objects;
 
 /**
@@ -39,16 +37,6 @@ public class Header {
         PrevIDHash = Objects.requireNonNullElse(hashBlockIdPrev, "");
     }
 
-
-    /**
-     * Getter timeStamp
-     *
-     * @return timeStamp
-     */
-    public long getTimeStamp() {
-        return timeStamp;
-    }
-
     /**
      * Getter previous hash
      *
@@ -64,10 +52,12 @@ public class Header {
      * @return string
      */
 
-    public String getPrevIDHash(){return PrevIDHash;}
-    public String toString() {
-        // return "\nTS : " + timeStamp + "\nprevHash : " + headerHashPrev + "\nhash : " + headerHash + "\nNonce : " + nonce;
-        return "\nTS : " + timeStamp + "\nNonce : " + nonce;
+    public String getPrevIDHash() {
+        return PrevIDHash;
+    }
 
+    public String toString() {
+        return "\nTS : " + timeStamp + "\nPrevBlockHash :"  + this.headerHashPrev
+                + "\nPrevIDBlockHash : "+ this.PrevIDHash + "\nNonce : " + nonce;
     }
 }

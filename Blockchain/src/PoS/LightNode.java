@@ -8,7 +8,6 @@ import MessageTypes.Transaction;
 import Network.Network;
 import Network.Node;
 import Network.ValidatorNode;
-import Utils.HashUtil;
 import Utils.RsaUtil;
 
 /**
@@ -40,7 +39,7 @@ public class LightNode extends Node {
      */
     public LightNode(String name, Network network) {
         super(name, network);
-        this.blockchain = new LightBlockChain();
+        this.blockchain = new LightBlockChain(network);
         this.wallet1 = INIT_WALLET;
         this.wallet2 = INIT_WALLET;
         this.stakeAmount1 = 0;
@@ -49,9 +48,9 @@ public class LightNode extends Node {
     }
 
     public double getWallet(String type) {
-        if (type.equals("1")){
+        if (type.equals(network.TYPE1)) {
             return wallet1;
-        }else{
+        } else {
             return wallet2;
         }
     }
@@ -60,7 +59,7 @@ public class LightNode extends Node {
         return stakeAmount1;
     }
 
-    public double getStakeAmount2(){
+    public double getStakeAmount2() {
         return stakeAmount2;
     }
 
@@ -92,13 +91,13 @@ public class LightNode extends Node {
      * @param nodeAddress Address of the receiver
      */
     public void sendMoneyTo(double amount, String nodeAddress, String transactionType) {
-        if (transactionType.equals("1")){
+        if (transactionType.equals(network.TYPE1)) {
             if (wallet1 < amount * (1 + TRANSACTION_FEE)) {
                 System.out.println(name + " Not enough currency of type " + transactionType + " to send"); // Whatever the currency
                 System.out.println("Rejected transaction");
                 return;
             }
-        }else{
+        } else {
             if (wallet2 < amount * (1 + TRANSACTION_FEE)) {
                 System.out.println(name + " Not enough currency of type " + transactionType + " to send"); // Whatever the currency
                 System.out.println("Rejected transaction");
@@ -108,7 +107,7 @@ public class LightNode extends Node {
         Transaction toSend = new Transaction(transactionType, this.getNodeAddress(), nodeAddress, amount, System.currentTimeMillis(), TRANSACTION_FEE, privateKey);
         Message m = null;
         try {
-            m = new Message(this.nodeAddress, nodeAddress, RsaUtil.sign(toSend.toString(), privateKey),  System.currentTimeMillis(), 0, toSend);
+            m = new Message(this.nodeAddress, nodeAddress, RsaUtil.sign(toSend.toString(), privateKey), System.currentTimeMillis(), 0, toSend);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -116,7 +115,7 @@ public class LightNode extends Node {
         //System.out.println(this.name + " Broadcasted a transaction");
     }
 
-    
+
     /**
      * Function which add or reduce a client's coins amount
      *
@@ -124,12 +123,12 @@ public class LightNode extends Node {
      */
     public void receiptCoin(double amount, String type) {
         String order = amount < 0 ? " Lost " : " received "; // if amount < 0 than order = Lost else Received
-        if (type.equals("1")) {
+        if (type.equals(network.TYPE1)) {
             wallet1 += amount;
-        }else{
+        } else {
             wallet2 += amount;
         }
-        System.out.println(this.name + order + amount + " currency of type : "+ type);
+        System.out.println(this.name + order + amount + " currency of type : " + type);
     }
 
     @Override
@@ -144,13 +143,13 @@ public class LightNode extends Node {
      * @param amount the stake amount of a user
      */
     public void stake(int amount, String type) {
-        if (type.equals("1")) {
+        if (type.equals(network.TYPE1)) {
             if (wallet1 < amount) {
                 System.out.println(name + " don't have enough money for stake in wallet1");
             }
             stakeAmount1 = amount;
             this.wallet1 -= amount;
-        }else{
+        } else {
             if (wallet1 < amount) {
                 System.out.println(name + " don't have enough money for stake in wallet1");
             }

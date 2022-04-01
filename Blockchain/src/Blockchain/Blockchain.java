@@ -2,10 +2,8 @@ package Blockchain;
 
 import Network.Network;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.Objects;
 import java.util.concurrent.CopyOnWriteArrayList;
 
 /**
@@ -29,10 +27,10 @@ public class Blockchain {
      */
     public Blockchain(Network network) {
         synchronized (o) {
-            blockChainId = cpt++;
-            blkchain.addAll(createFirstBlock());
+            this.blockChainId = cpt++;
+            this.network = network;
+            this.blkchain.addAll(createFirstBlock());
         }
-        this.network = network;
     }
 
     /**
@@ -55,14 +53,14 @@ public class Blockchain {
         return blkchain.get(blkchain.size() - 1);
     }
 
-    public Block searchPrevBlockByID(String blockID, int i){
-        if (i < 0){
+    public Block searchPrevBlockByID(String blockID, int i) {
+        if (i < 0) {
             return null;
         }
         Block b = this.blkchain.get(i);
         if (blockID.equals(b.getBlockID()))
             return b;
-        else{
+        else {
             return searchPrevBlockByID(blockID, --i);
         }
     }
