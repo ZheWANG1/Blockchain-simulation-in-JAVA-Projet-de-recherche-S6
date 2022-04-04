@@ -121,7 +121,7 @@ public class ValidatorNode extends PoS.FullNode {
     public void receiptBlock(Block b, String signature, String nodeAddress, Blockchain blk) {
         updateTransactionList(b);
         try {
-            if (RsaUtil.verify(b.toString(), signature, network.getPkWithAddress(nodeAddress))) {
+            if (RsaUtil.verify(HashUtil.SHA256(b.toString()), signature, network.getPkWithAddress(nodeAddress))) {
                 //System.out.println("Block accepted by " + this.name);
                 this.blockchain.addBlock(b);
                 this.blockchain.printBlk();
