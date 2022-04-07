@@ -36,7 +36,7 @@ public class Block {
         footer = new Footer();
         footer.setHash(HashUtil.SHA256(trs + header.PrevIDHash + header.headerHashPrev));
         this.blockID = blockID;
-        System.out.println(this);
+        //System.out.println(this);
     }
 
     /**
@@ -49,7 +49,7 @@ public class Block {
         footer.setHash(HashUtil.SHA256("Master")); // First block has Hash(Master)
         this.transactions = new ArrayList<>();
         this.blockID = blockID;
-        System.out.println(this);
+        //System.out.println(this);
     }
 
     public Block(Block firstBlock, String ID) {
@@ -58,7 +58,7 @@ public class Block {
         footer = new Footer();
         footer.setHash(HashUtil.SHA256("Master" + header.headerHashPrev));
         this.blockID = ID;
-        System.out.println(this);
+        //System.out.println(this);
     }
 
     /**
@@ -144,7 +144,7 @@ public class Block {
 
     @Override
     public String toString() {
-        return "ID : " + blockID + header.toString() + footer.toString();
+        return "\nID : " + blockID + header.toString() + footer.toString();
     }
 
     /**

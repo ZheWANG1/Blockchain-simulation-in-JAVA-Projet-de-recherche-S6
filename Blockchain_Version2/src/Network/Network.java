@@ -29,6 +29,12 @@ public class Network {
         TYPE2 = type2;
     }
 
+    // Traditional blockchain
+    public Network(String type1){
+        TYPE1 = type1;
+        TYPE2 = null;
+    }
+
     /**
      * Getter difficulty
      *
@@ -77,9 +83,10 @@ public class Network {
             n.receiptMessage(m);
         }
         if (m.getType() == 1) {
+            this.copyBlockchainFromFN().printBlk();
             Block block;
             try {
-                block = this.copyBlockchainFromFN().getUpdateBlock();
+                block = this.copyBlockchainFromFN().getLatestBlock();
                 if (!block.getNodeAddress().equals("Master"))
                     updateAllWallet(block);
                 System.out.println("--Wallet--");
@@ -176,7 +183,7 @@ public class Network {
     public void printWallets() {
         for (var node : network) {
             if (node instanceof PoS.LightNode) {
-                System.out.println("Nom client : " + node.name + " \nWallet 1 : " + ((PoS.LightNode) node).getWallet("1") + "\n" + "Wallet 2 : " + ((PoS.LightNode) node).getWallet("2"));
+                System.out.println("Nom client : " + node.name + " \nWallet 1 : " + ((PoS.LightNode) node).getWallet(TYPE1) + "\n" + "Wallet 2 : " + ((PoS.LightNode) node).getWallet(TYPE2));
             }
         }
     }

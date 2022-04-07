@@ -80,8 +80,8 @@ public class test {
 
         for (int i = 0; i < 20; i++) {
             for (int j = 0; j < 10; j++)
-                ln1.sendMoneyTo(2, ln3.getNodeAddress(), TYPE1);
-                ln1.sendMoneyTo(2, ln3.getNodeAddress(), TYPE2);
+                ln1.sendMoneyTo(20, ln3.getNodeAddress(), TYPE1);
+                ln3.sendMoneyTo(50, ln3.getNodeAddress(), TYPE2);
             try {
                 Thread.sleep(10000);
             } catch (InterruptedException e) {

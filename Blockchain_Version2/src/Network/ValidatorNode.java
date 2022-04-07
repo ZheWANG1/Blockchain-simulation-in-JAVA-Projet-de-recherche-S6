@@ -124,7 +124,7 @@ public class ValidatorNode extends PoS.FullNode {
             if (RsaUtil.verify(HashUtil.SHA256(b.toString()), signature, network.getPkWithAddress(nodeAddress))) {
                 //System.out.println("Block accepted by " + this.name);
                 this.blockchain.addBlock(b);
-                this.blockchain.printBlk();
+                //this.blockchain.printBlk();
             }
         } catch (Exception e) {
             e.printStackTrace();

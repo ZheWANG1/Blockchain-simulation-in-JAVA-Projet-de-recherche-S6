@@ -22,7 +22,7 @@ import Utils.RsaUtil;
  */
 public class LightNode extends Node {
     private final static double TRANSACTION_FEE = 0.1;
-    private final static int INIT_WALLET = 100;
+    private final static int INIT_WALLET = 100000;
     private double wallet1;
     private double wallet2;
     private double stakeAmount1;
@@ -92,13 +92,13 @@ public class LightNode extends Node {
      */
     public void sendMoneyTo(double amount, String nodeAddress, String transactionType) {
         if (transactionType.equals(network.TYPE1)) {
-            if (wallet1 < amount * (1 + TRANSACTION_FEE)) {
+            if (wallet1-amount * (1 + TRANSACTION_FEE) < 0 ) {
                 System.out.println(name + " Not enough currency of type " + transactionType + " to send"); // Whatever the currency
                 System.out.println("Rejected transaction");
                 return;
             }
         } else {
-            if (wallet2 < amount * (1 + TRANSACTION_FEE)) {
+            if (wallet2-amount * (1 + TRANSACTION_FEE) < 0) {
                 System.out.println(name + " Not enough currency of type " + transactionType + " to send"); // Whatever the currency
                 System.out.println("Rejected transaction");
                 return;
