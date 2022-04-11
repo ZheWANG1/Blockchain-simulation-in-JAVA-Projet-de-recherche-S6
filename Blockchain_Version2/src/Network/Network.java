@@ -23,10 +23,13 @@ public class Network {
     private final Map<String, PublicKey> keyTable = new HashMap<>();
     public String mode = "POS";
     private int difficulty = INIT_DIFFICULTY;
+    private Map<String, Integer> nbTransParType = new HashMap<String, Integer>();
 
     public Network(String type1, String type2) {
         TYPE1 = type1;
         TYPE2 = type2;
+        nbTransParType.put(TYPE1,0);
+        nbTransParType.put(TYPE2,0);
     }
 
     // Traditional blockchain
@@ -61,6 +64,14 @@ public class Network {
      */
     public PublicKey getPkWithAddress(String address) {
         return keyTable.get(address);
+    }
+
+    public Map<String, Integer> getNbTransParType() {
+        return nbTransParType;
+    }
+
+    public void setNbTransParType(String type, int nb) {
+        this.nbTransParType.put(type, nb);
     }
 
     /**

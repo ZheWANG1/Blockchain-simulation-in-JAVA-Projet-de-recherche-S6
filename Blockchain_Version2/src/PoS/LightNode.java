@@ -10,6 +10,8 @@ import Network.Node;
 import Network.ValidatorNode;
 import Utils.RsaUtil;
 
+import java.util.HashMap;
+
 /**
  * Class LightNode
  * TRANSACTION_FEE : double -> Transaction fee which apply when a lightNode send money to another LightNode
@@ -112,6 +114,10 @@ public class LightNode extends Node {
             e.printStackTrace();
         }
         network.broadcastMessage(m);
+
+        //compter le nb de transaction par son type
+        HashMap<String,Integer> nbTransParType = (HashMap<String, Integer>) network.getNbTransParType();
+        network.setNbTransParType(transactionType, nbTransParType.get(transactionType)+1);
         //System.out.println(this.name + " Broadcasted a transaction");
     }
 

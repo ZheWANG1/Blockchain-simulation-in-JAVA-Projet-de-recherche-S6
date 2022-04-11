@@ -79,11 +79,12 @@ public class test {
         new Thread(validatorExec).start();
 
         for (int i = 0; i < 20; i++) {
-            for (int j = 0; j < 10; j++)
+            for (int j = 0; j < 10; j++) {
                 ln1.sendMoneyTo(20, ln3.getNodeAddress(), TYPE1);
                 ln3.sendMoneyTo(50, ln3.getNodeAddress(), TYPE2);
+            }
             try {
-                Thread.sleep(10000);
+                Thread.sleep(100);
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }

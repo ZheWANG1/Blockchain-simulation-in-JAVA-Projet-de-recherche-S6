@@ -1,11 +1,14 @@
 package Network;
 
+import MessageTypes.Transaction;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
+import java.util.stream.Collectors;
 
 /**
  * Class Validator
@@ -103,7 +106,15 @@ public class Validator implements Runnable {
                         break;
                     }
                 }
-                int currentIDChosen = (int) (Math.random() * 2) + 1;
+
+                HashMap<String, Integer> nbTransParType = (HashMap<String, Integer>) network.getNbTransParType();
+                int nbSum = (int) nbTransParType.values().stream().collect(Collectors.summarizingInt(x->x.intValue())).getSum();
+                double proba = (double) nbTransParType.get(network.TYPE1)/nbSum;
+                //System.out.println(nbTransParType.values());
+                if (proba == 1.0) proba = 0.8;
+                if (proba == 0.0) proba = 0.2;
+                int currentIDChosen = (Math.random() < proba? 1 : 2);
+                System.out.println("Le proba de Type 1 est "+proba);
                 if (currentIDChosen == 1){
                     currentBlockType = network.TYPE1;
                     chooseValidator(network.TYPE1);
