@@ -15,6 +15,7 @@ import java.util.*;
  * keyTable : Map<Integer, PublicKey> -> Map table of NodeID and PublicKey in order to verify signatures.
  */
 public class Network {
+    // --
     public static int NB_OF_BLOCK_OF_TYPE1_CREATED;
     public static int NB_OF_BLOCK_OF_TYPE2_CREATED;
     public static int NB_OF_TRANSACTION_OF_TYPE_1_RECEIVED;
