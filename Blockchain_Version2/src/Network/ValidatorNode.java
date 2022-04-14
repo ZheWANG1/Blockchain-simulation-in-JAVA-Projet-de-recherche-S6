@@ -92,6 +92,11 @@ public class ValidatorNode extends PoS.FullNode {
             messageContent.add(this.blockchain);
             Message m = new Message(this.nodeAddress, "ALL", RsaUtil.sign(HashUtil.SHA256(forgedBlock.toString()), this.privateKey), System.currentTimeMillis(), 1, messageContent);
             network.broadcastMessage(m);
+            if (blockID.equals(network.TYPE1)){
+                Network.NB_OF_BLOCK_OF_TYPE1_CREATED ++;
+            }else{
+                Network.NB_OF_BLOCK_OF_TYPE2_CREATED ++;
+            }
             System.out.println("Block forged and broadcast successfully by " + this.name);
         } catch (Exception e) {
             e.printStackTrace();

@@ -71,7 +71,10 @@ public class Blockchain {
      *
      * @param block block
      */
-    public synchronized void addBlock(Block block) {
+    public synchronized void addBlock(Block block){
+        String ID = block.getBlockID();
+        Block prevBlock = searchPrevBlockByID(ID, this.blkchain.size()-1);
+        System.out.println("-----------Elapse time for block type " + ID +" = "+ (double)(block.getHeader().getTimeStamp() - prevBlock.getHeader().getTimeStamp())/1000 + " s");
         blkchain.add(block);
     }
 

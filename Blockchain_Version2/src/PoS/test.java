@@ -78,10 +78,17 @@ public class test {
         Validator validatorExec = new Validator(bitcoin);
         new Thread(validatorExec).start();
 
-        for (int i = 0; i < 20; i++) {
-            for (int j = 0; j < 10; j++) {
-                ln1.sendMoneyTo(20, ln3.getNodeAddress(), TYPE1);
-                ln3.sendMoneyTo(50, ln3.getNodeAddress(), TYPE2);
+
+        for (int i = 0; i < 1000; i++) {
+            for (int j = 0; j < 100; j++) {
+                ln1.sendMoneyTo(100, ln3.getNodeAddress(), TYPE1);
+                if(j < 60)
+                    ln3.sendMoneyTo(200, ln3.getNodeAddress(), TYPE2);
+                try {
+                    Thread.sleep(100);
+                }catch(InterruptedException e){
+                    System.out.println(e);
+                }
             }
             try {
                 Thread.sleep(100);
