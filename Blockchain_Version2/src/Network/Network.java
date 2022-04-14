@@ -15,6 +15,12 @@ import java.util.*;
  * keyTable : Map<Integer, PublicKey> -> Map table of NodeID and PublicKey in order to verify signatures.
  */
 public class Network {
+    public static int NB_OF_BLOCK_OF_TYPE1_CREATED;
+    public static int NB_OF_BLOCK_OF_TYPE2_CREATED;
+    public static int NB_OF_TRANSACTION_OF_TYPE_1_RECEIVED;
+    public static int NB_OF_TRANSACTION_OF_TYPE_2_RECEIVED;
+    public static double TIME_LAST_BLOCK_OF_TYPE1;
+    public static double TIME_LAST_BLOCK_OF_TYPE2;
     private final static int INIT_DIFFICULTY = 4;
     private final static int CHANGE_DIFFICULTY = 50;
     public final String TYPE1;

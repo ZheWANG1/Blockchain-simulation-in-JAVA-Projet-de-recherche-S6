@@ -22,7 +22,7 @@ import java.util.*;
  */
 public class ValidatorNode extends PoS.FullNode {
     public static int MAX_TRANSACTION = 10;
-    public static double INVEST_RATE = 0.30;
+    public static double INVEST_RATE = 0.80;
     public final LightNode fullNodeAccount;
     private final ArrayList<Transaction> pendingTransaction = new ArrayList<>();
     private final ArrayList<Transaction> fraudulentTransaction = new ArrayList<>();
@@ -77,19 +77,15 @@ public class ValidatorNode extends PoS.FullNode {
         for (int i = 0; (i < MAX_TRANSACTION) && (i < pendingTransaction.size()); i++) {
             if (pendingTransaction.get(i).getTransactionID().equals(blockID))
                 inBlockTransaction.add(pendingTransaction.get(i));
+                network.setNbTransParType(blockID, network.getNbTransParType().get(blockID)-1);
         }
         Block prevBlockID = this.blockchain.searchPrevBlockByID(blockID, this.blockchain.getSize() - 1);
         Block forgedBlock = new Block(this.blockchain.getLatestBlock(), prevBlockID, inBlockTransaction, blockID);
         forgedBlock.setNodeID(this.nodeID);
         forgedBlock.setNodeAddress(this.nodeAddress);
         System.out.println("Block has been forged by " + this.name);
-        //System.out.println("\t\t-----Block information-----");
-        //forgedBlock.printTransactions();
         System.out.println("---------------------------------------------------");
         System.out.println("Broadcasting");
-        //System.out.println("Broadcasting.");
-        //System.out.println("Broadcasting..");
-        //System.out.println("Broadcasting...");
         try {
             List<Object> messageContent = new ArrayList<>();
             messageContent.add(forgedBlock);
