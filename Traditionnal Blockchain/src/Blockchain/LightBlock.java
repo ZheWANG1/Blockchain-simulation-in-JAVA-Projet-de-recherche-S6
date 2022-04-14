@@ -6,7 +6,7 @@ package Blockchain;
  */
 public class LightBlock extends Header {
     private Footer footer;
-    
+
     /**
      * Constructor LightBlock
      *

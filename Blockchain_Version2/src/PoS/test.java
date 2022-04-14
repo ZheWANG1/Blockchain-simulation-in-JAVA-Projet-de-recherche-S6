@@ -74,7 +74,6 @@ public class test {
         vn5.addInvestorType(ln5.getNodeAddress(), ln5.getStakeAmount1(), TYPE2);
         vn6.addInvestorType(ln6.getNodeAddress(), ln6.getStakeAmount1(), TYPE2);
 
-
         Validator validatorExec = new Validator(bitcoin);
         new Thread(validatorExec).start();
 
@@ -90,11 +89,7 @@ public class test {
                     System.out.println(e);
                 }
             }
-            try {
-                Thread.sleep(100);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
+            System.out.println("------------Nb of block 1 : " + Network.NB_OF_BLOCK_OF_TYPE1_CREATED+"\n"+"--------------Nb of block 2 : "+ Network.NB_OF_BLOCK_OF_TYPE2_CREATED);
         }
     }
 }

@@ -8,7 +8,7 @@ import java.security.PrivateKey;
 /**
  * Transaction class with transaction information stored
  */
-public class Transaction{
+public class Transaction {
     private final String transactionHash;
     private final String fromAddress;
     private final String toAddress;

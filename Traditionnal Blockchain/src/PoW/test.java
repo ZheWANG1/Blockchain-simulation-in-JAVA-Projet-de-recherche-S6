@@ -38,8 +38,6 @@ public class test {
         PoW.FullNode m8 = new FullNode("Miner from Spain5", bitcoin, true);
 
 
-
-
         ExecutorService executor = Executors.newFixedThreadPool(8);
         executor.execute(m1);
         executor.execute(m2);

@@ -1,4 +1,5 @@
 package Network;
+
 import MessageTypes.Message;
 import Blockchain.Block;
 import Blockchain.Blockchain;
@@ -22,8 +23,8 @@ public class Network {
     private final static int CHANGE_DIFFICULTY = 50;
     private final List<Node> network = new ArrayList<>();
     private final Map<String, PublicKey> keyTable = new HashMap<>();
-    private int difficulty = INIT_DIFFICULTY;
     public String mode = "POW";
+    private int difficulty = INIT_DIFFICULTY;
 
     public Network() {
     }
@@ -70,24 +71,23 @@ public class Network {
             e.printStackTrace();
         }
     }
-    
-    public void broadcastMessage(Message m){
-        for (Node n: network){
+
+    public void broadcastMessage(Message m) {
+        for (Node n : network) {
             n.receiptMessage(m);
         }
-        if (m.getType() == 1){
+        if (m.getType() == 1) {
             Block block;
             try {
                 block = this.copyBlockchainFromFN().getUpdateBlock();
                 updateAllWallet(block);
                 System.out.println("--Wallet--");
                 printWallets();
-            }catch (NullPointerException ignored){
+            } catch (NullPointerException ignored) {
                 ;
             }
         }
     }
-
 
 
     /**
@@ -99,8 +99,8 @@ public class Network {
         double totalFee = 0;
         List<Transaction> t = b.getTransaction();
         ValidatorNode vn = null;
-        for(Node n: network){
-            if( n.nodeAddress.equals(b.getNodeAddress())){
+        for (Node n : network) {
+            if (n.nodeAddress.equals(b.getNodeAddress())) {
                 vn = ((ValidatorNode) n);
             }
         }
@@ -112,12 +112,12 @@ public class Network {
             String toAddress = transaction.getToAddress();
             updateWalletWithAddress(amount, toAddress);
             updateWalletWithAddress(-(amount + takenFromTrans), transaction.getFromAddress());
-            if (this.mode.equals("POS")){
+            if (this.mode.equals("POS")) {
                 Set<String> investorList = vn.getInvestorList();
                 double otherNodeReward = takenFromTrans * ValidatorNode.INVEST_RATE;
                 double thisNodeReward = takenFromTrans - otherNodeReward;
                 vn.fullNodeAccount.receiptCoin(thisNodeReward);
-                for(String s: investorList) {
+                for (String s : investorList) {
                     updateWalletWithAddress(otherNodeReward, s);
                 }
             }
@@ -125,7 +125,6 @@ public class Network {
 
         updateWalletWithAddress(totalFee, b.getNodeAddress());
     }
-
 
 
     /**
@@ -158,7 +157,7 @@ public class Network {
             if (node instanceof PoW.FullNode) {
                 return node.getBlockchain();
             }
-            if(node instanceof PoS.FullNode){
+            if (node instanceof PoS.FullNode) {
                 return node.getBlockchain();
             }
         }
@@ -174,7 +173,7 @@ public class Network {
             if (node instanceof PoS.LightNode) {
                 System.out.println("Nom client : " + node.name + " Wallet : " + ((PoS.LightNode) node).getWallet());
             }
-            if (node instanceof PoW.LightNode){
+            if (node instanceof PoW.LightNode) {
                 System.out.println("Nom client : " + node.name + " Wallet : " + ((PoW.LightNode) node).getWallet());
             }
         }

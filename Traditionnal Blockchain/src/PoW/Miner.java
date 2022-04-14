@@ -1,4 +1,5 @@
 package PoW;
+
 import MessageTypes.Message;
 import Blockchain.Block;
 import Blockchain.Blockchain;
@@ -107,7 +108,7 @@ public abstract class Miner extends Node implements Runnable {
                 List<Object> messageContent = new ArrayList<>();
                 messageContent.add(block);
                 messageContent.add(this.blockchain.copyBlkch());
-                Message m = new Message(this.nodeAddress,"ALL",RsaUtil.sign(block.toString(), this.privateKey),System.currentTimeMillis(), 1, messageContent);
+                Message m = new Message(this.nodeAddress, "ALL", RsaUtil.sign(block.toString(), this.privateKey), System.currentTimeMillis(), 1, messageContent);
                 System.out.println("Block found by " + this.name + " and broadcast successfully");
                 System.out.println("\t\t-------------Block information-------------");
                 System.out.println(block);
@@ -150,7 +151,7 @@ public abstract class Miner extends Node implements Runnable {
                 receiptVerified();
                 System.out.println("Block received by sender");
             } else if (RsaUtil.verify(b.toString(), signature, nodePK)) {
-                System.out.println("Block verified by "+this.name);
+                System.out.println("Block verified by " + this.name);
                 if (!blockchain.getLatestBlock().equals(b)) {
                     if (this.blockchain.getSize() <= blk.getSize()) {
                         this.blockchain = blk.copyBlkch();
@@ -193,7 +194,7 @@ public abstract class Miner extends Node implements Runnable {
                     }
                     if (transactionTempo != null) {
                         if (!transactionBuffer.contains(transactionTempo) && verifySignature(transactionTempo)) {
-                            System.out.println("Transaction : "+transactionTempo.getTransactionHash()+" has been accepted by "+ this.name);
+                            System.out.println("Transaction : " + transactionTempo.getTransactionHash() + " has been accepted by " + this.name);
                             transactionBuffer.add(transactionTempo);
                             if (transactionBuffer.size() < NB_MAX_TRANSACTIONS) {
                                 transactionInSize.add(transactionTempo);

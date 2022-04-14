@@ -28,12 +28,12 @@ public class test {
         LightNode wvn5 = new LightNode("Validator wallet5", bitcoin);
         LightNode wvn6 = new LightNode("Validator wallet6", bitcoin);
         // Validator
-        ValidatorNode vn1 = new ValidatorNode("Validator 1",bitcoin, wvn1);
-        ValidatorNode vn2 = new ValidatorNode("Validator 2",bitcoin, wvn2);
-        ValidatorNode vn3 = new ValidatorNode("Validator 3",bitcoin, wvn3);
-        ValidatorNode vn4 = new ValidatorNode("Validator 4",bitcoin, wvn4);
-        ValidatorNode vn5 = new ValidatorNode("Validator 5",bitcoin, wvn5);
-        ValidatorNode vn6 = new ValidatorNode("Validator 6",bitcoin, wvn6);
+        ValidatorNode vn1 = new ValidatorNode("Validator 1", bitcoin, wvn1);
+        ValidatorNode vn2 = new ValidatorNode("Validator 2", bitcoin, wvn2);
+        ValidatorNode vn3 = new ValidatorNode("Validator 3", bitcoin, wvn3);
+        ValidatorNode vn4 = new ValidatorNode("Validator 4", bitcoin, wvn4);
+        ValidatorNode vn5 = new ValidatorNode("Validator 5", bitcoin, wvn5);
+        ValidatorNode vn6 = new ValidatorNode("Validator 6", bitcoin, wvn6);
 
         // Normal lightNode
         LightNode ln1 = new LightNode("Jack", bitcoin);
@@ -62,8 +62,8 @@ public class test {
         new Thread(validatorExec).start();
 
         for (int i = 0; i < 20; i++) {
-            for(int j=0; j < 5; j++)
-                ln1.sendMoneyTo(2,ln3.getNodeAddress());
+            for (int j = 0; j < 5; j++)
+                ln1.sendMoneyTo(2, ln3.getNodeAddress());
             try {
                 Thread.sleep(30000);
             } catch (InterruptedException e) {

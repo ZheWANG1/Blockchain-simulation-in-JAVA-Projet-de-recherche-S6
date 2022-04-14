@@ -1,7 +1,5 @@
 package Network;
 
-import MessageTypes.Transaction;
-
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -108,17 +106,17 @@ public class Validator implements Runnable {
                 }
 
                 HashMap<String, Integer> nbTransParType = (HashMap<String, Integer>) network.getNbTransParType();
-                int nbSum = (int) nbTransParType.values().stream().collect(Collectors.summarizingInt(x->x.intValue())).getSum();
-                double proba = (double) nbTransParType.get(network.TYPE1)/nbSum;
+                int nbSum = (int) nbTransParType.values().stream().collect(Collectors.summarizingInt(Integer::intValue)).getSum();
+                double proba = (double) nbTransParType.get(network.TYPE1) / nbSum;
                 //System.out.println(nbTransParType.values());
                 if (proba == 1.0) proba = 0.8;
                 if (proba == 0.0) proba = 0.2;
-                int currentIDChosen = (Math.random() < proba? 1 : 2);
-                System.out.println("Le proba de Type 1 est "+proba);
-                if (currentIDChosen == 1){
+                int currentIDChosen = (Math.random() < proba ? 1 : 2);
+                System.out.println("Le proba de Type 1 est " + proba);
+                if (currentIDChosen == 1) {
                     currentBlockType = network.TYPE1;
                     chooseValidator(network.TYPE1);
-                }else{
+                } else {
                     currentBlockType = network.TYPE2;
                     chooseValidator(network.TYPE2);
                 }

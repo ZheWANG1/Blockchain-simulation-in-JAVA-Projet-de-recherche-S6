@@ -77,7 +77,7 @@ public class ValidatorNode extends PoS.FullNode {
         for (int i = 0; (i < MAX_TRANSACTION) && (i < pendingTransaction.size()); i++) {
             if (pendingTransaction.get(i).getTransactionID().equals(blockID))
                 inBlockTransaction.add(pendingTransaction.get(i));
-                network.setNbTransParType(blockID, network.getNbTransParType().get(blockID)-1);
+            network.setNbTransParType(blockID, network.getNbTransParType().get(blockID) - 1);
         }
         Block prevBlockID = this.blockchain.searchPrevBlockByID(blockID, this.blockchain.getSize() - 1);
         Block forgedBlock = new Block(this.blockchain.getLatestBlock(), prevBlockID, inBlockTransaction, blockID);

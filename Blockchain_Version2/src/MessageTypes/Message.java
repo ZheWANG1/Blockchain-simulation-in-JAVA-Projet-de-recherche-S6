@@ -20,7 +20,7 @@ public class Message {
         this.timeStamp = timeStamp;
         this.type = messageType;
         if (messageType == 1) {
-            if(obj instanceof List){
+            if (obj instanceof List) {
                 this.messageContent.add(((List<Object>) obj).get(0));
                 this.messageContent.add(((List<Object>) obj).get(1));
             }

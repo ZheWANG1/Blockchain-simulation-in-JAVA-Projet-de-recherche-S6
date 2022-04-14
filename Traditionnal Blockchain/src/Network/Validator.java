@@ -92,14 +92,14 @@ public class Validator implements Runnable {
             lock.lock();
             try {
                 if (validator != null) {
-                   validator.forgeBlock();
-                   validator = null;
+                    validator.forgeBlock();
+                    validator = null;
 
                 }
                 long start = System.currentTimeMillis();
-                while(true){
+                while (true) {
                     long end = System.currentTimeMillis();
-                    if (end-start > 10000){
+                    if (end - start > 10000) {
                         break;
                     }
                 }

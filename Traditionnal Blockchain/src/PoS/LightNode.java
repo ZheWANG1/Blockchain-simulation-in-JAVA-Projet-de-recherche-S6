@@ -87,7 +87,7 @@ public class LightNode extends Node {
             Transaction toSend = new Transaction("", this.getNodeAddress(), nodeAddress, amount, System.currentTimeMillis(), TRANSACTION_FEE, privateKey);
             Message m = null;
             try {
-                m = new Message(this.nodeAddress, nodeAddress, RsaUtil.sign(toSend.toString(), privateKey),  System.currentTimeMillis(), 0, toSend);
+                m = new Message(this.nodeAddress, nodeAddress, RsaUtil.sign(toSend.toString(), privateKey), System.currentTimeMillis(), 0, toSend);
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -95,7 +95,7 @@ public class LightNode extends Node {
             System.out.println(this.name + " Broadcasted a transaction");
         }
     }
-    
+
     /**
      * Function which add or reduce a client's coins amount
      *

@@ -59,7 +59,7 @@ public class Header {
     public long getTimeStamp(){return this.timeStamp;}
 
     public String toString() {
-        return "\nTS : " + timeStamp + "\nPrevBlockHash :"  + this.headerHashPrev
-                + "\nPrevIDBlockHash : "+ this.PrevIDHash + "\nNonce : " + nonce;
+        return "\nTS : " + timeStamp + "\nPrevBlockHash :" + this.headerHashPrev
+                + "\nPrevIDBlockHash : " + this.PrevIDHash + "\nNonce : " + nonce;
     }
 }

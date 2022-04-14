@@ -4,8 +4,6 @@ import Utils.HashUtil;
 import Utils.RsaUtil;
 
 import java.security.PrivateKey;
-import java.util.HashMap;
-import java.util.Map;
 
 /**
  * Transaction class with transaction information stored
@@ -20,7 +18,6 @@ public class Transaction {
     private final long timeStamp;
     private String signature;
     private boolean confirmedTrans = false;
-
 
 
     public Transaction(String transactionID, String fromAddress, String toAddress, double amount, long timeStamp, double transactionFee, PrivateKey pv) {

@@ -24,9 +24,9 @@ import java.util.*;
 public class ValidatorNode extends PoS.FullNode {
     public static int MAX_TRANSACTION = 10;
     public static double INVEST_RATE = 0.30;
+    public final LightNode fullNodeAccount;
     private final ArrayList<Transaction> pendingTransaction = new ArrayList<>();
     private final ArrayList<Transaction> fraudulentTransaction = new ArrayList<>();
-    public final LightNode fullNodeAccount;
     private final Map<String, Double> investorList = new HashMap<>();
     private double stakeAmount = 0;
     private long stakeTime = System.currentTimeMillis();
@@ -91,7 +91,7 @@ public class ValidatorNode extends PoS.FullNode {
             List<Object> messageContent = new ArrayList<>();
             messageContent.add(forgedBlock);
             messageContent.add(this.blockchain);
-            Message m = new Message(this.nodeAddress, "ALL",RsaUtil.sign(HashUtil.SHA256(forgedBlock.toString()), this.privateKey), System.currentTimeMillis(), 1, messageContent);
+            Message m = new Message(this.nodeAddress, "ALL", RsaUtil.sign(HashUtil.SHA256(forgedBlock.toString()), this.privateKey), System.currentTimeMillis(), 1, messageContent);
             network.broadcastMessage(m);
             System.out.println("Block forged and broadcast successfully by " + this.name);
         } catch (Exception e) {
@@ -104,23 +104,24 @@ public class ValidatorNode extends PoS.FullNode {
         double otherNodeReward = amount * INVEST_RATE;
         double thisNodeReward = amount - otherNodeReward;
         this.fullNodeAccount.receiptCoin(thisNodeReward);
-        for(String s: this.investorList.keySet()){
-            network.updateWalletWithAddress(otherNodeReward,s);
+        for (String s : this.investorList.keySet()) {
+            network.updateWalletWithAddress(otherNodeReward, s);
         }
     }
 
-    public void receiptBlock(Block b, String signature, String nodeAddress, Blockchain blk){
+    public void receiptBlock(Block b, String signature, String nodeAddress, Blockchain blk) {
         updateTransactionList(b);
         try {
-            if(RsaUtil.verify(b.toString(),signature, network.getPkWithAddress(nodeAddress))){
-                System.out.println("Block accepted by "+ this.name);
+            if (RsaUtil.verify(b.toString(), signature, network.getPkWithAddress(nodeAddress))) {
+                System.out.println("Block accepted by " + this.name);
                 this.blockchain.addBlock(b);
             }
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
-    public void addStake(double stake){
+
+    public void addStake(double stake) {
         this.stakeAmount = stake;
     }
 
@@ -142,7 +143,7 @@ public class ValidatorNode extends PoS.FullNode {
         return this.stakeTime;
     }
 
-    public Set<String> getInvestorList(){
+    public Set<String> getInvestorList() {
         return this.investorList.keySet();
     }
 }

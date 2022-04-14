@@ -94,13 +94,13 @@ public class LightNode extends Node {
      */
     public void sendMoneyTo(double amount, String nodeAddress, String transactionType) {
         if (transactionType.equals(network.TYPE1)) {
-            if (wallet1-amount * (1 + TRANSACTION_FEE) < 0 ) {
+            if (wallet1 - amount * (1 + TRANSACTION_FEE) < 0) {
                 System.out.println(name + " Not enough currency of type " + transactionType + " to send"); // Whatever the currency
                 System.out.println("Rejected transaction");
                 return;
             }
         } else {
-            if (wallet2-amount * (1 + TRANSACTION_FEE) < 0) {
+            if (wallet2 - amount * (1 + TRANSACTION_FEE) < 0) {
                 System.out.println(name + " Not enough currency of type " + transactionType + " to send"); // Whatever the currency
                 System.out.println("Rejected transaction");
                 return;
@@ -116,8 +116,8 @@ public class LightNode extends Node {
         network.broadcastMessage(m);
 
         //compter le nb de transaction par son type
-        HashMap<String,Integer> nbTransParType = (HashMap<String, Integer>) network.getNbTransParType();
-        network.setNbTransParType(transactionType, nbTransParType.get(transactionType)+1);
+        HashMap<String, Integer> nbTransParType = (HashMap<String, Integer>) network.getNbTransParType();
+        network.setNbTransParType(transactionType, nbTransParType.get(transactionType) + 1);
         //System.out.println(this.name + " Broadcasted a transaction");
     }
 

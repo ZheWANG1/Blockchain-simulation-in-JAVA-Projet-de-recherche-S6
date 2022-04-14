@@ -4,7 +4,9 @@ public class Footer {
 
     private String hash;
 
-    public Footer(){this.hash = "";}
+    public Footer() {
+        this.hash = "";
+    }
 
     public Footer(String hash) {
         this.hash = hash;
@@ -18,7 +20,7 @@ public class Footer {
         this.hash = hash;
     }
 
-    public String toString(){
+    public String toString() {
         return "\nFooter hash : " + hash;
     }
 }

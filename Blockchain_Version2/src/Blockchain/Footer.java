@@ -21,7 +21,7 @@ public class Footer {
     }
 
     public String toString() {
-        return "\nFooter hash : " + hash +"\n------------------------------";
+        return "\nFooter hash : " + hash + "\n------------------------------";
     }
 }
 

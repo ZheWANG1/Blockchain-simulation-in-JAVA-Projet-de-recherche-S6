@@ -15,32 +15,28 @@ import java.util.*;
  * keyTable : Map<Integer, PublicKey> -> Map table of NodeID and PublicKey in order to verify signatures.
  */
 public class Network {
-    // --
-    public static int NB_OF_BLOCK_OF_TYPE1_CREATED;
-    public static int NB_OF_BLOCK_OF_TYPE2_CREATED;
-    public static int NB_OF_TRANSACTION_OF_TYPE_1_RECEIVED;
-    public static int NB_OF_TRANSACTION_OF_TYPE_2_RECEIVED;
-    public static double TIME_LAST_BLOCK_OF_TYPE1;
-    public static double TIME_LAST_BLOCK_OF_TYPE2;
     private final static int INIT_DIFFICULTY = 4;
     private final static int CHANGE_DIFFICULTY = 50;
+    // --
+    public static int NB_OF_BLOCK_OF_TYPE1_CREATED = 1;
+    public static int NB_OF_BLOCK_OF_TYPE2_CREATED = 1;
     public final String TYPE1;
     public final String TYPE2;
     private final List<Node> network = new ArrayList<>();
     private final Map<String, PublicKey> keyTable = new HashMap<>();
     public String mode = "POS";
     private int difficulty = INIT_DIFFICULTY;
-    private Map<String, Integer> nbTransParType = new HashMap<String, Integer>();
+    private final Map<String, Integer> nbTransParType = new HashMap<>();
 
     public Network(String type1, String type2) {
         TYPE1 = type1;
         TYPE2 = type2;
-        nbTransParType.put(TYPE1,0);
-        nbTransParType.put(TYPE2,0);
+        nbTransParType.put(TYPE1, 0);
+        nbTransParType.put(TYPE2, 0);
+
     }
 
-    // Traditional blockchain
-    public Network(String type1){
+    public Network(String type1) {
         TYPE1 = type1;
         TYPE2 = null;
     }
@@ -141,7 +137,7 @@ public class Network {
             updateWalletWithAddress(amount, toAddress, transaction.getTransactionID());
             updateWalletWithAddress(-(amount + takenFromTrans), transaction.getFromAddress(), transaction.getTransactionID());
             Set<String> investorList;
-            if(vn != null){
+            if (vn != null) {
                 if (b.getBlockID().equals(TYPE1)) {
                     investorList = vn.getInvestorList1();
                 } else {

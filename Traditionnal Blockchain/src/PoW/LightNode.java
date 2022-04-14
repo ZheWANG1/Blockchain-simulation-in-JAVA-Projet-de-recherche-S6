@@ -55,7 +55,7 @@ public class LightNode extends Node {
             Transaction toSend = new Transaction("", this.getNodeAddress(), address, amount, System.currentTimeMillis(), TRANSACTION_FEE, privateKey);
             Message m = null;
             try {
-                m = new Message(nodeAddress, address, RsaUtil.sign(toSend.toString(), this.privateKey),System.currentTimeMillis(),0, toSend);
+                m = new Message(nodeAddress, address, RsaUtil.sign(toSend.toString(), this.privateKey), System.currentTimeMillis(), 0, toSend);
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -63,7 +63,7 @@ public class LightNode extends Node {
             System.out.println(this.name + " Broadcasted a transaction");
         }
     }
-    
+
     public double getWallet() {
         return wallet;
     }
@@ -86,7 +86,7 @@ public class LightNode extends Node {
 
     @Override
     public void receiptBlock(Block b, String signature, String nodeAddress, Blockchain blk) {
-        
+
         lastBlock = b;
         ((LightBlockChain) this.blockchain).addLightHeader(b.getHeader(), b.getFooter());
     }
