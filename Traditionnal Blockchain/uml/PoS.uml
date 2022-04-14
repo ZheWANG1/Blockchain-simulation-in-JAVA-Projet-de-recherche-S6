@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Diagram>
+  <ID>JAVA</ID>
+  <OriginalElement>Utils.HashUtil</OriginalElement>
+  <nodes>
+    <node x="695.0" y="0.0">Blockchain.Block</node>
+    <node x="334.99999999999994" y="284.0">PoS.LightNode</node>
+    <node x="505.0" y="1358.0">Network.Validator</node>
+    <node x="645.0" y="999.0">MessageTypes.Transaction</node>
+    <node x="974.0" y="260.0">Blockchain.LightBlockChain</node>
+    <node x="0.0" y="1358.0">Blockchain.Footer</node>
+    <node x="1093.0" y="999.0">MessageTypes.Message</node>
+    <node x="0.0" y="1259.0">Blockchain.LightBlock</node>
+    <node x="269.0" y="999.0">Network.Network</node>
+    <node x="926.0" y="1358.0">Utils.HashUtil</node>
+    <node x="1011.5" y="0.0">Blockchain.Blockchain</node>
+    <node x="0.0" y="383.0">PoW.FullNode</node>
+    <node x="2.5" y="999.0">Blockchain.Header</node>
+    <node x="167.49999999999997" y="0.0">Network.Node</node>
+    <node x="0.0" y="610.0">Network.ValidatorNode</node>
+    <node x="202.0" y="1358.0">Utils.RsaUtil</node>
+    <node x="721.0" y="1358.0">PoS.test</node>
+  </nodes>
+  <notes />
+  <edges>
+    <edge source="Blockchain.LightBlockChain" target="Blockchain.Blockchain" relationship="GENERALIZATION">
+      <point x="0.0" y="-50.0" />
+      <point x="0.0" y="105.0" />
+    </edge>
+    <edge source="Network.ValidatorNode" target="PoW.FullNode" relationship="GENERALIZATION">
+      <point x="0.0" y="-172.0" />
+      <point x="0.0" y="39.0" />
+    </edge>
+    <edge source="Blockchain.LightBlock" target="Blockchain.Header" relationship="GENERALIZATION">
+      <point x="0.0" y="-27.0" />
+      <point x="0.0" y="105.0" />
+    </edge>
+    <edge source="PoS.LightNode" target="Network.Node" relationship="GENERALIZATION">
+      <point x="5.6843418860808015E-14" y="-138.0" />
+      <point x="492.5" y="259.0" />
+      <point x="325.0" y="259.0" />
+      <point x="0.0" y="117.0" />
+    </edge>
+    <edge source="PoW.FullNode" target="Network.Node" relationship="GENERALIZATION">
+      <point x="0.0" y="-39.0" />
+      <point x="157.5" y="259.0" />
+      <point x="325.0" y="259.0" />
+      <point x="0.0" y="117.0" />
+    </edge>
+  </edges>
+  <settings layout="Hierarchic" zoom="0.40867279894875164" showDependencies="false" x="697.0" y="751.0" />
+  <SelectedNodes>
+    <node>Utils.HashUtil</node>
+  </SelectedNodes>
+  <Categories>
+    <Category>Constructors</Category>
+    <Category>Fields</Category>
+    <Category>Inner Classes</Category>
+    <Category>Methods</Category>
+  </Categories>
+  <SCOPE>All</SCOPE>
+  <VISIBILITY>packageLocal</VISIBILITY>
+</Diagram>
+
