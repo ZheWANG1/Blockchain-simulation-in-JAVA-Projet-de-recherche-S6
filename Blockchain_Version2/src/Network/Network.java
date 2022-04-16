@@ -97,14 +97,14 @@ public class Network {
             n.receiptMessage(m);
         }
         if (m.getType() == 1) {
-            //this.copyBlockchainFromFN().printBlk();
+            this.copyBlockchainFromFN().printBlk();
             Block block;
             try {
                 block = this.copyBlockchainFromFN().getLatestBlock();
                 if (!block.getNodeAddress().equals("Master"))
                     updateAllWallet(block);
-                System.out.println("--Wallet--");
-                printWallets();
+                //System.out.println("--Wallet--");
+                //printWallets();
             } catch (NullPointerException ignored) {
 
             }

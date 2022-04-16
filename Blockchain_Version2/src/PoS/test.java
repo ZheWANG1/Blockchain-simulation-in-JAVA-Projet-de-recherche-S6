@@ -3,6 +3,7 @@ package PoS;
 import Network.Network;
 import Network.Validator;
 import Network.ValidatorNode;
+import Network.ValidatorParaL;
 
 
 public class test {
@@ -74,7 +75,10 @@ public class test {
         vn5.addInvestorType(ln5.getNodeAddress(), ln5.getStakeAmount1(), TYPE2);
         vn6.addInvestorType(ln6.getNodeAddress(), ln6.getStakeAmount1(), TYPE2);
 
-        Validator validatorExec = new Validator(bitcoin);
+        //Validator validatorExec = new Validator(bitcoin);
+        //new Thread(validatorExec).start();
+
+        ValidatorParaL validatorExec = new ValidatorParaL(bitcoin);
         new Thread(validatorExec).start();
 
 
