@@ -134,7 +134,7 @@ public class LightNode extends Node {
         } else {
             wallet2 += amount;
         }
-        System.out.println(this.name + order + amount + " currency of type : " + type);
+        //System.out.println(this.name + order + amount + " currency of type : " + type);
     }
 
     @Override
@@ -163,6 +163,6 @@ public class LightNode extends Node {
             this.wallet2 -= amount;
         }
         stakeTime = System.currentTimeMillis();
-        System.out.println(name + " deposit " + amount + " as stake");
+        //System.out.println(name + " deposit " + amount + " as stake");
     }
 }

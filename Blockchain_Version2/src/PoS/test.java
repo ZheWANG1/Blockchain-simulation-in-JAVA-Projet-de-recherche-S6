@@ -5,14 +5,24 @@ import Network.Validator;
 import Network.ValidatorNode;
 import Network.ValidatorParaL;
 
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.PrintStream;
+
 
 public class test {
 
     public static void main(String[] args) {
-        simulationPoS();
+        try {
+            simulationPoS();
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
     }
 
-    public static void simulationPoS() {
+    public static void simulationPoS() throws FileNotFoundException {
+        PrintStream FileResult = new PrintStream("ResultParaLBlockchain");
+        System.setOut(FileResult);
         String TYPE1 = "Bit1";
         String TYPE2 = "Bit2";
 
@@ -94,6 +104,10 @@ public class test {
                 }
             }
             System.out.println("------------Nb of block 1 : " + Network.NB_OF_BLOCK_OF_TYPE1_CREATED+"\n"+"--------------Nb of block 2 : "+ Network.NB_OF_BLOCK_OF_TYPE2_CREATED);
+            if (Network.NB_OF_BLOCK_OF_TYPE1_CREATED + Network.NB_OF_BLOCK_OF_TYPE2_CREATED >= 5){
+                System.out.println("Finishing tests");
+                System.exit(1);
+            }
         }
     }
 }
