@@ -72,7 +72,10 @@ public class ValidatorNode extends PoS.FullNode {
                 inBlockTransaction.add(pendingTransaction.get(i));
             network.setNbTransParType(blockID, network.getNbTransParType().get(blockID) - 1);
         }
+        long start = System.nanoTime();
         Block prevBlockID = this.blockchain.searchPrevBlockByID(blockID, this.blockchain.getSize() - 1);
+        long end = System.nanoTime();
+        System.out.println("##Search time = " + (double)((end-start)));
         Block forgedBlock = new Block(this.blockchain.getLatestBlock(), prevBlockID, inBlockTransaction, blockID);
         forgedBlock.setNodeID(this.nodeID);
         forgedBlock.setNodeAddress(this.nodeAddress);

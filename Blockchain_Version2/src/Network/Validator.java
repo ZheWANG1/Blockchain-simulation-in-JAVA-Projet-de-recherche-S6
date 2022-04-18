@@ -108,7 +108,7 @@ public class Validator implements Runnable {
                 HashMap<String, Integer> nbTransParType = (HashMap<String, Integer>) network.getNbTransParType();
                 int nbSum = (int) nbTransParType.values().stream().collect(Collectors.summarizingInt(Integer::intValue)).getSum();
                 double proba = (double) nbTransParType.get(network.TYPE1) / nbSum;
-                //System.out.println(nbTransParType.values());
+                System.out.println("Transactions : " +  nbTransParType.values());
                 if (proba == 1.0) proba = 0.8;
                 if (proba == 0.0) proba = 0.2;
                 int currentIDChosen = (Math.random() < proba ? 1 : 2);

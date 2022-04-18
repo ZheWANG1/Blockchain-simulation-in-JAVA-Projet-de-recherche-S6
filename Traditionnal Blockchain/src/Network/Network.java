@@ -81,8 +81,8 @@ public class Network {
             try {
                 block = this.copyBlockchainFromFN().getUpdateBlock();
                 updateAllWallet(block);
-                System.out.println("--Wallet--");
-                printWallets();
+                //System.out.println("--Wallet--");
+                //printWallets();
             } catch (NullPointerException ignored) {
                 ;
             }
