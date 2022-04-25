@@ -16,11 +16,11 @@ public class test {
     public static void main(String[] args) {
         try {
             //System.out.println("-------------------First test");
-            simulationPoS(1);
+            //simulationPoS(1);
             //System.out.println("-------------------Second Test");
             //simulationPoS(2);
             //System.out.println("-------------------Third Test");
-            //simulationPoS(3);
+            simulationPoS(3);
             System.exit(1);
         } catch (FileNotFoundException e) {
             e.printStackTrace();
