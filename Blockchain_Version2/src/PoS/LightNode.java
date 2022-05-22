@@ -24,7 +24,7 @@ import java.util.HashMap;
  */
 public class LightNode extends Node {
     private final static double TRANSACTION_FEE = 0.1;
-    private final static int INIT_WALLET = 100000;
+    private final static int INIT_WALLET = 100000000;
     private double wallet1;
     private double wallet2;
     private double stakeAmount1;

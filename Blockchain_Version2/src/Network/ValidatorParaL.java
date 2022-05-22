@@ -6,7 +6,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
-import java.util.stream.Collectors;
 
 /**
  * Class Validator
@@ -22,7 +21,8 @@ public class ValidatorParaL implements Runnable {
     private final static int SLOTS_MAX = 10;
     private final Lock lock = new ReentrantLock();
     private final Network network;
-    private ValidatorNode validator = null;
+    private ValidatorNode validator1 = null;
+    private ValidatorNode validator2 = null;
 
     public ValidatorParaL(Network network) {
         this.network = network;
@@ -82,8 +82,16 @@ public class ValidatorParaL implements Runnable {
             return;
 
         int chosen_node_index = (int) (Math.random() * number_of_slots);
-        validator = validatorNodesSlots.get(chosen_node_index);
-        System.out.println(validator.name + " is chosen");
+        if(ID.equals(network.TYPE1)){
+            validator1 = validatorNodesSlots.get(chosen_node_index);
+            System.out.println(validator1.name + " is chosen");
+        }
+        else {
+            validator2 = validatorNodesSlots.get(chosen_node_index);
+            System.out.println(validator2.name + " is chosen");
+        }
+
+
     }
 
     public void validate() {
@@ -91,10 +99,13 @@ public class ValidatorParaL implements Runnable {
         while (!interrupt) {
             lock.lock();
             try {
-                if (validator != null) {
-                    validator.forgeBlock(network.TYPE1);
-                    validator.forgeBlock(network.TYPE2);
-                    validator = null;
+                if (validator1 != null && validator2 != null) {
+                    validator1.forgeBlock(network.TYPE1);
+                    validator2.forgeBlock(network.TYPE2);
+                    System.out.println(validator1);
+                    System.out.println(validator2);
+                    validator1 = null;
+                    validator2 = null;
                 }
                 long start = System.currentTimeMillis();
                 while (true) {

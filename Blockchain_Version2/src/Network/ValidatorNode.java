@@ -47,7 +47,7 @@ public class ValidatorNode extends PoS.FullNode {
             //System.out.println("Transaction" + t.getTransactionHash() + " receipt by " + this.name + " and accepted");
             pendingTransaction.add(t);
         } else {
-            System.out.println("Transaction" + t.getTransactionHash() + " receipt by " + this.name + " but refused (Probably fraudulent)");
+            //System.out.println("Transaction" + t.getTransactionHash() + " receipt by " + this.name + " but refused (Probably fraudulent)");
             fraudulentTransaction.add(t);
         }
     }
@@ -66,21 +66,24 @@ public class ValidatorNode extends PoS.FullNode {
     }
 
     public void forgeBlock(String blockID) {
+        System.out.println((blockID));
         List<Transaction> inBlockTransaction = new ArrayList<>();
         for (int i = 0; (i < MAX_TRANSACTION) && (i < pendingTransaction.size()); i++) {
-            if (pendingTransaction.get(i).getTransactionID().equals(blockID))
+            if (pendingTransaction.get(i).getTransactionID().equals(blockID)) {
                 inBlockTransaction.add(pendingTransaction.get(i));
-            network.setNbTransParType(blockID, network.getNbTransParType().get(blockID) - 1);
+                System.out.println(pendingTransaction.get(i).getTransactionID());
+                network.setNbTransParType(blockID, network.getNbTransParType().get(blockID) - 1);
+            }
         }
         long start = System.nanoTime();
         Block prevBlockID = this.blockchain.searchPrevBlockByID(blockID, this.blockchain.getSize() - 1);
         long end = System.nanoTime();
-        System.out.println("##Search time = " + (double)((end-start)));
+        network.ST.add((double)end-start); // IMPORTANT
         Block forgedBlock = new Block(this.blockchain.getLatestBlock(), prevBlockID, inBlockTransaction, blockID);
         forgedBlock.setNodeID(this.nodeID);
         forgedBlock.setNodeAddress(this.nodeAddress);
         System.out.println("Block has been forged by " + this.name);
-        System.out.println("---------------------------------------------------");
+        //System.out.println("---------------------------------------------------");
         System.out.println("Broadcasting");
         try {
             List<Object> messageContent = new ArrayList<>();
@@ -89,11 +92,11 @@ public class ValidatorNode extends PoS.FullNode {
             Message m = new Message(this.nodeAddress, "ALL", RsaUtil.sign(HashUtil.SHA256(forgedBlock.toString()), this.privateKey), System.currentTimeMillis(), 1, messageContent);
             network.broadcastMessage(m);
             if (blockID.equals(network.TYPE1)){
-                Network.NB_OF_BLOCK_OF_TYPE1_CREATED ++;
+                Network.NB_OF_BLOCK_OF_TYPE1_CREATED.add(Network.NB_OF_BLOCK_OF_TYPE1_CREATED.get(Network.NB_OF_BLOCK_OF_TYPE1_CREATED.size()-1)+1);
             }else{
-                Network.NB_OF_BLOCK_OF_TYPE2_CREATED ++;
+                Network.NB_OF_BLOCK_OF_TYPE2_CREATED.add(Network.NB_OF_BLOCK_OF_TYPE2_CREATED.get(Network.NB_OF_BLOCK_OF_TYPE2_CREATED.size()-1)+1);
             }
-            System.out.println("Block forged and broadcast successfully by " + this.name);
+            //System.out.println("Block forged and broadcast successfully by " + this.name);
         } catch (Exception e) {
             e.printStackTrace();
             System.out.println("Error signing");

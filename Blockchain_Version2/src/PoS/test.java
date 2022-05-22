@@ -1,5 +1,8 @@
 package PoS;
 
+import Blockchain.Block;
+import Blockchain.Blockchain;
+import MessageTypes.Transaction;
 import Network.Network;
 import Network.ValidatorNode;
 import Network.ValidatorParaL;
@@ -9,35 +12,21 @@ import Network.ValidatorMonoType;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.PrintStream;
+import java.util.ArrayList;
+import java.util.List;
 
 
 public class test {
 
     public static void main(String[] args) {
-        try {
-            //System.out.println("-------------------First test");
-            //simulationPoS(1);
-            //System.out.println("-------------------Second Test");
-            //simulationPoS(2);
-            //System.out.println("-------------------Third Test");
-            simulationPoS(3);
-            System.exit(1);
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        }
+        simulationPoS(1); // Simulation T-Probabilities
+        simulationPoS(2); // Simulation Parallel
+        simulationPoS(3); // Simulation Traditional
+        simuBlk(); // Simulation Search Time
     }
 
-    public static void simulationPoS(int type) throws FileNotFoundException {
-        PrintStream FileResult = System.out;
-        if(type==1){
-            FileResult = new PrintStream("ResultNormalWithTwoTypeBlockchain");
-        }
-        if(type==2)
-            FileResult = new PrintStream("ResultParaLBlockchain");
-        if(type==3)
-            FileResult = new PrintStream("ResultTradiBlockchain");
+    public static void simulationPoS(int type) {
 
-        System.setOut(FileResult);
         String TYPE1 = "Bit1";
         String TYPE2 = "Bit2";
 
@@ -116,25 +105,58 @@ public class test {
 
 
 
-        for (int i = 0; i < 1000; i++) {
-            for (int j = 0; j < 100; j++) {
-                ln1.sendMoneyTo(100, ln3.getNodeAddress(), TYPE1);
-                if(j < 60)
-                    ln3.sendMoneyTo(200, ln3.getNodeAddress(), TYPE2);
+        for (int i = 0; i < 10000; i++) {
+            int a = (int)(((Math.random())*2)+1);
+            double p_t1;
+            if (a == 1)
+                 p_t1 = 0.85;
+            else {
+                p_t1 = 0.30;
+            }
+
+            for (int j = 0; j < 100*(Math.random()*3)+1; j++) {
+                double b = Math.random() ;
+                //System.out.println(a);
+                if(b < p_t1)
+                    ln1.sendMoneyTo(1.23, ln3.getNodeAddress(), TYPE1);
+                else
+                    ln3.sendMoneyTo(3.47, ln3.getNodeAddress(), TYPE2);
+
                 try {
                     Thread.sleep(100);
+
                 }catch(InterruptedException e){
                     System.out.println(e);
                 }
             }
-            System.out.println("------------Nb of block 1 : " + Network.NB_OF_BLOCK_OF_TYPE1_CREATED+"\n"+"--------------Nb of block 2 : "+ Network.NB_OF_BLOCK_OF_TYPE2_CREATED);
-            if (Network.NB_OF_BLOCK_OF_TYPE1_CREATED + Network.NB_OF_BLOCK_OF_TYPE2_CREATED >= 200){
-                System.out.println("Finishing tests");
-                Network.NB_OF_BLOCK_OF_TYPE2_CREATED = 0;
-                Network.NB_OF_BLOCK_OF_TYPE1_CREATED = 0;
+            //net.printStats();
+            //System.out.println("------------Nb of block 1 : " + Network.NB_OF_BLOCK_OF_TYPE1_CREATED+"\n"+"--------------Nb of block 2 : "+ Network.NB_OF_BLOCK_OF_TYPE2_CREATED);
 
+            if (Network.NB_OF_BLOCK_OF_TYPE1_CREATED.get(Network.NB_OF_BLOCK_OF_TYPE1_CREATED.size()-1) + Network.NB_OF_BLOCK_OF_TYPE2_CREATED.get(Network.NB_OF_BLOCK_OF_TYPE2_CREATED.size()-1) >= 200){
+                net.printStats();
                 return;
             }
+        }
+    }
+
+    public static void simuBlk(){
+        List<Double> ST = new ArrayList<>();
+        List<Integer> NB_BLOCK = new ArrayList<>();
+        Network test = new Network("1","2");
+        for (int i = 0; i < 10000; i++) {
+            Blockchain b = new Blockchain(test);
+            for (int w = 0; w < i;w++) {
+                List<Transaction> LT = new ArrayList<Transaction>();
+                Block bb = new Block(b.getLatestBlock(), b.searchPrevBlockByID("1", b.getSize()-1), LT,"1");
+                b.addBlock(bb);
+            }
+            long start = System.nanoTime();
+            b.searchPrevBlockByID("2", b.getSize()-1);
+            long end = System.nanoTime();
+            ST.add((double)end-start);
+            NB_BLOCK.add(i);
+            System.out.println(ST);
+            System.out.println(NB_BLOCK);
         }
     }
 }

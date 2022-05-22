@@ -17,9 +17,16 @@ import java.util.*;
 public class Network {
     private final static int INIT_DIFFICULTY = 4;
     private final static int CHANGE_DIFFICULTY = 50;
-    // --
-    public static int NB_OF_BLOCK_OF_TYPE1_CREATED = 1;
-    public static int NB_OF_BLOCK_OF_TYPE2_CREATED = 1;
+    public static List<Integer> NB_OF_BLOCK_OF_TYPE1_CREATED = new ArrayList<>();
+    public static List<Integer> NB_OF_BLOCK_OF_TYPE2_CREATED = new ArrayList<>();
+    public List<Double> ST = new ArrayList<>();
+    public List<Double>  PT1 = new ArrayList<>();
+    public List<Double>  PT2 = new ArrayList<>();
+    public List<Integer>  T1 = new ArrayList<>();
+    public List<Integer>  T2 = new ArrayList<>();
+    public List<Integer>  ELECTED = new ArrayList<>();
+    public List<Double> EXCHANGE_MONEY1 = new ArrayList<>();
+    public List<Double> EXCHANGE_MONEY2 = new ArrayList<>();
     public final String TYPE1;
     public final String TYPE2;
     private final List<Node> network = new ArrayList<>();
@@ -33,6 +40,10 @@ public class Network {
         TYPE2 = type2;
         nbTransParType.put(TYPE1, 0);
         nbTransParType.put(TYPE2, 0);
+        NB_OF_BLOCK_OF_TYPE1_CREATED.add(1);
+        NB_OF_BLOCK_OF_TYPE2_CREATED.add(1);
+        EXCHANGE_MONEY1.add(0.);
+        EXCHANGE_MONEY2.add(0.);
 
     }
 
@@ -103,8 +114,8 @@ public class Network {
                 block = this.copyBlockchainFromFN().getLatestBlock();
                 if (!block.getNodeAddress().equals("Master"))
                     updateAllWallet(block);
-                //System.out.println("--Wallet--");
-                //printWallets();
+                System.out.println("--Wallet--");
+                printWallets();
             } catch (NullPointerException ignored) {
 
             }
@@ -136,6 +147,15 @@ public class Network {
             String toAddress = transaction.getToAddress();
             updateWalletWithAddress(amount, toAddress, transaction.getTransactionID());
             updateWalletWithAddress(-(amount + takenFromTrans), transaction.getFromAddress(), transaction.getTransactionID());
+            if (transaction.getTransactionID().equals(this.TYPE1)) {
+                System.out.println(transaction.getTransactionID());
+                this.EXCHANGE_MONEY1.add(EXCHANGE_MONEY1.get(EXCHANGE_MONEY1.size() - 1) + amount);
+            }
+            if (transaction.getTransactionID().equals(this.TYPE2)){
+                System.out.println(transaction.getTransactionID());
+                this.EXCHANGE_MONEY2.add(EXCHANGE_MONEY2.get(EXCHANGE_MONEY2.size() - 1) + amount);
+            }
+
             Set<String> investorList;
             if (vn != null) {
                 if (b.getBlockID().equals(TYPE1)) {
@@ -188,6 +208,21 @@ public class Network {
             }
         }
         throw new NullPointerException();
+    }
+
+    public void printStats(){
+        System.out.println("ST="+ ST);
+        System.out.println("NBT1="+NB_OF_BLOCK_OF_TYPE1_CREATED);
+        System.out.println("NBT2="+NB_OF_BLOCK_OF_TYPE2_CREATED);
+        System.out.println("WTT1="+copyBlockchainFromFN().WTT1);
+        System.out.println("WTT2="+copyBlockchainFromFN().WTT2);
+        System.out.println("PT1="+PT1);
+        System.out.println("PT2="+PT2);
+        System.out.println("T1="+T1);
+        System.out.println("T2="+T2);
+        System.out.println("ELECTED="+ELECTED);
+        System.out.println("Type 1 currency exchanged="+EXCHANGE_MONEY1);
+        System.out.println("Type 2 currency exchanged="+EXCHANGE_MONEY2);
     }
 
 

@@ -20,7 +20,10 @@ public class Blockchain {
     private static int cpt = 0;
     private final int blockChainId;
     private final List<Block> blkchain = new CopyOnWriteArrayList<>();
+    public final List<Double> WTT1 = new CopyOnWriteArrayList<>();
+    public final List<Double> WTT2 = new CopyOnWriteArrayList<>();
     private final Network network;
+
 
     /**
      * Constructor Blockchain
@@ -75,7 +78,11 @@ public class Blockchain {
     public synchronized void addBlock(Block block){
         String ID = block.getBlockID();
         Block prevBlock = searchPrevBlockByID(ID, this.blkchain.size()-1);
-        System.out.println("-----------Elapse time for block type " + ID +" = "+ (double)(block.getHeader().getTimeStamp() - prevBlock.getHeader().getTimeStamp())/1000 + " s");
+        //System.out.println("-----------Elapse time for block type " + ID +" = "+ (double)(block.getHeader().getTimeStamp() - prevBlock.getHeader().getTimeStamp())/1000 + " s");
+        if(ID.equals(network.TYPE1))
+            WTT1.add((double)(block.getHeader().getTimeStamp() - prevBlock.getHeader().getTimeStamp())/1000);
+        else
+            WTT2.add((double)(block.getHeader().getTimeStamp() - prevBlock.getHeader().getTimeStamp())/1000);
         blkchain.add(block);
     }
 

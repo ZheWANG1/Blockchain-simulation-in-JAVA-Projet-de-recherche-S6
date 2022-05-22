@@ -23,7 +23,8 @@ public class Validator implements Runnable {
     private final Lock lock = new ReentrantLock();
     private final Network network;
     private ValidatorNode validator = null;
-
+    private int incremBlock = 0;
+    private int testIncrement = 0;
     public Validator(Network network) {
         this.network = network;
     }
@@ -87,13 +88,16 @@ public class Validator implements Runnable {
     }
 
     public void validate() {
-        String currentBlockType = "";
+        int currentIDChosen = 0;
         boolean interrupt = false;
         while (!interrupt) {
             lock.lock();
             try {
                 if (validator != null) {
-                    validator.forgeBlock(currentBlockType);
+                    if (currentIDChosen == 1)
+                        validator.forgeBlock(this.network.TYPE1);
+                    if (currentIDChosen == 2)
+                        validator.forgeBlock(this.network.TYPE2);
                     validator = null;
 
                 }
@@ -108,16 +112,25 @@ public class Validator implements Runnable {
                 HashMap<String, Integer> nbTransParType = (HashMap<String, Integer>) network.getNbTransParType();
                 int nbSum = (int) nbTransParType.values().stream().collect(Collectors.summarizingInt(Integer::intValue)).getSum();
                 double proba = (double) nbTransParType.get(network.TYPE1) / nbSum;
-                System.out.println("Transactions : " +  nbTransParType.values());
-                if (proba == 1.0) proba = 0.8;
-                if (proba == 0.0) proba = 0.2;
-                int currentIDChosen = (Math.random() < proba ? 1 : 2);
-                System.out.println("Le proba de Type 1 est " + proba);
+                network.T1.add(nbTransParType.get(network.TYPE1));
+                network.T2.add(nbTransParType.get(network.TYPE2));
+                System.out.println("Transactions : " +  "["+nbTransParType.get(network.TYPE1)+","+nbTransParType.get(network.TYPE2)+"]");
+                if (proba > 0.95) proba = 0.95;
+                if (proba < 0.05) proba = 0.05;
+                currentIDChosen = (Math.random() < proba ? 1 : 2);
+                network.PT1.add(proba*100);
+                network.PT2.add(100-proba*100);
+
+                System.out.println("T1-Probability is  " + proba*100 + " %");
+                System.out.println("T2-Probability is " + (100-proba*100) + " %");
+                //MOD
+
+                // T
                 if (currentIDChosen == 1) {
-                    currentBlockType = network.TYPE1;
+                    network.ELECTED.add(1);
                     chooseValidator(network.TYPE1);
                 } else {
-                    currentBlockType = network.TYPE2;
+                    network.ELECTED.add(2);
                     chooseValidator(network.TYPE2);
                 }
             } catch (Exception e) {
